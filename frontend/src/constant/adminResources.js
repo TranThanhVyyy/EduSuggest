@@ -1,0 +1,161 @@
+const activeStatusOptions = [
+  { value: 'active', label: 'Đang hoạt động' },
+  { value: 'locked', label: 'Đã khóa' },
+]
+
+const visibilityOptions = [
+  { value: 'visible', label: 'Đang hiển thị' },
+  { value: 'hidden', label: 'Đã ẩn' },
+]
+
+export const ADMIN_RESOURCE_CONFIGS = {
+  users: {
+    key: 'users',
+    title: 'Tài khoản User',
+    section: 'Quản lý người dùng',
+    description: 'Chỉ hiển thị tài khoản học viên User. Reviewer và người cung cấp nội dung được quản lý tại các mục riêng.',
+    searchFields: ['id', 'fullName', 'email', 'phone'],
+    columns: [
+      { key: 'id', label: 'Mã tài khoản' },
+      { key: 'fullName', label: 'Họ tên' },
+      { key: 'email', label: 'Email' },
+      { key: 'createdAt', label: 'Ngày tạo' },
+      { key: 'status', label: 'Trạng thái' },
+    ],
+    filters: [{ key: 'status', label: 'Tất cả trạng thái', options: activeStatusOptions }],
+    fields: [
+      { key: 'fullName', label: 'Họ tên', required: true },
+      { key: 'email', label: 'Email', type: 'email', required: true },
+      { key: 'phone', label: 'Số điện thoại', type: 'tel' },
+    ],
+    detailFields: [
+      { key: 'id', label: 'Mã tài khoản' }, { key: 'fullName', label: 'Họ tên' },
+      { key: 'email', label: 'Email' }, { key: 'phone', label: 'Số điện thoại' },
+      { key: 'createdAt', label: 'Ngày tạo' },
+      { key: 'status', label: 'Trạng thái' },
+    ],
+    canCreate: true,
+    canEdit: true,
+    canToggle: true,
+  },
+  reviewers: {
+    key: 'reviewers',
+    title: 'Quản lý chuyên gia',
+    section: 'Quản lý người dùng',
+    description: 'Quản lý tài khoản và chuyên môn Reviewer; Admin không thực hiện kiểm duyệt thay.',
+    searchFields: ['id', 'fullName', 'email', 'expertise'],
+    columns: [
+      { key: 'id', label: 'Mã chuyên gia' }, { key: 'fullName', label: 'Họ tên' },
+      { key: 'email', label: 'Email' }, { key: 'expertise', label: 'Chuyên môn' },
+      { key: 'reviewedCourses', label: 'Đã kiểm duyệt' }, { key: 'status', label: 'Trạng thái' },
+    ],
+    filters: [{ key: 'status', label: 'Tất cả trạng thái', options: activeStatusOptions }],
+    fields: [
+      { key: 'fullName', label: 'Họ tên', required: true },
+      { key: 'email', label: 'Email', type: 'email', required: true },
+      { key: 'expertise', label: 'Chuyên môn', type: 'textarea', required: true },
+    ],
+    detailFields: [
+      { key: 'id', label: 'Mã chuyên gia' }, { key: 'fullName', label: 'Họ tên' },
+      { key: 'email', label: 'Email' }, { key: 'expertise', label: 'Chuyên môn', wide: true },
+      { key: 'joinedAt', label: 'Ngày tham gia' }, { key: 'reviewedCourses', label: 'Số khóa học đã kiểm duyệt' },
+      { key: 'activeAssignments', label: 'Công việc đang phụ trách' }, { key: 'status', label: 'Trạng thái' },
+    ],
+    canCreate: true,
+    canEdit: true,
+    canToggle: true,
+  },
+  providers: {
+    key: 'providers',
+    title: 'Quản lý người cung cấp',
+    section: 'Quản lý người dùng',
+    description: 'Theo dõi hồ sơ và trạng thái tài khoản người cung cấp nội dung.',
+    searchFields: ['id', 'name', 'email', 'phone'],
+    columns: [
+      { key: 'id', label: 'Mã người cung cấp' }, { key: 'name', label: 'Tên cá nhân/đơn vị' },
+      { key: 'email', label: 'Email' }, { key: 'phone', label: 'Điện thoại' },
+      { key: 'approvedCourses', label: 'Khóa học được duyệt' }, { key: 'status', label: 'Trạng thái' },
+    ],
+    filters: [{ key: 'status', label: 'Tất cả trạng thái', options: activeStatusOptions }],
+    fields: [
+      { key: 'name', label: 'Họ tên hoặc tên đơn vị', required: true },
+      { key: 'email', label: 'Email', type: 'email', required: true },
+      { key: 'phone', label: 'Số điện thoại', type: 'tel' },
+    ],
+    detailFields: [
+      { key: 'id', label: 'Mã người cung cấp' }, { key: 'name', label: 'Họ tên/Tên đơn vị' },
+      { key: 'email', label: 'Email' }, { key: 'phone', label: 'Số điện thoại' },
+      { key: 'registeredAt', label: 'Ngày đăng ký' }, { key: 'publishedCourses', label: 'Số khóa học đã đăng' },
+      { key: 'approvedCourses', label: 'Số khóa học đã duyệt' }, { key: 'status', label: 'Trạng thái' },
+    ],
+    canCreate: true,
+    canEdit: true,
+    canToggle: true,
+  },
+  categories: {
+    key: 'categories',
+    title: 'Quản lý danh mục',
+    section: 'Quản lý nội dung',
+    description: 'Tạo, cập nhật hoặc xóa danh mục; danh mục đang được sử dụng không thể xóa.',
+    searchFields: ['id', 'name', 'description'],
+    columns: [
+      { key: 'id', label: 'Mã danh mục' }, { key: 'name', label: 'Tên danh mục' },
+      { key: 'description', label: 'Mô tả' }, { key: 'courseCount', label: 'Số khóa học' },
+      { key: 'createdAt', label: 'Ngày tạo' }, { key: 'status', label: 'Trạng thái' },
+    ],
+    filters: [{ key: 'status', label: 'Tất cả trạng thái', options: [
+      { value: 'active', label: 'Đang hoạt động' }, { value: 'inactive', label: 'Ngừng hoạt động' },
+    ] }],
+    fields: [
+      { key: 'name', label: 'Tên danh mục', required: true },
+      { key: 'description', label: 'Mô tả', type: 'textarea', required: true },
+    ],
+    detailFields: [
+      { key: 'id', label: 'Mã danh mục' }, { key: 'name', label: 'Tên danh mục' },
+      { key: 'description', label: 'Mô tả', wide: true }, { key: 'createdAt', label: 'Ngày tạo' },
+      { key: 'courseCount', label: 'Số khóa học' }, { key: 'status', label: 'Trạng thái' },
+    ],
+    canCreate: true,
+    canEdit: true,
+    canDelete: true,
+  },
+  courses: {
+    key: 'courses',
+    title: 'Quản lý khóa học đã duyệt',
+    section: 'Quản lý nội dung',
+    description: 'Chỉ hiển thị khóa học đã được Reviewer phê duyệt. Admin chỉ xem và quản lý trạng thái hiển thị.',
+    searchFields: ['id', 'title', 'category', 'providerName', 'reviewerName'],
+    columns: [
+      { key: 'id', label: 'Mã khóa học' }, { key: 'title', label: 'Tên khóa học' },
+      { key: 'category', label: 'Danh mục' }, { key: 'providerName', label: 'Người cung cấp' },
+      { key: 'reviewerName', label: 'Reviewer' }, { key: 'approvedAt', label: 'Ngày duyệt' },
+      { key: 'lessonCount', label: 'Bài học' }, { key: 'enrollments', label: 'Lượt đăng ký' },
+      { key: 'visibility', label: 'Hiển thị' },
+    ],
+    filters: [
+      { key: 'category', label: 'Tất cả danh mục', options: ['Công nghệ', 'Kinh doanh', 'Thiết kế'] },
+      { key: 'visibility', label: 'Mọi trạng thái hiển thị', options: visibilityOptions },
+    ],
+    detailRoute: 'admin-course-detail',
+    readOnlyContent: true,
+  },
+  materials: {
+    key: 'materials',
+    title: 'Quản lý tài liệu đã duyệt',
+    section: 'Quản lý nội dung',
+    description: 'Theo dõi tài liệu độc lập và tài liệu gắn với khóa học/bài học; không đăng tải hoặc kiểm duyệt.',
+    searchFields: ['id', 'title', 'fileName', 'providerName', 'documentType', 'courseTitle', 'lessonTitle'],
+    columns: [
+      { key: 'id', label: 'Mã tài liệu' }, { key: 'title', label: 'Tên tài liệu' },
+      { key: 'documentType', label: 'Loại' }, { key: 'mimeType', label: 'Định dạng' },
+      { key: 'providerName', label: 'Người cung cấp' }, { key: 'courseTitle', label: 'Khóa học liên quan' },
+      { key: 'reviewerName', label: 'Reviewer' }, { key: 'visibility', label: 'Hiển thị' },
+    ],
+    filters: [
+      { key: 'documentType', label: 'Tất cả định dạng', options: ['E-book', 'Bài tập', 'Slide'] },
+      { key: 'visibility', label: 'Mọi trạng thái hiển thị', options: visibilityOptions },
+    ],
+    detailRoute: 'admin-material-detail',
+    readOnlyContent: true,
+  },
+}
