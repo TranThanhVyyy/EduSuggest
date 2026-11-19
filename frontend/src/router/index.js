@@ -3,9 +3,106 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: () => import('@/views/ExperiencePreview.vue'),
-    meta: { title: 'EduSuggest – Gợi ý học tập thông minh' },
+    component: () => import('@/layout/UserLayout.vue'),
+    meta: { demoOnly: true },
+    children: [
+      {
+        path: '',
+        name: 'home',
+        component: () => import('@/views/user/UserHome.vue'),
+        meta: { title: 'EduSuggest – Học tập theo mục tiêu', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'dashboard',
+        name: 'user-dashboard',
+        component: () => import('@/views/user/UserDashboard.vue'),
+        meta: { title: 'Dashboard người học', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'profile',
+        name: 'user-profile',
+        component: () => import('@/views/user/UserProfile.vue'),
+        meta: { title: 'Hồ sơ cá nhân', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'provider/application',
+        name: 'provider-application',
+        component: () => import('@/views/user/ProviderApplication.vue'),
+        meta: { title: 'Đăng ký trở thành nhà cung cấp', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'courses',
+        name: 'course-catalog',
+        component: () => import('@/views/user/CourseCatalog.vue'),
+        meta: { title: 'Danh sách khóa học', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'courses/:id',
+        name: 'course-detail',
+        component: () => import('@/views/user/CourseDetail.vue'),
+        meta: { title: 'Chi tiết khóa học', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'learning/:courseId',
+        name: 'learning',
+        component: () => import('@/views/user/LearningView.vue'),
+        meta: { title: 'Học khóa học', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'learning-progress',
+        name: 'learning-progress',
+        component: () => import('@/views/user/LearningProgress.vue'),
+        meta: { title: 'Tiến độ học tập', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'learning-history',
+        name: 'learning-history',
+        component: () => import('@/views/user/LearningHistory.vue'),
+        meta: { title: 'Lịch sử học tập', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'materials',
+        name: 'material-catalog',
+        component: () => import('@/views/user/MaterialCatalog.vue'),
+        meta: { title: 'Tài liệu học tập', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'materials/:id',
+        name: 'material-detail',
+        component: () => import('@/views/user/MaterialDetail.vue'),
+        meta: { title: 'Chi tiết tài liệu', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'recommendations/courses',
+        name: 'course-recommendations',
+        component: () => import('@/views/user/Recommendations.vue'),
+        meta: { title: 'Gợi ý khóa học', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'recommendations/materials',
+        name: 'material-recommendations',
+        component: () => import('@/views/user/Recommendations.vue'),
+        meta: { title: 'Gợi ý tài liệu', actor: 'user', demoOnly: true },
+      },
+      {
+        path: 'expert-reviews',
+        name: 'expert-reviews',
+        component: () => import('@/views/user/ExpertReviews.vue'),
+        meta: { title: 'Đánh giá chuyên gia', actor: 'user', demoOnly: true },
+      },
+    ],
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/user/AuthView.vue'),
+    meta: { title: 'Đăng ký tài khoản', actor: 'user', demoOnly: true },
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/user/AuthView.vue'),
+    meta: { title: 'Đăng nhập', actor: 'user', demoOnly: true },
   },
   {
     path: '/admin',
@@ -192,10 +289,6 @@ const routes = [
         name: 'provider-dashboard',
         component: () => import('@/views/provider/ProviderDashboard.vue'),
         meta: { title: 'Tổng quan Provider', providerSection: 'Tổng quan', demoOnly: true },
-      },
-      {
-        path: 'application',
-        redirect: { name: 'provider-register' },
       },
       {
         path: 'profile',
