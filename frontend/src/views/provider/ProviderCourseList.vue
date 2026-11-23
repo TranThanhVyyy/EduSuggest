@@ -10,10 +10,8 @@ import ToastMessage from '@/components/reviewer/ToastMessage.vue'
 import {
   PROVIDER_STATUS,
   PROVIDER_STATUS_LABELS,
-  deleteProviderCourse,
-  getProviderCourses,
-  submitProviderCourseForReview,
-} from '@/service/providerService'
+} from '@/service/providerApiService'
+import { deleteProviderCourseRecord, loadProviderCourses, providerErrorMessage, submitProviderCourseRecord } from '@/service/providerApiService'
 
 const pageSize = 8
 const route = useRoute()
@@ -25,7 +23,24 @@ const modalOpen = ref(false)
 const modalError = ref('')
 const pendingAction = ref(null)
 const toastMessage = ref('')
-const courses = computed(() => getProviderCourses())
+const courses = ref([])
+const isLoading = ref(true)
+const loadError = ref('')
+const isSubmitting = ref(false)
+
+async function refreshCourses() {
+  isLoading.value = true
+  loadError.value = ''
+  try {
+    courses.value = await loadProviderCourses()
+  } catch (error) {
+    loadError.value = providerErrorMessage(error, 'Không thể tải danh sách khóa học.')
+  } finally {
+    isLoading.value = false
+  }
+}
+
+refreshCourses()
 const filteredCourses = computed(() => {
   const search = query.value.trim().toLocaleLowerCase('vi')
   return courses.value.filter((course) => {
@@ -68,7 +83,7 @@ function formatDate(value) {
 
 function statusClass(status) {
   if (status === PROVIDER_STATUS.approved) return 'bg-accent/10 text-accent'
-  if ([PROVIDER_STATUS.pending, PROVIDER_STATUS.pendingAssignment, PROVIDER_STATUS.reviewing].includes(status)) return 'bg-primary/10 text-primary'
+  if (status === PROVIDER_STATUS.pending) return 'bg-primary/10 text-primary'
   if ([PROVIDER_STATUS.rejected, PROVIDER_STATUS.changesRequested].includes(status)) return 'bg-slate-100 text-navy'
   return 'bg-background text-muted'
 }
@@ -79,23 +94,30 @@ function askAction(type, course) {
   modalOpen.value = true
 }
 
-function performAction() {
+async function performAction() {
+  if (isSubmitting.value) return
+  isSubmitting.value = true
   try {
     const { type, course } = pendingAction.value
     if (type === 'delete') {
-      deleteProviderCourse(course.id)
-      toastMessage.value = 'Đã xóa bản nháp trong phiên hiện tại.'
+      await deleteProviderCourseRecord(course.id)
+      courses.value = await loadProviderCourses()
+      toastMessage.value = 'Đã xóa bản nháp không có dữ liệu liên quan.'
     } else {
       const wasResubmission = [PROVIDER_STATUS.rejected, PROVIDER_STATUS.changesRequested].includes(course.status)
-      submitProviderCourseForReview(course.id)
+      await submitProviderCourseRecord(course.id)
+      courses.value = await loadProviderCourses()
+      loadError.value = ''
       toastMessage.value = wasResubmission
-        ? 'Đã gửi lại khóa học để kiểm duyệt trong phiên hiện tại.'
-        : 'Đã gửi khóa học để kiểm duyệt trong phiên hiện tại.'
+        ? 'Đã gửi lại khóa học; trạng thái đã đồng bộ từ Backend.'
+        : 'Đã gửi khóa học; trạng thái đã đồng bộ từ Backend.'
     }
     modalOpen.value = false
     pendingAction.value = null
   } catch (error) {
-    modalError.value = error instanceof Error ? error.message : 'Không thể thực hiện thao tác.'
+    modalError.value = providerErrorMessage(error, 'Không thể thực hiện thao tác.')
+  } finally {
+    isSubmitting.value = false
   }
 }
 
@@ -117,7 +139,7 @@ const modalDescription = computed(() => {
       <div>
         <p class="text-sm text-muted">Quản lý khóa học</p>
         <h2 class="mt-1 text-2xl font-bold tracking-tight text-navy">Khóa học của tôi</h2>
-        <p class="mt-2 text-sm leading-6 text-muted">Chỉ dữ liệu mock thuộc hồ sơ Provider minh họa đang được hiển thị.</p>
+        <p class="mt-2 text-sm leading-6 text-muted">Danh sách khóa học được tải từ Backend theo tài khoản Provider đang đăng nhập.</p>
       </div>
       <RouterLink :to="{ name: 'provider-course-create' }" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90">
         <Plus :size="17" aria-hidden="true" /> Tạo khóa học
@@ -135,14 +157,16 @@ const modalDescription = computed(() => {
         </select>
       </div>
 
-      <div v-if="visibleCourses.length" class="overflow-x-auto">
+      <p v-if="isLoading" class="p-5 text-sm text-muted" role="status">Đang tải khóa học…</p>
+      <p v-else-if="loadError" class="m-4 rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-primary" role="alert">{{ loadError }} <button type="button" class="ml-2 font-semibold underline" @click="refreshCourses">Thử lại</button></p>
+      <div v-else-if="visibleCourses.length" class="overflow-x-auto">
         <table class="w-full min-w-[1050px] text-left text-sm">
           <thead class="bg-background text-xs uppercase tracking-wide text-muted">
             <tr>
               <th scope="col" class="px-4 py-3 font-semibold">Khóa học</th>
               <th scope="col" class="px-4 py-3 font-semibold">Danh mục</th>
               <th scope="col" class="px-4 py-3 font-semibold">Cập nhật</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Chương / bài học</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Bài học</th>
               <th scope="col" class="px-4 py-3 font-semibold">Kiểm duyệt</th>
               <th scope="col" class="px-4 py-3 font-semibold">Hiển thị</th>
               <th scope="col" class="px-4 py-3 text-right font-semibold">Thao tác</th>
@@ -160,17 +184,17 @@ const modalDescription = computed(() => {
                   </span>
                 </div>
               </th>
-              <td class="px-4 py-4 text-muted">{{ course.category || '—' }}</td>
+              <td class="px-4 py-4 text-muted">{{ course.categoryId ? `Mã danh mục ${course.categoryId}` : '—' }}</td>
               <td class="whitespace-nowrap px-4 py-4 text-muted">{{ formatDate(course.updatedAt) }}</td>
-              <td class="px-4 py-4 text-muted">{{ course.chapters.length }} chương · {{ course.chapters.reduce((sum, chapter) => sum + chapter.lessons.length, 0) }} bài</td>
+              <td class="px-4 py-4 text-muted">{{ course.lessons.length }} bài học</td>
               <td class="px-4 py-4"><span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" :class="statusClass(course.status)">{{ PROVIDER_STATUS_LABELS[course.status] || course.status }}</span></td>
-              <td class="px-4 py-4 text-xs text-muted">{{ course.status === PROVIDER_STATUS.approved ? (course.visibility ? (course.visibility === 'visible' ? 'Đang hiển thị' : 'Đã ẩn') : 'Chưa có dữ liệu Backend') : 'Chưa công khai' }}</td>
+              <td class="px-4 py-4 text-xs text-muted">{{ course.visibility === 'VISIBLE' ? 'Đang hiển thị' : 'Đang ẩn' }}</td>
               <td class="px-4 py-4 text-right">
                 <div class="inline-flex flex-wrap justify-end gap-1">
                   <RouterLink :to="{ name: 'provider-course-detail', params: { id: course.id } }" class="flex size-8 items-center justify-center rounded-lg text-muted hover:bg-primary/10 hover:text-primary" :aria-label="`Xem ${course.title}`" title="Xem chi tiết"><Eye :size="16" aria-hidden="true" /></RouterLink>
                   <RouterLink v-if="isEditable(course)" :to="{ name: 'provider-course-edit', params: { id: course.id } }" class="flex size-8 items-center justify-center rounded-lg text-muted hover:bg-background hover:text-navy" :aria-label="`Chỉnh sửa ${course.title}`" title="Chỉnh sửa"><FileEdit :size="16" aria-hidden="true" /></RouterLink>
                   <button v-if="course.status === PROVIDER_STATUS.draft" type="button" class="flex size-8 items-center justify-center rounded-lg text-muted hover:bg-primary/10 hover:text-primary" :aria-label="`Gửi ${course.title} kiểm duyệt`" title="Gửi kiểm duyệt" @click="askAction('submit', course)"><Send :size="15" aria-hidden="true" /></button>
-                  <button v-if="course.status === PROVIDER_STATUS.draft" type="button" class="flex size-8 items-center justify-center rounded-lg text-muted hover:bg-background hover:text-primary" :aria-label="`Xóa bản nháp ${course.title}`" title="Xóa bản nháp" @click="askAction('delete', course)"><Trash2 :size="15" aria-hidden="true" /></button>
+                  <button v-if="course.status === PROVIDER_STATUS.draft" type="button" class="flex size-8 items-center justify-center rounded-lg text-muted hover:bg-primary/10 hover:text-primary" :aria-label="`Xóa bản nháp ${course.title}`" title="Xóa bản nháp nếu chưa có dữ liệu liên quan" @click="askAction('delete', course)"><Trash2 :size="15" aria-hidden="true" /></button>
                 </div>
               </td>
             </tr>
@@ -191,7 +215,7 @@ const modalDescription = computed(() => {
       @close="modalOpen = false"
       @confirm="performAction"
     >
-      <p v-if="pendingAction?.type === 'delete'">Chỉ bản nháp chưa gửi kiểm duyệt mới có thể xóa. Thao tác chỉ ảnh hưởng đến dữ liệu mock trong phiên.</p>
+      <p v-if="pendingAction?.type === 'delete'">Chỉ bản nháp đang ẩn, chưa gửi duyệt và chưa có bài học, đăng ký, lịch sử học hoặc nhận xét mới được xóa. Backend sẽ từ chối nếu khóa học có dữ liệu liên quan.</p>
       <p v-else>Khóa học chỉ được chuyển sang trạng thái chờ kiểm duyệt. Provider không thể tự phê duyệt hoặc công khai nội dung.</p>
     </AdminModal>
     <ToastMessage :message="toastMessage" @close="toastMessage = ''" />

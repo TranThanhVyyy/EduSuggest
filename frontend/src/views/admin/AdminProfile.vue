@@ -1,69 +1,65 @@
 <script setup>
-import { computed, reactive, ref } from 'vue'
-import { Save, ShieldCheck } from 'lucide-vue-next'
-import ToastMessage from '@/components/reviewer/ToastMessage.vue'
-import { getAdminProfile, saveAdminProfile } from '@/service/adminService'
+import { computed, onMounted, reactive, ref } from 'vue'
+import { Save } from 'lucide-vue-next'
+import UiButton from '@/components/ui/UiButton.vue'
+import { authState, setCurrentUser } from '@/service/authState'
+import { loadCurrentUser } from '@/service/authService'
+import api from '@/service/api'
 
-const profile = computed(() => getAdminProfile())
-const form = reactive({
-  fullName: profile.value.fullName,
-  email: profile.value.email,
-  phone: profile.value.phone,
-})
-const formError = ref('')
-const toastMessage = ref('')
+const form = reactive({ fullName: '', phone: '' })
+const loading = ref(true)
+const saving = ref(false)
+const errorMessage = ref('')
+const successMessage = ref('')
+const username = computed(() => authState.user?.tenTaiKhoan || '')
+const email = computed(() => authState.user?.email || '')
 
-function saveProfile() {
-  formError.value = ''
+async function loadProfile() {
+  loading.value = true
+  errorMessage.value = ''
   try {
-    saveAdminProfile(form)
-    toastMessage.value = 'Đã lưu hồ sơ mẫu trong phiên hiện tại.'
+    const user = await loadCurrentUser()
+    if (user) Object.assign(form, { fullName: user.hoTen || '', phone: user.soDienThoai || '' })
   } catch (error) {
-    formError.value = error instanceof Error ? error.message : 'Không thể lưu hồ sơ.'
+    errorMessage.value = error.response?.data?.detail || 'Không thể tải hồ sơ. Hãy thử tải lại trang.'
+  } finally {
+    loading.value = false
   }
 }
+
+async function saveProfile() {
+  saving.value = true
+  errorMessage.value = ''
+  successMessage.value = ''
+  try {
+    const { data } = await api.put('/users/me', { hoTen: form.fullName.trim(), soDienThoai: form.phone.trim() || null })
+    setCurrentUser(data)
+    Object.assign(form, { fullName: data.hoTen || '', phone: data.soDienThoai || '' })
+    successMessage.value = 'Hồ sơ đã được cập nhật.'
+  } catch (error) {
+    errorMessage.value = error.response?.data?.detail || 'Không thể cập nhật hồ sơ. Hãy kiểm tra kết nối rồi thử lại.'
+  } finally {
+    saving.value = false
+  }
+}
+
+onMounted(loadProfile)
 </script>
 
 <template>
-  <div class="mx-auto max-w-3xl space-y-5">
-    <section>
-      <p class="text-sm text-muted">Tài khoản</p>
-      <h2 class="mt-1 text-2xl font-bold tracking-tight text-navy">Thông tin cá nhân</h2>
-      <p class="mt-2 text-sm leading-6 text-muted">Cập nhật thông tin hồ sơ quản trị. Dữ liệu hiện chỉ lưu trong bộ nhớ của phiên.</p>
-    </section>
-
-    <form class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6" novalidate @submit.prevent="saveProfile">
-      <div class="mb-5 flex items-center gap-3 rounded-xl bg-background p-4">
-        <span class="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary"><ShieldCheck :size="21" aria-hidden="true" /></span>
-        <div>
-          <p class="text-sm font-semibold text-navy">{{ profile.role }}</p>
-          <p class="mt-0.5 text-xs text-muted">Quyền quản trị được bảo vệ</p>
-        </div>
+  <main class="max-w-3xl space-y-6">
+    <header class="border-b border-border pb-5"><p class="ui-eyebrow">Tài khoản</p><h1 class="ui-page-title mt-2">Hồ sơ quản trị</h1><p class="mt-2 text-sm text-muted">Thông tin được tải và lưu qua tài khoản hiện tại.</p></header>
+    <p v-if="loading" class="py-4 text-sm text-muted" role="status">Đang tải hồ sơ…</p>
+    <form v-else class="max-w-2xl space-y-5" @submit.prevent="saveProfile">
+      <div class="grid gap-5 sm:grid-cols-2">
+        <label class="text-sm font-medium text-navy">Họ và tên<input v-model.trim="form.fullName" class="ui-input mt-2" autocomplete="name" maxlength="255" required></label>
+        <label class="text-sm font-medium text-navy">Tên tài khoản<input :value="username" class="ui-input mt-2" disabled></label>
+        <label class="text-sm font-medium text-navy">Email<input :value="email" class="ui-input mt-2" disabled type="email"></label>
+        <label class="text-sm font-medium text-navy">Số điện thoại<input v-model.trim="form.phone" class="ui-input mt-2" autocomplete="tel" type="tel"></label>
       </div>
-
-      <div class="grid gap-4 sm:grid-cols-2">
-        <label class="block">
-          <span class="mb-1.5 block text-sm font-semibold text-navy">Họ tên <span class="text-primary" aria-hidden="true">*</span></span>
-          <input v-model="form.fullName" type="text" autocomplete="name" required class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-navy outline-none focus:border-primary focus:ring-2 focus:ring-primary/15">
-        </label>
-        <label class="block">
-          <span class="mb-1.5 block text-sm font-semibold text-navy">Email <span class="text-primary" aria-hidden="true">*</span></span>
-          <input v-model="form.email" type="email" autocomplete="email" required class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-navy outline-none focus:border-primary focus:ring-2 focus:ring-primary/15">
-        </label>
-        <label class="block sm:col-span-2">
-          <span class="mb-1.5 block text-sm font-semibold text-navy">Số điện thoại</span>
-          <input v-model="form.phone" type="tel" autocomplete="tel" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-navy outline-none focus:border-primary focus:ring-2 focus:ring-primary/15">
-        </label>
-      </div>
-
-      <p v-if="formError" class="mt-4 rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm text-primary" role="alert">{{ formError }}</p>
-      <div class="mt-5 flex justify-end border-t border-slate-100 pt-4">
-        <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90">
-          <Save :size="16" aria-hidden="true" /> Lưu thay đổi
-        </button>
-      </div>
+      <p v-if="errorMessage" class="border-l-2 border-danger py-1 pl-3 text-sm text-danger" role="alert">{{ errorMessage }}</p>
+      <p v-if="successMessage" class="border-l-2 border-secondary py-1 pl-3 text-sm text-secondary" role="status">{{ successMessage }}</p>
+      <UiButton type="submit" :loading="saving"><Save :size="15" aria-hidden="true" /> Lưu thay đổi</UiButton>
     </form>
-
-    <ToastMessage :message="toastMessage" @close="toastMessage = ''" />
-  </div>
+  </main>
 </template>

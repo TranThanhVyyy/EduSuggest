@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { ArrowLeft, BookOpen, FileText, FileVideo, Pencil, Send } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import AdminModal from '@/components/admin/AdminModal.vue'
@@ -7,11 +7,8 @@ import ToastMessage from '@/components/reviewer/ToastMessage.vue'
 import {
   PROVIDER_STATUS,
   PROVIDER_STATUS_LABELS,
-  getProviderCourse,
-  getProviderCourseTimeline,
-  submitProviderCourseForReview,
-  validateProviderCourse,
-} from '@/service/providerService'
+} from '@/service/providerApiService'
+import { loadProviderCourse, loadProviderReviews, mapProviderReview, providerErrorMessage, submitProviderCourseRecord } from '@/service/providerApiService'
 
 const route = useRoute()
 const router = useRouter()
@@ -22,21 +19,32 @@ const timeline = ref([])
 const submitConfirmOpen = ref(false)
 const modalError = ref('')
 const toastMessage = ref('')
+const isSubmitting = ref(false)
 
-try {
-  course.value = getProviderCourse(courseId)
-  timeline.value = getProviderCourseTimeline(courseId)
-} catch (error) {
-  loadError.value = error instanceof Error ? error.message : 'Không thể tải khóa học.'
+async function refreshCourse() {
+  try {
+    course.value = await loadProviderCourse(courseId)
+    const reviews = await loadProviderReviews(courseId)
+    const mappedReviews = reviews.map(mapProviderReview)
+    const latestReview = mappedReviews[0]
+    if (latestReview) {
+      course.value.reviewFeedback = latestReview.feedback
+    }
+    timeline.value = mappedReviews.map((review) => ({ action: review.action, detail: review.feedback, createdAt: review.createdAt }))
+  } catch (error) {
+    loadError.value = providerErrorMessage(error, 'Không thể tải khóa học từ Backend.')
+  }
 }
+
+onMounted(refreshCourse)
 
 const isEditable = computed(() => course.value && [
   PROVIDER_STATUS.draft,
   PROVIDER_STATUS.rejected,
   PROVIDER_STATUS.changesRequested,
 ].includes(course.value.status))
-const canSubmit = computed(() => isEditable.value && validateProviderCourse(course.value).length === 0)
-const lessonCount = computed(() => course.value?.chapters.reduce((sum, chapter) => sum + chapter.lessons.length, 0) || 0)
+const canSubmit = computed(() => isEditable.value && Boolean(course.value?.title && course.value?.categoryId && lessonCount.value))
+const lessonCount = computed(() => course.value?.lessons.length || 0)
 
 function formatDate(value) {
   if (!value) return 'Chưa có dữ liệu'
@@ -46,20 +54,23 @@ function formatDate(value) {
 
 function statusClass(status) {
   if (status === PROVIDER_STATUS.approved) return 'bg-accent/10 text-accent'
-  if ([PROVIDER_STATUS.pending, PROVIDER_STATUS.pendingAssignment, PROVIDER_STATUS.reviewing].includes(status)) return 'bg-primary/10 text-primary'
+  if (status === PROVIDER_STATUS.pending) return 'bg-primary/10 text-primary'
   if ([PROVIDER_STATUS.rejected, PROVIDER_STATUS.changesRequested].includes(status)) return 'bg-slate-100 text-navy'
   return 'bg-background text-muted'
 }
 
-function confirmSubmit() {
+async function confirmSubmit() {
+  if (isSubmitting.value) return
+  isSubmitting.value = true
   try {
-    submitProviderCourseForReview(courseId)
-    course.value = getProviderCourse(courseId)
-    timeline.value = getProviderCourseTimeline(courseId)
-    toastMessage.value = 'Đã gửi khóa học để kiểm duyệt trong phiên hiện tại.'
+    await submitProviderCourseRecord(courseId)
+    await refreshCourse()
+    toastMessage.value = 'Đã gửi khóa học. Trạng thái đã được tải lại từ Backend.'
     submitConfirmOpen.value = false
   } catch (error) {
-    modalError.value = error instanceof Error ? error.message : 'Không thể gửi kiểm duyệt.'
+    modalError.value = providerErrorMessage(error, 'Không thể gửi kiểm duyệt.')
+  } finally {
+    isSubmitting.value = false
   }
 }
 </script>
@@ -92,8 +103,8 @@ function confirmSubmit() {
     <section class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
       <article class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs text-muted">Tạo ngày</p><p class="mt-1 text-sm font-semibold text-navy">{{ formatDate(course.createdAt) }}</p></article>
       <article class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs text-muted">Gửi kiểm duyệt</p><p class="mt-1 text-sm font-semibold text-navy">{{ formatDate(course.submittedAt) }}</p></article>
-      <article class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs text-muted">Cấu trúc</p><p class="mt-1 text-sm font-semibold text-navy">{{ course.chapters.length }} chương · {{ lessonCount }} bài học</p></article>
-      <article class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs text-muted">Trạng thái hiển thị</p><p class="mt-1 text-sm font-semibold text-navy">{{ course.status === PROVIDER_STATUS.approved ? (course.visibility ? (course.visibility === 'visible' ? 'Đang hiển thị' : 'Đã ẩn') : 'Chưa có dữ liệu Backend') : 'Chưa công khai' }}</p></article>
+      <article class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs text-muted">Nội dung</p><p class="mt-1 text-sm font-semibold text-navy">{{ lessonCount }} bài học</p></article>
+      <article class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs text-muted">Trạng thái hiển thị</p><p class="mt-1 text-sm font-semibold text-navy">{{ course.status === PROVIDER_STATUS.approved ? (course.visibility ? (course.visibility === 'VISIBLE' ? 'Đang hiển thị' : 'Đã ẩn') : 'Chưa có dữ liệu Backend') : 'Chưa công khai' }}</p></article>
     </section>
 
     <section class="grid gap-5 xl:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.6fr)]">
@@ -111,32 +122,23 @@ function confirmSubmit() {
 
         <article class="rounded-2xl border border-slate-200 bg-white p-5">
           <div class="flex flex-wrap items-center justify-between gap-3">
-            <div><h3 class="text-lg font-bold text-navy">Chương trình học</h3><p class="mt-1 text-xs text-muted">{{ course.estimatedDuration || 'Chưa có thời lượng dự kiến' }}</p></div>
+            <div><h3 class="text-lg font-bold text-navy">Bài học</h3><p class="mt-1 text-xs text-muted">{{ course.estimatedDuration || 'Chưa có thời lượng dự kiến' }}</p></div>
             <RouterLink :to="{ name: 'provider-lessons', params: { id: course.id } }" class="text-sm font-semibold text-primary hover:underline">Quản lý bài học</RouterLink>
           </div>
-          <div v-if="course.chapters.length" class="mt-4 space-y-3">
-            <details v-for="(chapter, index) in course.chapters" :key="chapter.id" class="rounded-xl border border-slate-200 p-4" :open="index === 0">
-              <summary class="cursor-pointer font-semibold text-navy">Chương {{ index + 1 }} · {{ chapter.title }}</summary>
-              <p v-if="chapter.description" class="mt-2 text-sm text-muted">{{ chapter.description }}</p>
-              <ol class="mt-3 space-y-3">
-                <li v-for="(lesson, lessonIndex) in chapter.lessons" :key="lesson.id" class="rounded-lg bg-background p-3">
-                  <p class="text-sm font-semibold text-navy">{{ lessonIndex + 1 }}. {{ lesson.title }}</p>
-                  <p v-if="lesson.description" class="mt-1 text-xs text-muted">{{ lesson.description }}</p>
-                  <p class="mt-2 whitespace-pre-line text-sm leading-6 text-navy">{{ lesson.content || 'Chưa có nội dung văn bản.' }}</p>
-                  <video v-if="lesson.video?.url?.startsWith('blob:')" :src="lesson.video.url" controls class="mt-3 max-h-64 w-full rounded-lg bg-navy"></video>
-                  <a v-else-if="lesson.video?.url" :href="lesson.video.url" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-2 text-xs font-semibold text-primary hover:underline"><FileVideo :size="14" aria-hidden="true" /> Mở video</a>
-                  <span class="mt-2 block text-xs text-muted">{{ lesson.duration || 'Chưa có thời lượng' }}</span>
-                </li>
-              </ol>
-              <p v-if="!chapter.lessons.length" class="mt-3 text-sm text-muted">Chương chưa có bài học.</p>
+          <div v-if="course.lessons.length" class="mt-4 space-y-3">
+            <details v-for="(lesson, index) in course.lessons" :key="lesson.id" class="rounded-xl border border-slate-200 p-4" :open="index === 0">
+              <summary class="cursor-pointer font-semibold text-navy">{{ index + 1 }}. {{ lesson.title }}</summary>
+              <p class="mt-2 whitespace-pre-line text-sm leading-6 text-navy">{{ lesson.content || 'Chưa có nội dung văn bản.' }}</p>
+              <a v-if="lesson.video?.url" :href="lesson.video.url" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-2 text-xs font-semibold text-primary hover:underline"><FileVideo :size="14" aria-hidden="true" /> Mở video</a>
+              <span class="mt-2 block text-xs text-muted">{{ lesson.duration || 'Chưa có thời lượng' }}</span>
             </details>
           </div>
-          <p v-else class="mt-4 rounded-xl border border-dashed border-slate-200 p-4 text-sm text-muted">Khóa học chưa có chương.</p>
+          <p v-else class="mt-4 rounded-xl border border-dashed border-slate-200 p-4 text-sm text-muted">Khóa học chưa có bài học.</p>
         </article>
 
         <article class="rounded-2xl border border-slate-200 bg-white p-5">
           <div class="flex items-center justify-between gap-3">
-            <div><h3 class="text-lg font-bold text-navy">Tài liệu đính kèm</h3><p class="mt-1 text-xs text-muted">Tệp chỉ tồn tại trong phiên demo nếu được chọn từ máy.</p></div>
+            <div><h3 class="text-lg font-bold text-navy">Tài liệu đính kèm</h3><p class="mt-1 text-xs text-muted">Metadata và URL được tải từ Backend; upload tệp chưa được hỗ trợ.</p></div>
             <RouterLink :to="{ name: 'provider-materials', params: { id: course.id } }" class="text-sm font-semibold text-primary hover:underline">Quản lý tài liệu</RouterLink>
           </div>
           <ul v-if="course.materials.length" class="mt-4 divide-y divide-slate-100">

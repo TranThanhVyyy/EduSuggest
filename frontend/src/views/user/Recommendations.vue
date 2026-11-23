@@ -1,39 +1,88 @@
 <script setup>
-import { computed } from 'vue'
-import { Sparkles } from 'lucide-vue-next'
+import { computed, onMounted, ref } from 'vue'
+import { BookOpen, RefreshCw } from 'lucide-vue-next'
+import EmptyState from '@/components/reviewer/EmptyState.vue'
 import CourseCard from '@/components/user/CourseCard.vue'
 import MaterialCard from '@/components/user/MaterialCard.vue'
-import EmptyState from '@/components/reviewer/EmptyState.vue'
-import { useRoute } from 'vue-router'
-import { getPublicCourses, getRecommendedCourses, getRecommendedMaterials } from '@/service/userService'
+import { useRoute, useRouter } from 'vue-router'
+import { fetchRecommendedCourses, fetchRecommendedMaterials } from '@/service/userApiService'
 
 const route = useRoute()
+const router = useRouter()
 const isMaterialView = computed(() => route.name === 'material-recommendations')
-const title = computed(() => isMaterialView.value ? 'Tài liệu phù hợp với bạn' : 'Khóa học dành riêng cho bạn')
-const courses = computed(() => getRecommendedCourses())
-const materials = computed(() => getRecommendedMaterials().map((material) => ({
-  ...material,
-  courseTitle: getPublicCourses().find((course) => course.id === material.courseId)?.title || 'Chưa có thông tin',
-  lessonTitle: 'Bài học liên quan',
-  sizeLabel: material.sizeBytes ? `${Math.round(material.sizeBytes / 1024)} KB` : 'Chưa có dữ liệu',
-})))
+
+const items = ref([])
+const loading = ref(true)
+const error = ref('')
+const strategy = ref('none')
+const personalized = ref(false)
+
+async function loadData() {
+  loading.value = true
+  error.value = ''
+  try {
+    if (isMaterialView.value) {
+      const courseId = Number(route.query.course_id)
+      const lessonId = route.query.lesson_id != null ? Number(route.query.lesson_id) : null
+      if (!courseId || courseId <= 0) {
+        error.value = 'Không thể tải gợi ý tài liệu: thiếu mã khóa học.'
+        return
+      }
+      const result = await fetchRecommendedMaterials(courseId, { lessonId, limit: 12 })
+      items.value = result
+    } else {
+      const result = await fetchRecommendedCourses({ limit: 12 })
+      items.value = result.items
+      strategy.value = result.strategy
+      personalized.value = result.personalized
+    }
+  } catch (cause) {
+    error.value = cause.response?.data?.detail || 'Không thể tải gợi ý. Hãy thử lại.'
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => { loadData() })
 </script>
 
 <template>
-  <div class="space-y-5">
-    <section class="rounded-2xl border border-accent/20 bg-accent/5 p-5 sm:p-7">
-      <span class="inline-flex items-center gap-2 text-sm font-semibold text-accent"><Sparkles :size="17" aria-hidden="true" /> Gợi ý học tập</span>
-      <h1 class="mt-2 text-2xl font-bold text-navy">{{ title }}</h1>
-      <p class="mt-2 max-w-3xl text-sm leading-6 text-muted">Các thẻ hiện lấy từ Mock Data được đánh dấu; chưa gọi hệ thống AI. Không có điểm phù hợp hoặc lý do gợi ý nếu nguồn dữ liệu chưa cung cấp.</p>
+  <div class="space-y-7">
+    <header class="border-b border-border pb-5">
+      <p class="ui-eyebrow">Học tập</p>
+      <h1 class="ui-page-title mt-2">{{ isMaterialView ? 'Gợi ý tài liệu' : 'Gợi ý khóa học' }}</h1>
+      <p class="mt-2 max-w-2xl text-sm leading-6 text-muted">
+        {{ isMaterialView ? 'Tài liệu được đề xuất cho khóa học bạn đang học.' : 'Khóa học được gợi ý dựa trên lịch sử học tập và sở thích của bạn.' }}
+      </p>
+      <p v-if="!isMaterialView.value && strategy.value === 'latest'" class="mt-2 text-sm text-muted" role="status">
+        Chưa có đủ lịch sử học tập để cá nhân hóa. Các khóa học dưới đây là gợi ý khám phá mới cập nhật.
+      </p>
+    </header>
+
+    <p v-if="loading" class="py-6 text-sm text-muted" role="status">Đang tải gợi ý…</p>
+    <section v-else-if="error" class="max-w-2xl border-l-2 border-danger py-1 pl-4" role="alert">
+      <p class="text-sm text-danger">{{ error }}</p>
+      <button class="mt-3 text-sm font-medium text-secondary underline" @click="loadData"><RefreshCw :size="14" aria-hidden="true" /> Thử lại</button>
     </section>
-    <template v-if="isMaterialView">
-      <div v-if="materials.length" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3"><MaterialCard v-for="material in materials" :key="material.id" :material="material" /></div>
-      <div v-else class="rounded-2xl border border-slate-200 bg-white"><EmptyState title="Chưa có gợi ý tài liệu" description="Khi API gợi ý cung cấp kết quả, tài liệu phù hợp sẽ xuất hiện tại đây." /></div>
-    </template>
-    <template v-else>
-      <div v-if="courses.length" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3"><CourseCard v-for="course in courses" :key="course.id" :course="course" /></div>
-      <div v-else class="rounded-2xl border border-slate-200 bg-white"><EmptyState title="Chưa có gợi ý khóa học" description="Khi API gợi ý cung cấp kết quả, khóa học phù hợp sẽ xuất hiện tại đây." /></div>
-    </template>
-    <p class="text-xs text-muted">{{ isMaterialView ? getRecommendedMaterials().length : getRecommendedCourses().length }} kết quả từ bộ dữ liệu minh họa.</p>
+    <div v-else-if="items.length" class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      <template v-if="isMaterialView">
+        <MaterialCard v-for="item in items" :key="item.id" :material="item" />
+      </template>
+      <template v-else>
+        <CourseCard v-for="item in items" :key="item.id" :course="item" />
+      </template>
+    </div>
+    <section v-else class="max-w-2xl border-y border-border py-3">
+      <EmptyState
+        :title="isMaterialView ? 'Chưa có gợi ý tài liệu' : 'Chưa có gợi ý khóa học'"
+        :description="isMaterialView ? 'Khóa học này chưa có tài liệu được đề xuất.' : 'Backend hiện chưa có khóa học phù hợp để gợi ý.'"
+      />
+      <RouterLink
+        :to="{ name: isMaterialView ? 'material-catalog' : 'course-catalog' }"
+        class="ml-5 inline-flex items-center gap-2 text-sm font-medium text-secondary hover:underline"
+      >
+        <BookOpen :size="16" aria-hidden="true" /> Xem danh mục {{ isMaterialView ? 'tài liệu' : 'khóa học' }}
+      </RouterLink>
+    </section>
   </div>
 </template>

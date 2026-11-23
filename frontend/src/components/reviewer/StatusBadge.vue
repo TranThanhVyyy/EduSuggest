@@ -1,21 +1,21 @@
 <script setup>
 import { REVIEW_STATUS, REVIEW_STATUS_LABELS } from '@/constant/reviewStatus'
+import UiStatusBadge from '@/components/ui/UiStatusBadge.vue'
 
 defineProps({
   status: { type: String, required: true },
 })
 
-const statusClasses = {
-  [REVIEW_STATUS.pending]: 'border-slate-200 bg-background text-muted',
-  [REVIEW_STATUS.inReview]: 'border-primary/20 bg-primary/10 text-primary',
-  [REVIEW_STATUS.approved]: 'border-accent/20 bg-accent/10 text-accent',
-  [REVIEW_STATUS.rejected]: 'border-navy/15 bg-navy/5 text-navy',
-  [REVIEW_STATUS.changesRequested]: 'border-primary/20 bg-primary/5 text-primary',
+const statusTones = {
+  [REVIEW_STATUS.pending]: 'neutral',
+  [REVIEW_STATUS.approved]: 'success',
+  [REVIEW_STATUS.rejected]: 'danger',
+  [REVIEW_STATUS.changesRequested]: 'warning',
 }
 </script>
 
 <template>
-  <span class="inline-flex whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-semibold" :class="statusClasses[status] || statusClasses[REVIEW_STATUS.pending]">
+  <UiStatusBadge :tone="statusTones[status] || 'neutral'">
     {{ REVIEW_STATUS_LABELS[status] || 'Chưa xác định' }}
-  </span>
+  </UiStatusBadge>
 </template>

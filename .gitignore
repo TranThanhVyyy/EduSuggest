@@ -30,6 +30,7 @@ service-account*.json
 **/.vite/
 **/coverage/
 *.log
+**/logs/
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*

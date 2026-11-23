@@ -1,182 +1,36 @@
 <script setup>
-import { computed } from 'vue'
-import {
-  ArrowUpRight,
-  BookOpenCheck,
-  CheckCircle2,
-  Clock3,
-  FileCheck2,
-  Sparkles,
-  XCircle,
-} from 'lucide-vue-next'
-import StatCard from '@/components/reviewer/StatCard.vue'
-import StatusBadge from '@/components/reviewer/StatusBadge.vue'
-import { getReviewerDashboardData } from '@/service/reviewerService'
+import { onMounted, ref } from 'vue'
+import { ArrowRight } from 'lucide-vue-next'
+import { getPendingExpertCourses, getExpertReviewHistory } from '@/service/expertApiService'
 
-const dashboard = computed(() => getReviewerDashboardData())
-const statCards = computed(() => [
-  {
-    label: 'Khóa học chờ duyệt',
-    value: dashboard.value.pendingCourses,
-    detail: 'Bao gồm nội dung đang xem xét',
-    icon: BookOpenCheck,
-    tone: 'primary',
-  },
-  {
-    label: 'Tài liệu chờ duyệt',
-    value: dashboard.value.pendingMaterials,
-    detail: 'Cần được kiểm tra',
-    icon: FileCheck2,
-    tone: 'accent',
-  },
-  {
-    label: 'Nội dung đã phê duyệt',
-    value: dashboard.value.approved,
-    detail: 'Trong lịch sử kiểm duyệt',
-    icon: CheckCircle2,
-    tone: 'accent',
-  },
-  {
-    label: 'Nội dung bị từ chối',
-    value: dashboard.value.rejected,
-    detail: 'Trong lịch sử kiểm duyệt',
-    icon: XCircle,
-    tone: 'navy',
-  },
-])
+const pending = ref([])
+const history = ref([])
+const loading = ref(true)
+const pendingError = ref('')
+const historyError = ref('')
 
-const maxReviews = computed(() =>
-  Math.max(1, ...dashboard.value.weeklyStats.map((day) => day.reviewed)),
-)
-
-function detailRoute(item) {
-  return item.itemType === 'course'
-    ? { name: 'reviewer-course-detail', params: { id: item.id } }
-    : { name: 'reviewer-material-detail', params: { id: item.id } }
-}
-
-function formatDate(value) {
-  return new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium' }).format(new Date(value))
-}
+onMounted(async () => {
+  const [pendingResult, historyResult] = await Promise.allSettled([
+    getPendingExpertCourses(),
+    getExpertReviewHistory(),
+  ])
+  if (pendingResult.status === 'fulfilled') pending.value = pendingResult.value
+  else pendingError.value = pendingResult.reason.response?.data?.detail || 'Không thể tải hàng đợi kiểm duyệt.'
+  if (historyResult.status === 'fulfilled') history.value = historyResult.value.slice(0, 5)
+  else historyError.value = historyResult.reason.response?.data?.detail || 'Không thể tải lịch sử kiểm duyệt.'
+  loading.value = false
+})
 </script>
 
 <template>
-  <div class="space-y-6">
-    <section class="flex flex-wrap items-end justify-between gap-3">
-      <div>
-        <p class="text-sm text-muted">Tổng quan</p>
-        <h2 class="mt-1 text-2xl font-bold tracking-tight text-navy">Chào mừng đến không gian kiểm duyệt</h2>
-        <p class="mt-2 text-sm text-muted">Theo dõi nội dung chờ xử lý và kết quả kiểm duyệt gần đây.</p>
-      </div>
-      <span class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-muted">Dữ liệu minh họa trong phiên</span>
-    </section>
-
-    <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Thống kê kiểm duyệt">
-      <StatCard
-        v-for="card in statCards"
-        :key="card.label"
-        :label="card.label"
-        :value="card.value"
-        :detail="card.detail"
-        :icon="card.icon"
-        :tone="card.tone"
-      />
-    </section>
-
-    <section class="grid gap-5 xl:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.8fr)]">
-      <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h3 class="font-bold text-navy">Kết quả kiểm duyệt trong tuần</h3>
-            <p class="mt-1 text-sm text-muted">Số nội dung đã xử lý theo ngày</p>
-          </div>
-          <span class="inline-flex items-center gap-1.5 text-xs text-muted">
-            <span class="size-2 rounded-full bg-primary"></span> Đã xử lý
-          </span>
-        </div>
-        <div class="mt-7 flex h-48 items-end justify-between gap-2 border-b border-slate-200 px-1 sm:gap-4 sm:px-3">
-          <div v-for="day in dashboard.weeklyStats" :key="day.label" class="flex h-full flex-1 flex-col items-center justify-end gap-2">
-            <span class="text-[11px] font-medium text-muted">{{ day.reviewed }}</span>
-            <div class="flex h-full w-full items-end justify-center">
-              <div
-                class="w-full max-w-10 rounded-t-lg bg-primary/80 transition hover:bg-primary"
-                :style="{ height: `${Math.max(14, (day.reviewed / maxReviews) * 100)}%` }"
-                :aria-label="`${day.label}: ${day.reviewed} nội dung`"
-                role="img"
-              ></div>
-            </div>
-            <span class="pb-2 text-xs text-muted">{{ day.label }}</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-        <div class="flex items-start justify-between gap-3">
-          <div>
-            <h3 class="font-bold text-navy">Truy cập nhanh</h3>
-            <p class="mt-1 text-sm text-muted">Mở danh sách cần xử lý</p>
-          </div>
-          <Sparkles class="text-accent" :size="19" aria-hidden="true" />
-        </div>
-        <div class="mt-5 grid gap-3">
-          <RouterLink :to="{ name: 'reviewer-courses' }" class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 p-4 transition hover:border-primary/40 hover:bg-background focus-visible:outline-2 focus-visible:outline-primary">
-            <span class="flex items-center gap-3">
-              <span class="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary"><BookOpenCheck :size="18" aria-hidden="true" /></span>
-              <span>
-                <span class="block text-sm font-semibold text-navy">Khóa học chờ duyệt</span>
-                <span class="mt-1 block text-xs text-muted">{{ dashboard.pendingCourses }} nội dung</span>
-              </span>
-            </span>
-            <ArrowUpRight class="text-muted" :size="17" aria-hidden="true" />
-          </RouterLink>
-          <RouterLink :to="{ name: 'reviewer-materials' }" class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 p-4 transition hover:border-primary/40 hover:bg-background focus-visible:outline-2 focus-visible:outline-primary">
-            <span class="flex items-center gap-3">
-              <span class="flex size-10 items-center justify-center rounded-xl bg-accent/10 text-accent"><FileCheck2 :size="18" aria-hidden="true" /></span>
-              <span>
-                <span class="block text-sm font-semibold text-navy">Tài liệu chờ duyệt</span>
-                <span class="mt-1 block text-xs text-muted">{{ dashboard.pendingMaterials }} nội dung</span>
-              </span>
-            </span>
-            <ArrowUpRight class="text-muted" :size="17" aria-hidden="true" />
-          </RouterLink>
-        </div>
-      </article>
-    </section>
-
-    <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 p-5">
-        <div>
-          <h3 class="font-bold text-navy">Yêu cầu kiểm duyệt mới nhất</h3>
-          <p class="mt-1 text-sm text-muted">Nội dung đang chờ hoặc được xem xét</p>
-        </div>
-        <RouterLink :to="{ name: 'reviewer-history' }" class="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
-          Lịch sử kiểm duyệt <ArrowUpRight :size="16" aria-hidden="true" />
-        </RouterLink>
-      </div>
-      <div v-if="dashboard.recentItems.length" class="divide-y divide-slate-100">
-        <RouterLink
-          v-for="item in dashboard.recentItems"
-          :key="`${item.itemType}-${item.id}`"
-          :to="detailRoute(item)"
-          class="flex flex-wrap items-center justify-between gap-3 px-5 py-4 transition hover:bg-background/70"
-        >
-          <span class="flex min-w-0 items-center gap-3">
-            <span class="flex size-10 shrink-0 items-center justify-center rounded-xl" :class="item.itemType === 'course' ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent'">
-              <BookOpenCheck v-if="item.itemType === 'course'" :size="18" aria-hidden="true" />
-              <FileCheck2 v-else :size="18" aria-hidden="true" />
-            </span>
-            <span class="min-w-0">
-              <span class="block truncate text-sm font-semibold text-navy">{{ item.title }}</span>
-              <span class="mt-1 block text-xs text-muted">{{ item.creator }} · {{ formatDate(item.submittedAt) }}</span>
-            </span>
-          </span>
-          <span class="flex items-center gap-3">
-            <StatusBadge :status="item.status" />
-            <Clock3 class="hidden text-muted sm:block" :size="16" aria-hidden="true" />
-          </span>
-        </RouterLink>
-      </div>
-      <p v-else class="p-6 text-center text-sm text-muted">Hiện không có nội dung cần xử lý.</p>
-    </section>
-  </div>
+  <main class="space-y-8">
+    <header class="max-w-2xl border-b border-border pb-5"><p class="ui-eyebrow">Không gian chuyên gia</p><h1 class="ui-page-title mt-2">Kiểm duyệt khóa học</h1><p class="mt-2 text-sm leading-6 text-muted">Danh sách chờ xử lý và lịch sử được lấy từ API chuyên gia.</p></header>
+    <p v-if="loading" class="py-4 text-sm text-muted" role="status">Đang tải…</p>
+    <template v-else>
+      <p v-if="pendingError" class="border-l-2 border-danger py-2 pl-3 text-sm text-danger" role="alert">{{ pendingError }}</p>
+      <section class="flex flex-wrap items-baseline gap-x-3 gap-y-1"><span class="text-4xl font-light tabular-nums text-navy">{{ pendingError ? '—' : pending.length }}</span><span class="text-sm text-muted">khóa học đang chờ duyệt</span><RouterLink :to="{ name: 'reviewer-courses' }" class="ml-auto inline-flex items-center gap-2 text-sm font-medium text-secondary hover:underline">Mở hàng đợi <ArrowRight :size="15" aria-hidden="true" /> </RouterLink></section>
+      <section class="border-t border-border pt-5"><div class="flex items-center justify-between"><h2 class="text-lg font-medium text-navy">Quyết định gần đây</h2><RouterLink :to="{ name: 'reviewer-history' }" class="text-sm font-medium text-secondary hover:underline">Toàn bộ lịch sử</RouterLink></div><p v-if="historyError" class="mt-3 text-sm text-danger" role="alert">{{ historyError }}</p><ul v-else-if="history.length" class="mt-3 divide-y divide-border border-y border-border"><li v-for="record in history" :key="record.id" class="flex flex-wrap justify-between gap-2 py-4"><span class="font-medium text-navy">{{ record.title }}</span><span class="text-sm text-muted">{{ record.note || 'Không có ghi chú' }}</span></li></ul><p v-else class="mt-3 text-sm text-muted">Chưa có quyết định trong lịch sử.</p></section>
+      <p class="border-l-2 border-accent py-1 pl-4 text-sm leading-6 text-muted">Luồng kiểm duyệt tài liệu chưa có API; danh sách tài liệu đang được ẩn cho đến khi Backend hỗ trợ.</p>
+    </template>
+  </main>
 </template>

@@ -1,25 +1,30 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { ArrowLeft, Clock3 } from 'lucide-vue-next'
 import { useRoute } from 'vue-router'
 import {
   PROVIDER_STATUS_LABELS,
-  getProviderCourse,
-  getProviderCourseTimeline,
-} from '@/service/providerService'
+} from '@/service/providerApiService'
+import { loadProviderCourse, loadProviderReviews, mapProviderReview, providerErrorMessage } from '@/service/providerApiService'
 
 const route = useRoute()
 const courseId = String(route.params.id)
 const course = ref(null)
 const timeline = ref([])
 const loadError = ref('')
+const isLoading = ref(true)
 
-try {
-  course.value = getProviderCourse(courseId)
-  timeline.value = getProviderCourseTimeline(courseId)
-} catch (error) {
-  loadError.value = error instanceof Error ? error.message : 'Không thể tải tiến trình kiểm duyệt.'
-}
+onMounted(async () => {
+  try {
+    course.value = await loadProviderCourse(courseId)
+    const reviews = await loadProviderReviews(courseId)
+    timeline.value = reviews.map(mapProviderReview).map((review) => ({ action: review.action, detail: review.feedback, createdAt: review.createdAt }))
+  } catch (error) {
+    loadError.value = providerErrorMessage(error, 'Không thể tải tiến trình kiểm duyệt từ Backend.')
+  } finally {
+    isLoading.value = false
+  }
+})
 
 function formatDate(value) {
   if (!value) return 'Chưa có dữ liệu'
@@ -29,7 +34,8 @@ function formatDate(value) {
 </script>
 
 <template>
-  <div v-if="loadError" class="rounded-2xl border border-slate-200 bg-white p-6">
+  <div v-if="isLoading" class="rounded-2xl border border-slate-200 bg-white p-6 text-sm text-muted" role="status">Đang tải tiến trình…</div>
+  <div v-else-if="loadError" class="rounded-2xl border border-slate-200 bg-white p-6">
     <h2 class="text-xl font-bold text-navy">Không tìm thấy tiến trình</h2>
     <p class="mt-2 text-sm text-muted">{{ loadError }}</p>
   </div>

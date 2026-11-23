@@ -8,6 +8,8 @@ const props = defineProps({
   itemTitle: { type: String, default: '' },
   itemDescription: { type: String, default: '' },
   itemKind: { type: String, default: '' },
+  saving: { type: Boolean, default: false },
+  errorMessage: { type: String, default: '' },
 })
 
 const emit = defineEmits(['close', 'confirm'])
@@ -18,7 +20,7 @@ const actionContentByType = {
   approve: {
     title: 'Xác nhận phê duyệt',
     button: 'Phê duyệt nội dung',
-    description: 'Nội dung sẽ được đánh dấu đã phê duyệt trong phiên làm việc này.',
+    description: 'Quyết định sẽ được lưu vào hệ thống kiểm duyệt.',
     noteLabel: 'Ghi chú (không bắt buộc)',
     noteRequired: false,
   },
@@ -98,12 +100,13 @@ function submit() {
           aria-describedby="review-note-error"
         ></textarea>
         <p v-if="error" id="review-note-error" class="mt-1 text-xs font-medium text-primary" role="alert">{{ error }}</p>
+        <p v-if="errorMessage" class="mt-2 text-sm text-danger" role="alert">{{ errorMessage }}</p>
         <div class="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <button type="button" class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-navy transition hover:bg-background focus-visible:outline-2 focus-visible:outline-primary" @click="emit('close')">
             Hủy
           </button>
-          <button type="submit" class="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-            {{ actionContent.button }}
+          <button type="submit" :disabled="saving" class="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-wait disabled:opacity-60">
+            {{ saving ? 'Đang lưu…' : actionContent.button }}
           </button>
         </div>
       </form>

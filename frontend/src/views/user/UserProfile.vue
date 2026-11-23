@@ -1,110 +1,110 @@
 <script setup>
-import { onBeforeUnmount, reactive, ref } from 'vue'
-import { Camera, Save, UserPlus } from 'lucide-vue-next'
+import { computed, onMounted, reactive, ref } from 'vue'
+import { ArrowRight, Save } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
 import ToastMessage from '@/components/reviewer/ToastMessage.vue'
-import {
-  getProviderApplication,
-  getUserProfile,
-  hasProviderRole,
-  saveUserProfile,
-} from '@/service/userService'
+import UiButton from '@/components/ui/UiButton.vue'
+import { authState, setCurrentUser } from '@/service/authState'
+import { loadCurrentUser } from '@/service/authService'
+import api from '@/service/api'
 
-const profile = getUserProfile()
-const form = reactive({ ...profile })
-const application = getProviderApplication()
+const form = reactive({ fullName: '', phone: '' })
+const application = ref(null)
+const loading = ref(true)
+const saving = ref(false)
 const errorMessage = ref('')
 const toastMessage = ref('')
-const generatedUrls = new Set()
-const savedAvatar = ref(profile.avatarUrl)
+const username = computed(() => authState.user?.tenTaiKhoan || '')
+const email = computed(() => authState.user?.email || '')
+const isProvider = computed(() => String(authState.user?.tenVaiTro || '').toUpperCase() === 'PROVIDER')
 
-function setAvatar(event) {
-  const file = event.target.files?.[0]
-  if (!file) return
-  if (!file.type.startsWith('image/')) {
-    errorMessage.value = 'Chỉ chọn tệp hình ảnh.'
-    return
-  }
-  const url = URL.createObjectURL(file)
-  generatedUrls.add(url)
-  form.avatarUrl = url
+async function loadProfileAndApplication() {
+  loading.value = true
   errorMessage.value = ''
-}
-
-function save() {
   try {
-    saveUserProfile(form)
-    savedAvatar.value = form.avatarUrl
-    errorMessage.value = ''
-    toastMessage.value = 'Đã cập nhật hồ sơ minh họa trong phiên.'
+    const user = await loadCurrentUser()
+    if (!user) return
+    Object.assign(form, { fullName: user.hoTen || '', phone: user.soDienThoai || '' })
+    if (!isProvider.value) {
+      const { data } = await api.get('/provider/applications/me')
+      application.value = data[0] || null
+    }
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Không thể cập nhật hồ sơ.'
+    errorMessage.value = error.response?.data?.detail || 'Không thể tải hồ sơ. Hãy thử tải lại trang.'
+  } finally {
+    loading.value = false
   }
 }
 
+async function save() {
+  saving.value = true
+  errorMessage.value = ''
+  try {
+    const { data } = await api.put('/users/me', {
+      hoTen: form.fullName.trim(),
+      soDienThoai: form.phone.trim() || null,
+    })
+    setCurrentUser(data)
+    form.fullName = data.hoTen || ''
+    form.phone = data.soDienThoai || ''
+    toastMessage.value = 'Đã cập nhật hồ sơ.'
+  } catch (error) {
+    errorMessage.value = error.response?.data?.detail || 'Không thể cập nhật hồ sơ. Kiểm tra thông tin rồi thử lại.'
+  } finally {
+    saving.value = false
+  }
+}
+
+const applicationStatus = computed(() => application.value?.trangThai?.toLowerCase() || 'not_applied')
 function applicationLabel(status) {
   return ({
-    not_applied: 'Chưa đăng ký',
+    not_applied: 'Chưa gửi hồ sơ',
     pending: 'Đang chờ xét duyệt',
     approved: 'Đã được phê duyệt',
-    rejected: 'Bị từ chối',
-  })[status] || 'Chưa có dữ liệu'
+    rejected: 'Cần cập nhật hồ sơ',
+  })[status] || 'Chưa có trạng thái'
 }
 
-onBeforeUnmount(() => {
-  for (const url of generatedUrls) {
-    if (url !== savedAvatar.value) URL.revokeObjectURL(url)
-  }
-})
+onMounted(loadProfileAndApplication)
 </script>
 
 <template>
-  <div class="mx-auto max-w-4xl space-y-5">
-    <section><p class="text-sm text-muted">Tài khoản</p><h1 class="mt-1 text-2xl font-bold text-navy">Hồ sơ cá nhân</h1><p class="mt-2 text-sm text-muted">Thông tin minh họa. Email và ngày tham gia được Backend quản lý sau khi tích hợp.</p></section>
-    <form class="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6" @submit.prevent="save">
-      <div class="flex flex-wrap items-center gap-4 border-b border-slate-100 pb-5">
-        <img v-if="form.avatarUrl" :src="form.avatarUrl" alt="Ảnh đại diện người học" class="size-16 rounded-full object-cover">
-        <span v-else class="flex size-16 items-center justify-center rounded-full bg-primary/10 text-lg font-bold text-primary">{{ form.fullName.split(' ').slice(-1)[0]?.[0] || 'U' }}</span>
-        <label class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-navy hover:bg-background"><Camera :size="16" aria-hidden="true" /> Cập nhật ảnh
-          <input type="file" accept="image/*" class="sr-only" @change="setAvatar">
+  <div class="mx-auto max-w-4xl space-y-8">
+    <header class="border-b border-border pb-5">
+      <p class="ui-eyebrow">Tài khoản</p>
+      <h1 class="ui-page-title mt-2">Hồ sơ cá nhân</h1>
+      <p class="mt-2 text-sm leading-6 text-muted">Cập nhật thông tin liên hệ gắn với tài khoản của bạn.</p>
+    </header>
+
+    <p v-if="loading" class="py-6 text-sm text-muted" role="status">Đang tải hồ sơ…</p>
+    <form v-else class="max-w-2xl space-y-5" @submit.prevent="save">
+      <div class="grid gap-5 sm:grid-cols-2">
+        <label class="text-sm font-medium text-navy">Họ và tên
+          <input v-model.trim="form.fullName" required maxlength="255" autocomplete="name" class="ui-input mt-2">
         </label>
-        <span class="text-xs text-muted">Tệp chỉ tồn tại trong phiên demo.</span>
-      </div>
-      <div class="mt-5 grid gap-4 sm:grid-cols-2">
-        <label class="text-sm font-semibold text-navy">Họ và tên *
-          <input v-model="form.fullName" required class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/15">
+        <label class="text-sm font-medium text-navy">Tên tài khoản
+          <input :value="username" disabled autocomplete="username" class="ui-input mt-2">
         </label>
-        <label class="text-sm font-semibold text-navy">Email
-          <input :value="profile.email" disabled class="mt-1.5 w-full rounded-xl border border-slate-200 bg-background px-3 py-2.5 text-sm text-muted">
+        <label class="text-sm font-medium text-navy">Email
+          <input :value="email" disabled type="email" autocomplete="email" class="ui-input mt-2">
         </label>
-        <label class="text-sm font-semibold text-navy">Số điện thoại
-          <input v-model="form.phone" type="tel" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/15">
-        </label>
-        <label class="text-sm font-semibold text-navy">Ngày tham gia
-          <input :value="profile.joinedAt" disabled class="mt-1.5 w-full rounded-xl border border-slate-200 bg-background px-3 py-2.5 text-sm text-muted">
-        </label>
-        <label class="text-sm font-semibold text-navy sm:col-span-2">Giới thiệu
-          <textarea v-model="form.bio" rows="4" class="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/15"></textarea>
+        <label class="text-sm font-medium text-navy">Số điện thoại
+          <input v-model.trim="form.phone" type="tel" maxlength="20" autocomplete="tel" class="ui-input mt-2">
         </label>
       </div>
-      <p v-if="errorMessage" class="mt-4 rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm text-primary" role="alert">{{ errorMessage }}</p>
-      <button type="submit" class="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90"><Save :size="15" aria-hidden="true" /> Lưu thay đổi</button>
+      <p v-if="errorMessage" class="border-l-2 border-danger py-1 pl-3 text-sm text-danger" role="alert">{{ errorMessage }}</p>
+      <UiButton type="submit" :loading="saving"><Save :size="15" aria-hidden="true" /> Lưu thay đổi</UiButton>
     </form>
 
-    <section class="rounded-2xl border border-accent/20 bg-accent/5 p-5 sm:p-6">
-      <div class="flex flex-wrap items-start justify-between gap-3">
-        <div><p class="text-xs font-semibold uppercase tracking-wide text-accent">Mở rộng vai trò</p><h2 class="mt-1 text-lg font-bold text-navy">{{ hasProviderRole() ? 'Bạn đã là nhà cung cấp' : 'Trở thành nhà cung cấp khóa học' }}</h2><p class="mt-2 max-w-2xl text-sm leading-6 text-muted">Chia sẻ kiến thức và xây dựng khóa học trên EduSuggest. Hồ sơ gửi đi không tạo tài khoản mới; Backend/Admin phải xét duyệt và cấp vai trò Provider.</p></div>
-        <span class="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-navy">{{ applicationLabel(application.status) }}</span>
-      </div>
-      <div class="mt-4 flex flex-wrap gap-2">
-        <RouterLink v-if="hasProviderRole()" :to="{ name: 'provider-dashboard' }" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white"><UserPlus :size="15" aria-hidden="true" /> Quản lý khóa học</RouterLink>
-        <RouterLink v-else-if="application.status === 'pending'" :to="{ name: 'provider-application' }" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-navy"><UserPlus :size="15" aria-hidden="true" /> Xem hồ sơ đang chờ</RouterLink>
-        <RouterLink v-else-if="application.status !== 'approved'" :to="{ name: 'provider-application' }" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90"><UserPlus :size="15" aria-hidden="true" /> {{ application.status === 'rejected' ? 'Chỉnh sửa và gửi lại' : 'Đăng ký trở thành nhà cung cấp' }}</RouterLink>
-        <span v-else class="self-center text-sm font-semibold text-muted">Chờ Backend đồng bộ quyền Provider.</span>
-        <p class="self-center text-xs text-muted">Quyền không được cấp bởi giao diện demo.</p>
-      </div>
+    <section v-if="!loading" class="border-t border-border pt-6">
+      <p class="ui-eyebrow">Nhà cung cấp</p>
+      <h2 class="mt-2 text-lg font-medium text-navy">{{ isProvider ? 'Tài khoản nhà cung cấp' : 'Đăng ký trở thành nhà cung cấp' }}</h2>
+      <p class="mt-2 text-sm text-muted">{{ isProvider ? 'Bạn có thể quản lý nội dung nhà cung cấp của mình.' : application ? `Trạng thái hồ sơ: ${applicationLabel(applicationStatus)}` : 'Gửi hồ sơ để đề nghị xét duyệt vai trò nhà cung cấp.' }}</p>
+      <RouterLink v-if="isProvider" :to="{ name: 'provider-dashboard' }" class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-secondary hover:underline">Quản lý khóa học <ArrowRight :size="15" aria-hidden="true" /></RouterLink>
+      <RouterLink v-else-if="applicationStatus === 'pending'" :to="{ name: 'provider-application' }" class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-secondary hover:underline">Xem hồ sơ đã gửi <ArrowRight :size="15" aria-hidden="true" /></RouterLink>
+      <RouterLink v-else :to="{ name: 'provider-application' }" class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-secondary hover:underline">{{ applicationStatus === 'rejected' ? 'Cập nhật hồ sơ' : 'Mở biểu mẫu đăng ký' }} <ArrowRight :size="15" aria-hidden="true" /></RouterLink>
     </section>
-    <p class="rounded-xl border border-slate-200 bg-white p-4 text-sm leading-6 text-muted">Đổi mật khẩu chưa khả dụng vì chưa có API xác thực. Không nhập hoặc lưu mật khẩu tại giao diện demo.</p>
+
     <ToastMessage :message="toastMessage" @close="toastMessage = ''" />
   </div>
 </template>

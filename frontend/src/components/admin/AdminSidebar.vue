@@ -36,6 +36,7 @@ const menuGroups = [
       { label: 'Tài khoản', routeName: 'admin-users', icon: Users },
       { label: 'Chuyên gia', routeName: 'admin-reviewers', icon: UserCog },
       { label: 'Người cung cấp', routeName: 'admin-providers', icon: GraduationCap },
+      { label: 'Hồ sơ đăng ký', routeName: 'admin-provider-applications', icon: ClipboardList },
     ],
   },
   {
@@ -79,7 +80,7 @@ function isActive(link) {
   <aside class="sticky top-0 hidden h-screen shrink-0 flex-col overflow-y-auto bg-navy px-3 py-5 text-white transition-[width] duration-200 lg:flex" :class="collapsed ? 'w-20' : 'w-[270px]'">
     <div class="flex items-center justify-between gap-2 px-1">
       <RouterLink :to="{ name: 'admin-dashboard' }" class="flex min-w-0 items-center gap-2.5" aria-label="EduSuggest Admin">
-        <span class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white">
+        <span class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-accent text-navy">
           <GraduationCap :size="21" aria-hidden="true" />
         </span>
         <span v-if="!collapsed" class="min-w-0">
@@ -110,7 +111,7 @@ function isActive(link) {
             :key="link.routeName"
             :to="{ name: link.routeName }"
             class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            :class="isActive(link) ? 'bg-primary font-semibold text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'"
+            :class="isActive(link) ? 'bg-white/10 font-semibold text-white ring-1 ring-inset ring-white/15' : 'text-white/70 hover:bg-white/10 hover:text-white'"
             :title="collapsed ? link.label : undefined"
             :aria-current="isActive(link) ? 'page' : undefined"
             @click="emit('close-mobile')"
@@ -122,10 +123,7 @@ function isActive(link) {
       </section>
     </nav>
 
-    <div v-if="!collapsed" class="mt-6 rounded-xl border border-white/10 bg-white/5 p-3">
-      <p class="text-xs font-semibold">Không gian quản trị</p>
-      <p class="mt-1 text-[11px] leading-5 text-white/55">Dữ liệu minh họa chỉ lưu trong phiên làm việc.</p>
-    </div>
+
   </aside>
 
   <div v-if="mobileOpen" class="fixed inset-0 z-50 lg:hidden">
@@ -133,7 +131,7 @@ function isActive(link) {
     <aside class="relative flex h-full w-[min(86vw,300px)] flex-col overflow-y-auto bg-navy px-3 py-5 text-white shadow-xl">
       <div class="flex items-center justify-between gap-3 px-1">
         <RouterLink :to="{ name: 'admin-dashboard' }" class="flex items-center gap-2.5" @click="emit('close-mobile')">
-          <span class="flex size-10 items-center justify-center rounded-xl bg-primary text-white">
+          <span class="flex size-10 items-center justify-center rounded-xl bg-brand-accent text-navy">
             <GraduationCap :size="21" aria-hidden="true" />
           </span>
           <span>
@@ -154,7 +152,7 @@ function isActive(link) {
               :key="link.routeName"
               :to="{ name: link.routeName }"
               class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm"
-              :class="isActive(link) ? 'bg-primary font-semibold text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'"
+              :class="isActive(link) ? 'bg-white/10 font-semibold text-white ring-1 ring-inset ring-white/15' : 'text-white/70 hover:bg-white/10 hover:text-white'"
               @click="emit('close-mobile')"
             >
               <component :is="link.icon" class="shrink-0" :size="18" aria-hidden="true" />

@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { authState } from '@/service/authState'
+import { getRoleLandingRouteName, getRoleName, loadCurrentUser } from '@/service/authService'
 
 const routes = [
   {
@@ -16,79 +18,79 @@ const routes = [
         path: 'dashboard',
         name: 'user-dashboard',
         component: () => import('@/views/user/UserDashboard.vue'),
-        meta: { title: 'Dashboard người học', actor: 'user', demoOnly: true },
+        meta: { title: 'Dashboard người học', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'profile',
         name: 'user-profile',
         component: () => import('@/views/user/UserProfile.vue'),
-        meta: { title: 'Hồ sơ cá nhân', actor: 'user', demoOnly: true },
+        meta: { title: 'Hồ sơ cá nhân', actor: 'user', requiresRole: ['USER', 'PROVIDER'] },
       },
       {
         path: 'provider/application',
         name: 'provider-application',
         component: () => import('@/views/user/ProviderApplication.vue'),
-        meta: { title: 'Đăng ký trở thành nhà cung cấp', actor: 'user', demoOnly: true },
+        meta: { title: 'Đăng ký trở thành nhà cung cấp', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'courses',
         name: 'course-catalog',
         component: () => import('@/views/user/CourseCatalog.vue'),
-        meta: { title: 'Danh sách khóa học', actor: 'user', demoOnly: true },
+        meta: { title: 'Danh sách khóa học', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'courses/:id',
         name: 'course-detail',
         component: () => import('@/views/user/CourseDetail.vue'),
-        meta: { title: 'Chi tiết khóa học', actor: 'user', demoOnly: true },
+        meta: { title: 'Chi tiết khóa học', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'learning/:courseId',
         name: 'learning',
         component: () => import('@/views/user/LearningView.vue'),
-        meta: { title: 'Học khóa học', actor: 'user', demoOnly: true },
+        meta: { title: 'Học khóa học', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'learning-progress',
         name: 'learning-progress',
         component: () => import('@/views/user/LearningProgress.vue'),
-        meta: { title: 'Tiến độ học tập', actor: 'user', demoOnly: true },
+        meta: { title: 'Tiến độ học tập', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'learning-history',
         name: 'learning-history',
         component: () => import('@/views/user/LearningHistory.vue'),
-        meta: { title: 'Lịch sử học tập', actor: 'user', demoOnly: true },
+        meta: { title: 'Lịch sử học tập', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'materials',
         name: 'material-catalog',
         component: () => import('@/views/user/MaterialCatalog.vue'),
-        meta: { title: 'Tài liệu học tập', actor: 'user', demoOnly: true },
+        meta: { title: 'Tài liệu học tập', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'materials/:id',
         name: 'material-detail',
         component: () => import('@/views/user/MaterialDetail.vue'),
-        meta: { title: 'Chi tiết tài liệu', actor: 'user', demoOnly: true },
+        meta: { title: 'Chi tiết tài liệu', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'recommendations/courses',
         name: 'course-recommendations',
         component: () => import('@/views/user/Recommendations.vue'),
-        meta: { title: 'Gợi ý khóa học', actor: 'user', demoOnly: true },
+        meta: { title: 'Gợi ý khóa học', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'recommendations/materials',
         name: 'material-recommendations',
         component: () => import('@/views/user/Recommendations.vue'),
-        meta: { title: 'Gợi ý tài liệu', actor: 'user', demoOnly: true },
+        meta: { title: 'Gợi ý tài liệu', actor: 'user', requiresRole: 'USER' },
       },
       {
         path: 'expert-reviews',
         name: 'expert-reviews',
         component: () => import('@/views/user/ExpertReviews.vue'),
-        meta: { title: 'Đánh giá chuyên gia', actor: 'user', demoOnly: true },
+        meta: { title: 'Đánh giá chuyên gia', actor: 'user', requiresRole: 'USER' },
       },
     ],
   },
@@ -96,18 +98,35 @@ const routes = [
     path: '/register',
     name: 'register',
     component: () => import('@/views/user/AuthView.vue'),
-    meta: { title: 'Đăng ký tài khoản', actor: 'user', demoOnly: true },
+    meta: { title: 'Đăng ký tài khoản', actor: 'user', publicOnly: true },
   },
   {
     path: '/login',
     name: 'login',
     component: () => import('@/views/user/AuthView.vue'),
-    meta: { title: 'Đăng nhập', actor: 'user', demoOnly: true },
+    meta: { title: 'Đăng nhập', actor: 'user', publicOnly: true },
   },
+  {
+    path: '/access-denied',
+    name: 'access-denied',
+    component: () => import('@/views/AccessDeniedView.vue'),
+    meta: { title: 'Không có quyền truy cập' },
+  },
+  ...[
+    ['admin', 'ADMIN', 'Không gian quản trị'],
+    ['expert', 'EXPERT', 'Không gian chuyên gia'],
+    ['provider', 'PROVIDER', 'Không gian nhà cung cấp'],
+    ['user', 'USER', 'Không gian người học'],
+  ].map(([role, requiredRole, title]) => ({
+    path: `/workspace/${role}`,
+    name: `workspace-${role}`,
+    component: () => import('@/views/RoleLandingView.vue'),
+    meta: { title, requiresRole: requiredRole },
+  })),
   {
     path: '/admin',
     component: () => import('@/layout/AdminLayout.vue'),
-    meta: { requiresRole: 'admin' },
+    meta: { requiresRole: 'ADMIN' },
     children: [
       {
         path: '',
@@ -118,7 +137,13 @@ const routes = [
         path: 'dashboard',
         name: 'admin-dashboard',
         component: () => import('@/views/admin/AdminDashboard.vue'),
-        meta: { title: 'Tổng quan quản trị', adminSection: 'Tổng quan', requiresRole: 'admin' },
+        meta: { title: 'Tổng quan quản trị', adminSection: 'Tổng quan', requiresRole: 'ADMIN' },
+      },
+      {
+        path: 'provider-applications',
+        name: 'admin-provider-applications',
+        component: () => import('@/views/admin/AdminProviderApplications.vue'),
+        meta: { title: 'Hồ sơ nhà cung cấp', adminSection: 'Quản lý người dùng', requiresRole: 'ADMIN' },
       },
       ...[
         ['users', 'admin-users', 'Tài khoản', 'users'],
@@ -137,7 +162,7 @@ const routes = [
             ? 'Quản lý người dùng'
             : 'Quản lý nội dung',
           adminResource: resource,
-          requiresRole: 'admin',
+          requiresRole: 'ADMIN',
         },
       })),
       {
@@ -160,58 +185,58 @@ const routes = [
           title,
           adminSection: 'Quản lý nội dung',
           adminResource: resource,
-          requiresRole: 'admin',
+          requiresRole: 'ADMIN',
         },
       })),
       {
         path: 'visibility',
         name: 'admin-visibility',
         component: () => import('@/views/admin/AdminVisibility.vue'),
-        meta: { title: 'Trạng thái hiển thị', adminSection: 'Quản lý nội dung', requiresRole: 'admin' },
+        meta: { title: 'Trạng thái hiển thị', adminSection: 'Quản lý nội dung', requiresRole: 'ADMIN' },
       },
       {
         path: 'reviewers/assignment',
         name: 'admin-assign-reviewer',
         component: () => import('@/views/admin/AdminReviewerAssignment.vue'),
-        meta: { title: 'Phân công Reviewer', adminSection: 'Kiểm duyệt', requiresRole: 'admin' },
+        meta: { title: 'Phân công Reviewer', adminSection: 'Kiểm duyệt', requiresRole: 'ADMIN' },
       },
       {
         path: 'reviews',
         name: 'admin-review-monitor',
         component: () => import('@/views/admin/AdminReviewMonitor.vue'),
-        meta: { title: 'Theo dõi kiểm duyệt', adminSection: 'Kiểm duyệt', requiresRole: 'admin' },
+        meta: { title: 'Theo dõi kiểm duyệt', adminSection: 'Kiểm duyệt', requiresRole: 'ADMIN' },
       },
       {
         path: 'recommendations',
         name: 'admin-recommendations',
         component: () => import('@/views/admin/AdminRecommendations.vue'),
-        meta: { title: 'Hệ thống gợi ý', adminSection: 'Hệ thống', requiresRole: 'admin' },
+        meta: { title: 'Hệ thống gợi ý', adminSection: 'Hệ thống', requiresRole: 'ADMIN' },
       },
       {
         path: 'analytics',
         name: 'admin-analytics',
         component: () => import('@/views/admin/AdminAnalytics.vue'),
-        meta: { title: 'Thống kê hệ thống', adminSection: 'Hệ thống', requiresRole: 'admin' },
+        meta: { title: 'Thống kê hệ thống', adminSection: 'Hệ thống', requiresRole: 'ADMIN' },
       },
       {
         path: 'profile',
         name: 'admin-profile',
         component: () => import('@/views/admin/AdminProfile.vue'),
-        meta: { title: 'Thông tin cá nhân', adminSection: 'Tài khoản', requiresRole: 'admin' },
+        meta: { title: 'Thông tin cá nhân', adminSection: 'Tài khoản', requiresRole: 'ADMIN' },
       },
     ],
   },
   {
     path: '/admin/login',
     name: 'admin-login',
-    component: () => import('@/views/admin/AdminLogin.vue'),
-    meta: { title: 'Đăng nhập quản trị' },
+    component: () => import('@/views/user/AuthView.vue'),
+    meta: { title: 'Đăng nhập quản trị', publicOnly: true },
   },
   {
     path: '/reviewer',
     name: 'reviewer',
     component: () => import('@/layout/ReviewerLayout.vue'),
-    meta: { requiresRole: 'reviewer' },
+    meta: { requiresRole: 'EXPERT' },
     children: [
       {
         path: '',
@@ -222,43 +247,43 @@ const routes = [
         path: 'dashboard',
         name: 'reviewer-dashboard',
         component: () => import('@/views/reviewer/ReviewerDashboard.vue'),
-        meta: { title: 'Tổng quan kiểm duyệt', requiresRole: 'reviewer' },
+        meta: { title: 'Tổng quan kiểm duyệt', requiresRole: 'EXPERT' },
       },
       {
         path: 'courses',
         name: 'reviewer-courses',
         component: () => import('@/views/reviewer/PendingCourses.vue'),
-        meta: { title: 'Khóa học chờ duyệt', requiresRole: 'reviewer' },
+        meta: { title: 'Khóa học chờ duyệt', requiresRole: 'EXPERT' },
       },
       {
         path: 'courses/:id',
         name: 'reviewer-course-detail',
         component: () => import('@/views/reviewer/CourseReviewDetail.vue'),
-        meta: { title: 'Chi tiết kiểm duyệt khóa học', requiresRole: 'reviewer' },
+        meta: { title: 'Chi tiết kiểm duyệt khóa học', requiresRole: 'EXPERT' },
       },
       {
         path: 'materials',
         name: 'reviewer-materials',
         component: () => import('@/views/reviewer/PendingMaterials.vue'),
-        meta: { title: 'Tài liệu chờ duyệt', requiresRole: 'reviewer' },
+        meta: { title: 'Tài liệu chờ duyệt', requiresRole: 'EXPERT' },
       },
       {
         path: 'materials/:id',
         name: 'reviewer-material-detail',
         component: () => import('@/views/reviewer/MaterialReviewDetail.vue'),
-        meta: { title: 'Chi tiết kiểm duyệt tài liệu', requiresRole: 'reviewer' },
+        meta: { title: 'Chi tiết kiểm duyệt tài liệu', requiresRole: 'EXPERT' },
       },
       {
         path: 'history',
         name: 'reviewer-history',
         component: () => import('@/views/reviewer/ReviewHistory.vue'),
-        meta: { title: 'Lịch sử kiểm duyệt', requiresRole: 'reviewer' },
+        meta: { title: 'Lịch sử kiểm duyệt', requiresRole: 'EXPERT' },
       },
       {
         path: 'profile',
         name: 'reviewer-profile',
         component: () => import('@/views/reviewer/ReviewerProfile.vue'),
-        meta: { title: 'Hồ sơ cá nhân', requiresRole: 'reviewer' },
+        meta: { title: 'Hồ sơ cá nhân', requiresRole: 'EXPERT' },
       },
     ],
   },
@@ -277,7 +302,7 @@ const routes = [
   {
     path: '/provider',
     component: () => import('@/layout/ProviderLayout.vue'),
-    meta: { demoOnly: true },
+    meta: { requiresRole: 'PROVIDER' },
     children: [
       {
         path: '',
@@ -390,9 +415,67 @@ const router = createRouter({
   scrollBehavior: () => ({ top: 0 }),
 })
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const pageTitle = to.meta.title || 'EduSuggest – Gợi ý học tập thông minh'
   document.title = to.name === 'home' ? pageTitle : `${pageTitle} | EduSuggest`
+
+  if (to.name === 'home') {
+    if (!authState.accessToken) return { name: 'login' }
+
+    try {
+      const user = await loadCurrentUser()
+      return user ? { name: getRoleLandingRouteName(user) } : { name: 'login' }
+    } catch (error) {
+      const query = {}
+      if (error.response?.status !== 401 && authState.accessToken) {
+        query.authError = 'unavailable'
+      }
+      return { name: 'login', query }
+    }
+  }
+
+  if (to.meta.publicOnly && authState.accessToken && to.query.authError !== 'unavailable') {
+    try {
+      const user = await loadCurrentUser()
+      if (user) return { name: getRoleLandingRouteName(user) }
+    } catch (error) {
+      if (error.response?.status !== 401 && authState.accessToken) {
+        return {
+          name: to.name,
+          query: { ...to.query, authError: 'unavailable' },
+        }
+      }
+    }
+  }
+
+  const requiredRole = to.meta.requiresRole
+  if (!requiredRole) return true
+
+  if (!authState.accessToken) {
+    return {
+      name: 'login',
+      query: { redirect: to.fullPath },
+    }
+  }
+
+  try {
+    await loadCurrentUser()
+  } catch (error) {
+    const query = { redirect: to.fullPath }
+    if (error.response?.status !== 401 && authState.accessToken) {
+      query.authError = 'unavailable'
+    }
+    return {
+      name: 'login',
+      query,
+    }
+  }
+
+  const allowedRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole]
+  if (!allowedRoles.includes(getRoleName())) {
+    return { name: 'access-denied' }
+  }
+  return true
 })
 
 export default router
