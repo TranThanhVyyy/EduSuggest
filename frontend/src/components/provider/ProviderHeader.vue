@@ -1,22 +1,36 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { Bell, ChevronDown, Menu, UserRound } from 'lucide-vue-next'
-import { useRoute } from 'vue-router'
-import { getProviderNotifications, getProviderProfile } from '@/service/providerService'
+import { Bell, ChevronDown, LogOut, Menu, UserRound } from 'lucide-vue-next'
+import { useRoute, useRouter } from 'vue-router'
+import { authState } from '@/service/authState'
+import { logoutAccount } from '@/service/authService'
 
 const emit = defineEmits(['toggle-navigation'])
 const route = useRoute()
+const router = useRouter()
 const notificationsOpen = ref(false)
 const accountOpen = ref(false)
+const logoutError = ref('')
 const title = computed(() => route.meta.title || 'Dashboard')
-const notifications = computed(() => getProviderNotifications())
-const profile = getProviderProfile()
+const notifications = ref([])
+const fullName = computed(() => authState.user?.hoTen || '')
 const initials = computed(() => {
-  const words = profile.fullName.trim().split(/\s+/).filter(Boolean)
+  const words = fullName.value.trim().split(/\s+/).filter(Boolean)
   return words.length > 1
     ? `${words[0][0]}${words[words.length - 1][0]}`.toLocaleUpperCase('vi')
     : words[0]?.slice(0, 2).toLocaleUpperCase('vi') || 'PR'
 })
+
+async function logout() {
+  accountOpen.value = false
+  logoutError.value = ''
+  try {
+    await logoutAccount()
+  } catch {
+    logoutError.value = 'Không thể xác nhận đăng xuất trên Backend; phiên cục bộ đã được xóa.'
+  }
+  await router.replace({ name: 'login' })
+}
 </script>
 
 <template>
@@ -46,16 +60,16 @@ const initials = computed(() => {
                 <p class="mt-0.5 text-xs text-muted">{{ notification.detail }}</p>
               </li>
             </ul>
-            <p v-else class="mt-2 text-sm text-muted">Chưa có thông báo.</p>
+            <p v-else class="mt-2 text-sm text-muted">Backend hiện chưa cung cấp API thông báo Provider.</p>
           </div>
         </div>
 
         <div class="relative">
-          <button type="button" class="flex items-center gap-2 rounded-xl p-1.5 text-left hover:bg-background" aria-label="Menu tài khoản Provider minh họa" :aria-expanded="accountOpen" @click="accountOpen = !accountOpen; notificationsOpen = false">
+          <button type="button" class="flex items-center gap-2 rounded-xl p-1.5 text-left hover:bg-background" aria-label="Menu tài khoản Provider" :aria-expanded="accountOpen" @click="accountOpen = !accountOpen; notificationsOpen = false">
             <span class="flex size-9 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{{ initials }}</span>
             <span class="hidden min-w-0 sm:block">
-              <span class="block max-w-36 truncate text-sm font-semibold text-navy">{{ profile.fullName }}</span>
-              <span class="block text-xs text-muted">Tài khoản minh họa</span>
+              <span class="block max-w-36 truncate text-sm font-semibold text-navy">{{ fullName }}</span>
+              <span class="block text-xs text-muted">Nhà cung cấp</span>
             </span>
             <ChevronDown class="hidden text-muted sm:block" :size="15" aria-hidden="true" />
           </button>
@@ -63,12 +77,13 @@ const initials = computed(() => {
             <RouterLink :to="{ name: 'provider-profile' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false">
               <UserRound :size="16" aria-hidden="true" /> Hồ sơ cá nhân
             </RouterLink>
-            <button type="button" disabled title="Chưa tích hợp xác thực" class="mt-1 w-full cursor-not-allowed rounded-lg px-3 py-2 text-left text-sm text-muted/70">
-              Đăng xuất · chưa tích hợp
+            <button type="button" class="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-muted hover:bg-background" @click="logout">
+              <LogOut :size="16" aria-hidden="true" /> Đăng xuất
             </button>
           </div>
         </div>
       </div>
     </div>
+    <p v-if="logoutError" class="px-4 pb-3 text-xs text-primary" role="status">{{ logoutError }}</p>
   </header>
 </template>

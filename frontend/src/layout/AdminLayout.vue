@@ -21,7 +21,7 @@ const mobileNavigationOpen = ref(false)
         <RouterView />
       </main>
       <footer class="border-t border-slate-200 bg-white px-4 py-4 text-center text-xs text-muted sm:px-6 lg:px-8">
-        EduSuggest · Trung tâm quản trị · Dữ liệu minh họa trong phiên
+        EduSuggest · Trung tâm quản trị 
       </footer>
     </div>
   </div>

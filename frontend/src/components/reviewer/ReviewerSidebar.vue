@@ -4,7 +4,6 @@ import {
   ClipboardList,
   FileCheck2,
   LayoutDashboard,
-  LogOut,
   UserRound,
 } from 'lucide-vue-next'
 import { useRoute } from 'vue-router'
@@ -33,7 +32,7 @@ function isActive(routeName) {
 <template>
   <aside class="hidden min-h-screen flex-col bg-navy px-4 py-6 text-white lg:flex">
     <RouterLink :to="{ name: 'reviewer-dashboard' }" class="flex items-center gap-3 px-2">
-      <span class="flex size-10 items-center justify-center rounded-xl bg-primary text-white">
+      <span class="flex size-10 items-center justify-center rounded-xl bg-brand-accent text-navy">
         <BookOpenCheck :size="21" aria-hidden="true" />
       </span>
       <span class="text-lg font-bold tracking-tight">EduSuggest</span>
@@ -44,7 +43,7 @@ function isActive(routeName) {
       <RouterLink
         :to="{ name: overviewLink.routeName }"
         class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        :class="isActive(overviewLink.routeName) ? 'bg-primary font-semibold text-white' : 'text-white/75 hover:bg-white/10 hover:text-white'"
+        :class="isActive(overviewLink.routeName) ? 'bg-white/10 font-semibold text-white ring-1 ring-inset ring-white/15' : 'text-white/75 hover:bg-white/10 hover:text-white'"
       >
         <component :is="overviewLink.icon" :size="18" aria-hidden="true" />
         {{ overviewLink.label }}
@@ -58,7 +57,7 @@ function isActive(routeName) {
         :key="link.routeName"
         :to="{ name: link.routeName }"
         class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        :class="isActive(link.routeName) ? 'bg-primary font-semibold text-white' : 'text-white/75 hover:bg-white/10 hover:text-white'"
+        :class="isActive(link.routeName) ? 'bg-white/10 font-semibold text-white ring-1 ring-inset ring-white/15' : 'text-white/75 hover:bg-white/10 hover:text-white'"
       >
         <component :is="link.icon" :size="18" aria-hidden="true" />
         {{ link.label }}
@@ -72,26 +71,16 @@ function isActive(routeName) {
         :key="link.routeName"
         :to="{ name: link.routeName }"
         class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        :class="isActive(link.routeName) ? 'bg-primary font-semibold text-white' : 'text-white/75 hover:bg-white/10 hover:text-white'"
+        :class="isActive(link.routeName) ? 'bg-white/10 font-semibold text-white ring-1 ring-inset ring-white/15' : 'text-white/75 hover:bg-white/10 hover:text-white'"
       >
         <component :is="link.icon" :size="18" aria-hidden="true" />
         {{ link.label }}
       </RouterLink>
-      <button
-        type="button"
-        disabled
-        title="Chưa tích hợp xác thực tài khoản"
-        class="flex w-full cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-white/40"
-      >
-        <LogOut :size="18" aria-hidden="true" />
-        Đăng xuất
-      </button>
     </nav>
-    <p class="mt-2 px-3 text-xs leading-5 text-white/50">Đăng xuất khả dụng sau khi tích hợp xác thực.</p>
 
     <div class="mt-auto rounded-xl border border-white/10 bg-white/5 p-4">
       <p class="text-sm font-semibold">Không gian kiểm duyệt</p>
-      <p class="mt-1 text-xs leading-5 text-white/60">Nội dung mẫu được lưu trong phiên làm việc hiện tại.</p>
+      <p class="mt-1 text-xs leading-5 text-white/60">Khóa học được tải từ dịch vụ kiểm duyệt.</p>
     </div>
   </aside>
 

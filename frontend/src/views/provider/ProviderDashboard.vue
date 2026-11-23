@@ -1,19 +1,30 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { ArrowRight, BookOpen, Clock3, FileEdit, Plus, Send, ShieldCheck } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
 import {
   PROVIDER_STATUS,
   PROVIDER_STATUS_LABELS,
-  getProviderDashboardData,
-} from '@/service/providerService'
+} from '@/service/providerApiService'
+import { loadProviderCourses, providerErrorMessage } from '@/service/providerApiService'
 
-const dashboard = computed(() => getProviderDashboardData())
+const courses = ref([])
+const loadError = ref('')
+const dashboard = computed(() => ({
+  total: courses.value.length,
+  statusCounts: Object.fromEntries(statusCards.map(({ key }) => [key, courses.value.filter((course) => course.status === key).length])),
+  recentCourses: [...courses.value].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)).slice(0, 5),
+}))
+onMounted(async () => {
+  try {
+    courses.value = await loadProviderCourses()
+  } catch (error) {
+    loadError.value = providerErrorMessage(error, 'Không thể tải số liệu khóa học.')
+  }
+})
 const statusCards = [
   { key: PROVIDER_STATUS.draft, label: 'Bản nháp', icon: FileEdit },
-  { key: PROVIDER_STATUS.pendingAssignment, label: 'Chờ phân công', icon: Clock3 },
   { key: PROVIDER_STATUS.pending, label: 'Chờ kiểm duyệt', icon: Clock3 },
-  { key: PROVIDER_STATUS.reviewing, label: 'Đang kiểm duyệt', icon: Clock3 },
   { key: PROVIDER_STATUS.approved, label: 'Đã phê duyệt', icon: ShieldCheck },
   { key: PROVIDER_STATUS.rejected, label: 'Bị từ chối', icon: FileEdit },
   { key: PROVIDER_STATUS.changesRequested, label: 'Cần chỉnh sửa', icon: FileEdit },
@@ -27,7 +38,7 @@ function formatDate(value) {
 
 function statusClass(status) {
   if (status === PROVIDER_STATUS.approved) return 'bg-accent/10 text-accent'
-  if (status === PROVIDER_STATUS.pending || status === PROVIDER_STATUS.pendingAssignment || status === PROVIDER_STATUS.reviewing) return 'bg-primary/10 text-primary'
+  if (status === PROVIDER_STATUS.pending) return 'bg-primary/10 text-primary'
   if (status === PROVIDER_STATUS.rejected || status === PROVIDER_STATUS.changesRequested) return 'bg-slate-100 text-navy'
   return 'bg-background text-muted'
 }
@@ -39,13 +50,14 @@ function statusClass(status) {
       <div>
         <p class="text-sm text-muted">Tổng quan người cung cấp</p>
         <h2 class="mt-1 text-2xl font-bold tracking-tight text-navy">Dashboard</h2>
-        <p class="mt-2 text-sm leading-6 text-muted">Theo dõi khóa học và tiến độ kiểm duyệt trong không gian dữ liệu minh họa.</p>
+        <p class="mt-2 text-sm leading-6 text-muted">Theo dõi khóa học của bạn và trạng thái kiểm duyệt từ Backend.</p>
       </div>
       <RouterLink :to="{ name: 'provider-course-create' }" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90">
         <Plus :size="17" aria-hidden="true" /> Tạo khóa học
       </RouterLink>
     </section>
 
+    <p v-if="loadError" class="rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-primary" role="alert">{{ loadError }}</p>
     <section class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Thống kê khóa học">
       <article class="rounded-xl border border-slate-200 bg-white p-4">
         <div class="flex items-center justify-between text-muted"><span class="text-sm">Tổng khóa học</span><BookOpen :size="18" aria-hidden="true" /></div>
@@ -80,8 +92,8 @@ function statusClass(status) {
 
       <article class="rounded-2xl border border-slate-200 bg-white p-5">
         <h3 class="font-bold text-navy">Hoạt động gần đây</h3>
-        <p class="mt-1 text-xs text-muted">Các thao tác trong phiên trình duyệt hiện tại.</p>
-        <ol v-if="dashboard.activities.length" class="mt-4 space-y-4">
+        <p class="mt-1 text-xs text-muted">Backend chưa cung cấp API hoạt động gần đây.</p>
+        <ol v-if="dashboard.activities?.length" class="mt-4 space-y-4">
           <li v-for="activity in dashboard.activities" :key="activity.id" class="flex gap-3">
             <span class="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"><Send :size="15" aria-hidden="true" /></span>
             <div class="min-w-0">
@@ -91,7 +103,7 @@ function statusClass(status) {
             </div>
           </li>
         </ol>
-        <div v-else class="mt-4 rounded-xl border border-dashed border-slate-200 p-4 text-sm text-muted">Các thao tác mới sẽ xuất hiện tại đây trong phiên hiện tại.</div>
+        <div v-else class="mt-4 rounded-xl border border-dashed border-slate-200 p-4 text-sm text-muted">Chưa có API cung cấp lịch sử hoạt động Provider.</div>
       </article>
     </section>
   </div>

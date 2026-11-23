@@ -1,15 +1,12 @@
 <script setup>
-import { computed, onBeforeUnmount, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { ArrowLeft, FileVideo, Plus, Save, Trash2, Upload } from 'lucide-vue-next'
 import { useRoute } from 'vue-router'
 import ToastMessage from '@/components/reviewer/ToastMessage.vue'
 import {
   PROVIDER_STATUS,
-  getProviderCourse,
-  saveProviderMaterial,
-  saveProviderVideo,
-  deleteProviderMaterial,
-} from '@/service/providerService'
+} from '@/service/providerApiService'
+import { createProviderMaterial, deleteProviderMaterial, loadProviderCourse, providerErrorMessage, updateProviderLesson, updateProviderMaterial } from '@/service/providerApiService'
 
 const route = useRoute()
 const courseId = String(route.params.id)
@@ -19,7 +16,6 @@ const loadError = ref('')
 const errorMessage = ref('')
 const toastMessage = ref('')
 const videoDrafts = reactive({})
-const generatedObjectUrls = new Set()
 const materialFormOpen = ref(false)
 const editingMaterialId = ref('')
 const materialForm = reactive({
@@ -33,88 +29,53 @@ const materialForm = reactive({
   lessonId: '',
 })
 
-function refresh() {
+async function refresh() {
   try {
-    course.value = JSON.parse(JSON.stringify(getProviderCourse(courseId)))
+    course.value = await loadProviderCourse(courseId)
   } catch (error) {
-    loadError.value = error instanceof Error ? error.message : 'Không thể tải nội dung khóa học.'
+    loadError.value = providerErrorMessage(error, 'Không thể tải nội dung khóa học.')
   }
 }
 
-refresh()
+onMounted(refresh)
 
 const canEdit = computed(() => course.value && [
   PROVIDER_STATUS.draft,
   PROVIDER_STATUS.rejected,
   PROVIDER_STATUS.changesRequested,
 ].includes(course.value.status))
-const lessons = computed(() => course.value?.chapters.flatMap((chapter) =>
-  chapter.lessons.map((lesson) => ({ ...lesson, chapterId: chapter.id, chapterTitle: chapter.title })),
-) || [])
+const lessons = computed(() => course.value?.lessons || [])
 
 function videoDraft(lesson) {
   if (!videoDrafts[lesson.id]) {
     videoDrafts[lesson.id] = {
-      title: lesson.video?.title || '',
       url: lesson.video?.url || '',
-      localFileName: lesson.video?.localFileName || '',
-      duration: lesson.video?.duration || '',
-      description: lesson.video?.description || '',
-      thumbnailUrl: lesson.video?.thumbnailUrl || '',
     }
   }
   return videoDrafts[lesson.id]
 }
 
-function createLocalUrl(file) {
-  const url = URL.createObjectURL(file)
-  generatedObjectUrls.add(url)
-  return url
-}
-
-function setVideoFile(event, draft) {
-  const file = event.target.files?.[0]
-  if (!file) return
-  if (generatedObjectUrls.has(draft.url)) {
-    URL.revokeObjectURL(draft.url)
-    generatedObjectUrls.delete(draft.url)
-  }
-  draft.url = createLocalUrl(file)
-  draft.localFileName = file.name
-  if (!draft.title) draft.title = file.name.replace(/\.[^.]+$/, '')
-}
-
-function setThumbnail(event, draft) {
-  const file = event.target.files?.[0]
-  if (!file) return
-  if (generatedObjectUrls.has(draft.thumbnailUrl)) {
-    URL.revokeObjectURL(draft.thumbnailUrl)
-    generatedObjectUrls.delete(draft.thumbnailUrl)
-  }
-  draft.thumbnailUrl = createLocalUrl(file)
-}
-
-function saveVideo(lesson) {
+async function saveVideo(lesson) {
   try {
     const draft = videoDraft(lesson)
-    saveProviderVideo(courseId, lesson.chapterId, lesson.id, draft)
+    await updateProviderLesson(courseId, lesson.id, { ...lesson, video: draft.url ? { url: draft.url } : null })
     errorMessage.value = ''
-    toastMessage.value = draft.url ? 'Đã lưu thông tin video trong phiên.' : 'Đã gỡ video trong phiên.'
-    refresh()
+    toastMessage.value = 'Đã lưu URL video trên Backend.'
+    await refresh()
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Không thể cập nhật video.'
+    errorMessage.value = providerErrorMessage(error, 'Không thể cập nhật video.')
   }
 }
 
-function clearVideo(lesson) {
+async function clearVideo(lesson) {
   try {
-    saveProviderVideo(courseId, lesson.chapterId, lesson.id, {})
+    await updateProviderLesson(courseId, lesson.id, { ...lesson, video: null })
     delete videoDrafts[lesson.id]
-    refresh()
+    await refresh()
     errorMessage.value = ''
-    toastMessage.value = 'Đã gỡ video trong phiên.'
+    toastMessage.value = 'Đã gỡ URL video trên Backend.'
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Không thể gỡ video.'
+    errorMessage.value = providerErrorMessage(error, 'Không thể gỡ video.')
   }
 }
 
@@ -142,42 +103,36 @@ function openEditMaterial(material) {
 }
 
 function setMaterialFile(event) {
-  const file = event.target.files?.[0]
-  if (!file) return
-  if (generatedObjectUrls.has(materialForm.fileUrl)) {
-    URL.revokeObjectURL(materialForm.fileUrl)
-    generatedObjectUrls.delete(materialForm.fileUrl)
-  }
-  materialForm.fileUrl = createLocalUrl(file)
-  materialForm.fileName = file.name
-  materialForm.mimeType = file.type
-  materialForm.sizeBytes = file.size
-  if (!materialForm.title) materialForm.title = file.name.replace(/\.[^.]+$/, '')
+  event.target.value = ''
+  errorMessage.value = 'Backend chưa có API upload tài liệu. Hãy nhập URL tệp đã được lưu trữ thực tế.'
 }
 
-function saveMaterial() {
+async function saveMaterial() {
   try {
-    saveProviderMaterial(courseId, {
-      ...materialForm,
-      ...(editingMaterialId.value ? { id: editingMaterialId.value } : {}),
-    })
-    refresh()
+    if (!materialForm.lessonId) throw new Error('API hiện yêu cầu tài liệu phải gắn với một bài học.')
+    if (!/^https?:\/\//i.test(materialForm.fileUrl)) throw new Error('Nhập URL HTTP/HTTPS thật; tệp được chọn từ máy không thể lưu trên Backend.')
+    if (editingMaterialId.value) {
+      await updateProviderMaterial(courseId, materialForm.lessonId, editingMaterialId.value, materialForm)
+    } else {
+      await createProviderMaterial(courseId, materialForm.lessonId, materialForm)
+    }
+    await refresh()
     materialFormOpen.value = false
     errorMessage.value = ''
-    toastMessage.value = 'Đã lưu tài liệu trong phiên.'
+    toastMessage.value = 'Đã lưu metadata tài liệu trên Backend.'
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Không thể lưu tài liệu.'
+    errorMessage.value = providerErrorMessage(error, 'Không thể lưu tài liệu.')
   }
 }
 
-function removeMaterial(material) {
+async function removeMaterial(material) {
   try {
-    deleteProviderMaterial(courseId, material.id)
-    refresh()
+    await deleteProviderMaterial(courseId, material.lessonId, material.id)
+    await refresh()
     errorMessage.value = ''
-    toastMessage.value = 'Đã xóa tài liệu trong phiên.'
+    toastMessage.value = 'Đã xóa metadata tài liệu trên Backend.'
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Không thể xóa tài liệu.'
+    errorMessage.value = providerErrorMessage(error, 'Không thể xóa tài liệu.')
   }
 }
 
@@ -196,23 +151,6 @@ function formatBytes(bytes) {
     : `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-onBeforeUnmount(() => {
-  const savedUrls = new Set()
-  if (course.value) {
-    for (const chapter of course.value.chapters) {
-      for (const lesson of chapter.lessons) {
-        if (lesson.video?.url?.startsWith('blob:')) savedUrls.add(lesson.video.url)
-        if (lesson.video?.thumbnailUrl?.startsWith('blob:')) savedUrls.add(lesson.video.thumbnailUrl)
-      }
-    }
-    for (const material of course.value.materials) {
-      if (material.fileUrl?.startsWith('blob:')) savedUrls.add(material.fileUrl)
-    }
-  }
-  for (const url of generatedObjectUrls) {
-    if (!savedUrls.has(url)) URL.revokeObjectURL(url)
-  }
-})
 </script>
 
 <template>
@@ -226,7 +164,7 @@ onBeforeUnmount(() => {
       <div>
         <p class="text-sm text-muted">Quản lý nội dung · {{ course.id }}</p>
         <h2 class="mt-1 text-2xl font-bold tracking-tight text-navy">{{ assetType === 'video' ? 'Video bài học' : 'Tài liệu khóa học' }}</h2>
-        <p class="mt-2 text-sm text-muted">{{ course.title }} · Tệp được chọn chỉ tồn tại trong phiên demo.</p>
+        <p class="mt-2 text-sm text-muted">{{ course.title }} · Metadata lưu ở Backend; upload tệp chưa được hỗ trợ.</p>
       </div>
       <div class="flex gap-2">
         <RouterLink :to="{ name: 'provider-course-detail', params: { id: course.id } }" class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-navy hover:bg-background"><ArrowLeft :size="15" aria-hidden="true" /> Chi tiết khóa học</RouterLink>
@@ -240,32 +178,19 @@ onBeforeUnmount(() => {
     <section v-if="assetType === 'video'" class="space-y-4">
       <article v-for="lesson in lessons" :key="lesson.id" class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
         <div class="flex flex-wrap items-start justify-between gap-3">
-          <div><p class="text-xs font-semibold uppercase tracking-wide text-muted">{{ lesson.chapterTitle }}</p><h3 class="mt-1 font-bold text-navy">{{ lesson.title || 'Bài học chưa đặt tên' }}</h3><p class="mt-1 text-xs text-muted">{{ lesson.duration || 'Chưa có thời lượng bài học' }}</p></div>
+          <div><h3 class="font-bold text-navy">{{ lesson.title || 'Bài học chưa đặt tên' }}</h3><p class="mt-1 text-xs text-muted">{{ lesson.duration || 'Chưa có thời lượng bài học' }}</p></div>
           <FileVideo :size="20" class="text-muted" aria-hidden="true" />
         </div>
         <div class="mt-4 grid gap-3 md:grid-cols-2">
-          <label class="text-xs font-semibold text-muted">Tên video
-            <input v-model="videoDraft(lesson).title" :disabled="!canEdit" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-navy outline-none focus:border-primary disabled:bg-background">
-          </label>
-          <label class="text-xs font-semibold text-muted">Thời lượng
-            <input v-model="videoDraft(lesson).duration" :disabled="!canEdit" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-navy outline-none focus:border-primary disabled:bg-background" placeholder="Ví dụ: 12 phút">
-          </label>
           <label class="text-xs font-semibold text-muted md:col-span-2">URL video thực tế
             <input v-model="videoDraft(lesson).url" :disabled="!canEdit" type="url" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-navy outline-none focus:border-primary disabled:bg-background" placeholder="https://...">
           </label>
-          <label class="text-xs font-semibold text-muted md:col-span-2">Mô tả video
-            <textarea v-model="videoDraft(lesson).description" :disabled="!canEdit" rows="2" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-navy outline-none focus:border-primary disabled:bg-background"></textarea>
-          </label>
           <div class="flex flex-wrap items-center gap-2 md:col-span-2">
-            <label class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-navy hover:bg-background" :class="!canEdit ? 'pointer-events-none opacity-50' : ''"><Upload :size="14" aria-hidden="true" /> Chọn tệp video
-              <input type="file" accept="video/*" class="sr-only" :disabled="!canEdit" @change="setVideoFile($event, videoDraft(lesson))">
+            <label class="inline-flex cursor-not-allowed items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-muted opacity-60"><Upload :size="14" aria-hidden="true" /> Upload chưa hỗ trợ
+              <input type="file" accept="video/*" class="sr-only" disabled>
             </label>
-            <span class="text-xs text-muted">{{ videoDraft(lesson).localFileName || (videoDraft(lesson).url ? 'Đã có URL video' : 'Chưa có video') }}</span>
-            <label class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-navy hover:bg-background" :class="!canEdit ? 'pointer-events-none opacity-50' : ''">Ảnh thumbnail
-              <input type="file" accept="image/*" class="sr-only" :disabled="!canEdit" @change="setThumbnail($event, videoDraft(lesson))">
-            </label>
+            <span class="text-xs text-muted">{{ videoDraft(lesson).url ? 'Đã có URL video' : 'Chưa có video' }}</span>
           </div>
-          <img v-if="videoDraft(lesson).thumbnailUrl" :src="videoDraft(lesson).thumbnailUrl" alt="Thumbnail video" class="max-h-40 rounded-lg object-cover md:col-span-2">
         </div>
         <video v-if="videoDraft(lesson).url?.startsWith('blob:')" :src="videoDraft(lesson).url" controls class="mt-4 max-h-72 w-full rounded-xl bg-navy"></video>
         <a v-else-if="videoDraft(lesson).url" :href="videoDraft(lesson).url" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-primary hover:underline">Mở URL video trong tab mới</a>
@@ -275,7 +200,7 @@ onBeforeUnmount(() => {
           <button type="button" class="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-50" :disabled="!canEdit" @click="saveVideo(lesson)"><Save :size="14" aria-hidden="true" /> Lưu video</button>
         </div>
       </article>
-      <p v-if="!lessons.length" class="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center text-sm text-muted">Khóa học chưa có bài học để gắn video. Thêm bài học trước trong mục Chương và bài học.</p>
+      <p v-if="!lessons.length" class="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center text-sm text-muted">Khóa học chưa có bài học để gắn video. Thêm bài học trước trong mục Bài học.</p>
     </section>
 
     <section v-else class="space-y-4">
@@ -317,14 +242,13 @@ onBeforeUnmount(() => {
           <textarea v-model="materialForm.description" rows="2" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-navy outline-none focus:border-primary"></textarea>
         </label>
         <label class="text-xs font-semibold text-muted">Bài học liên quan
-          <select v-model="materialForm.lessonId" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal text-navy">
-            <option value="">Tài liệu toàn khóa học</option>
+          <select v-model="materialForm.lessonId" :disabled="Boolean(editingMaterialId)" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal text-navy disabled:bg-background">
             <option v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">{{ lesson.title || 'Bài học chưa đặt tên' }}</option>
           </select>
         </label>
-        <label class="text-xs font-semibold text-muted">Chọn tệp thật
-          <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg" class="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs" @change="setMaterialFile">
-          <span class="mt-1 block font-normal">{{ materialForm.fileName || 'Chưa chọn tệp' }}</span>
+        <label class="text-xs font-semibold text-muted">Upload tệp (chưa hỗ trợ)
+          <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg" disabled class="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs opacity-60">
+          <span class="mt-1 block font-normal">Backend chưa có API lưu trữ tệp.</span>
         </label>
         <label class="text-xs font-semibold text-muted md:col-span-2">URL tệp đã có
           <input v-model="materialForm.fileUrl" type="url" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-navy outline-none focus:border-primary" placeholder="Không tạo URL nếu chưa có tệp thật">

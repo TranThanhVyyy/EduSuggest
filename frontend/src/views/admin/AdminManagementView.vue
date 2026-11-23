@@ -1,309 +1,126 @@
 <script setup>
-import { computed, reactive, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { ChevronDown, Eye, LockKeyhole, Pencil, Plus, Trash2, UnlockKeyhole } from 'lucide-vue-next'
-import AdminModal from '@/components/admin/AdminModal.vue'
-import EmptyState from '@/components/reviewer/EmptyState.vue'
-import PaginationControls from '@/components/reviewer/PaginationControls.vue'
-import SearchInput from '@/components/reviewer/SearchInput.vue'
-import StatusBadge from '@/components/reviewer/StatusBadge.vue'
-import ToastMessage from '@/components/reviewer/ToastMessage.vue'
-import { ADMIN_RESOURCE_CONFIGS } from '@/constant/adminResources'
-import {
-  deleteAdminCategory,
-  getAdminCourseLessons,
-  getAdminRows,
-  saveAdminRecord,
-  toggleAdminAccount,
-} from '@/service/adminService'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { Plus, Save, Trash2, X } from 'lucide-vue-next'
+import UiButton from '@/components/ui/UiButton.vue'
+import api from '@/service/api'
 
-const pageSize = 8
 const route = useRoute()
-const router = useRouter()
-const query = ref('')
-const filters = reactive({})
-const currentPage = ref(1)
-const modalOpen = ref(false)
-const modalMode = ref('view')
-const modalRecord = ref(null)
-const modalError = ref('')
-const toastMessage = ref('')
-const pendingAction = ref(null)
-const expandedCourseId = ref('')
+const resource = computed(() => route.meta.adminResource)
+const titles = { users: 'Tài khoản', reviewers: 'Chuyên gia', providers: 'Nhà cung cấp', categories: 'Danh mục', courses: 'Khóa học', materials: 'Tài liệu' }
+const title = computed(() => titles[resource.value] || 'Quản lý')
+const rows = ref([])
+const loading = ref(true)
+const saving = ref(false)
+const busyUserId = ref(null)
+const errorMessage = ref('')
+const successMessage = ref('')
+const editorOpen = ref(false)
+const editingId = ref(null)
+const form = reactive({ tenDanhMuc: '', moTa: '' })
+const canEditCategories = computed(() => resource.value === 'categories')
+const columns = computed(() => resource.value === 'categories'
+  ? [{ key: 'tenDanhMuc', label: 'Tên danh mục' }, { key: 'moTa', label: 'Mô tả' }]
+  : resource.value === 'courses'
+    ? [{ key: 'tieuDe', label: 'Tên khóa học' }, { key: 'trangThaiDuyet', label: 'Kiểm duyệt' }, { key: 'trangThaiHienThi', label: 'Hiển thị' }]
+    : [{ key: 'hoTen', label: 'Họ tên' }, { key: 'email', label: 'Email' }, { key: 'tenVaiTro', label: 'Vai trò' }])
 
-const config = computed(() => ADMIN_RESOURCE_CONFIGS[route.meta.adminResource] || null)
-const records = computed(() => (config.value ? getAdminRows(config.value.key) : []))
-const filteredRecords = computed(() => {
-  if (!config.value) return []
-  const search = query.value.trim().toLocaleLowerCase('vi')
-
-  return records.value.filter((record) => {
-    const matchesText = !search || config.value.searchFields.some((key) =>
-      String(record[key] ?? '').toLocaleLowerCase('vi').includes(search),
-    ) || (config.value.key === 'courses' && getAdminCourseLessons(record.id).some((lesson) =>
-      `${lesson.id} ${lesson.title} ${lesson.chapter}`.toLocaleLowerCase('vi').includes(search),
-    ))
-    const matchesFilters = config.value.filters.every((filter) => {
-      const selected = filters[filter.key]
-      return !selected || String(record[filter.key] ?? '') === String(selected)
-    })
-    return matchesText && matchesFilters
-  })
-})
-const totalPages = computed(() => Math.max(1, Math.ceil(filteredRecords.value.length / pageSize)))
-const visibleRecords = computed(() =>
-  filteredRecords.value.slice((currentPage.value - 1) * pageSize, currentPage.value * pageSize),
-)
-
-watch(
-  () => route.meta.adminResource,
-  () => {
-    query.value = ''
-    currentPage.value = 1
-    expandedCourseId.value = ''
-    for (const key of Object.keys(filters)) delete filters[key]
-  },
-)
-watch([query, filters], () => { currentPage.value = 1 })
-watch(totalPages, (pages) => { if (currentPage.value > pages) currentPage.value = pages })
-
-function formatCell(record, key) {
-  const value = record[key]
-  if (key === 'permissions') return Array.isArray(value) ? `${value.length} quyền` : value || 'Chưa có dữ liệu'
-  if (key === 'status') {
-    return value === 'active' ? 'Đang hoạt động' : value === 'locked' ? 'Đã khóa' : value === 'inactive' ? 'Ngừng hoạt động' : value || 'Chưa có dữ liệu'
-  }
-  if (key === 'visibility') return value === 'visible' ? 'Đang hiển thị' : value === 'hidden' ? 'Đã ẩn' : 'Chưa có dữ liệu'
-  if (key === 'reviewStatus') return value === 'DaPheDuyet' ? 'Đã phê duyệt' : 'Chưa có dữ liệu'
-  if (value === null || value === undefined || value === '') return '—'
-  if (typeof value === 'number') return value.toLocaleString('vi-VN')
-  if (key.toLowerCase().endsWith('at') || key.endsWith('Date')) {
-    const date = new Date(value)
-    if (!Number.isNaN(date.getTime())) return new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium' }).format(date)
-  }
-  if (Array.isArray(value)) return value.join(', ')
-  return value
+function unwrapResponseError(error, fallback) {
+  return error.response?.data?.detail || fallback
 }
 
-function openView(record) {
-  modalRecord.value = record
-  modalMode.value = 'view'
-  modalError.value = ''
-  modalOpen.value = true
+async function loadRows() {
+  loading.value = true
+  errorMessage.value = ''
+  successMessage.value = ''
+  try {
+    if (resource.value === 'categories') {
+      const { data } = await api.get('/admin/categories')
+      rows.value = data
+    } else if (resource.value === 'courses') {
+      const { data } = await api.get('/admin/courses')
+      rows.value = data
+    } else if (['users', 'reviewers', 'providers'].includes(resource.value)) {
+      const { data } = await api.get('/admin/users')
+      const role = resource.value === 'reviewers' ? 'EXPERT' : resource.value === 'providers' ? 'PROVIDER' : null
+      rows.value = role ? data.filter((user) => user.tenVaiTro === role) : data
+    } else {
+      rows.value = []
+    }
+  } catch (error) {
+    errorMessage.value = unwrapResponseError(error, `Không thể tải ${title.value.toLocaleLowerCase('vi')}.`)
+  } finally { loading.value = false }
 }
 
 function openCreate() {
-  modalRecord.value = null
-  modalMode.value = 'form'
-  modalError.value = ''
-  modalOpen.value = true
+  editingId.value = null
+  Object.assign(form, { tenDanhMuc: '', moTa: '' })
+  editorOpen.value = true
 }
 
-function openEdit(record) {
-  if (record.isProtected) {
-    toastMessage.value = 'Vai trò Admin được bảo vệ và không thể chỉnh sửa.'
-    return
-  }
-  modalRecord.value = record
-  modalMode.value = 'form'
-  modalError.value = ''
-  modalOpen.value = true
+function openEdit(row) {
+  editingId.value = row.maDanhMuc
+  Object.assign(form, { tenDanhMuc: row.tenDanhMuc || '', moTa: row.moTa || '' })
+  editorOpen.value = true
 }
 
-function openDetailRoute(record) {
-  router.push({ name: config.value.detailRoute, params: { id: record.id } })
-}
-
-function toggleCourseLessons(courseId) {
-  expandedCourseId.value = expandedCourseId.value === courseId ? '' : courseId
-}
-
-function lessonsForCourse(courseId) {
-  return getAdminCourseLessons(courseId)
-}
-
-function confirmToggle(record) {
-  pendingAction.value = {
-    type: 'toggle',
-    record,
-    title: record.status === 'active' ? 'Xác nhận khóa tài khoản' : 'Xác nhận mở khóa tài khoản',
-    description: record.status === 'active'
-      ? `Tài khoản "${record.fullName || record.name}" sẽ bị khóa.`
-      : `Tài khoản "${record.fullName || record.name}" sẽ được mở khóa.`,
-  }
-  modalMode.value = 'confirm'
-  modalRecord.value = record
-  modalError.value = ''
-  modalOpen.value = true
-}
-
-function confirmDelete(record) {
-  pendingAction.value = {
-    type: 'delete',
-    record,
-    title: 'Xác nhận xóa danh mục',
-    description: `Bạn có chắc muốn xóa danh mục "${record.name}"?`,
-  }
-  modalMode.value = 'confirm'
-  modalRecord.value = record
-  modalError.value = ''
-  modalOpen.value = true
-}
-
-function saveRecord(values) {
+async function saveCategory() {
+  if (saving.value) return
+  saving.value = true
+  errorMessage.value = ''
   try {
-    saveAdminRecord(config.value.key, values)
-    modalOpen.value = false
-    toastMessage.value = values.id ? 'Đã cập nhật dữ liệu mẫu trong phiên.' : 'Đã thêm dữ liệu mẫu trong phiên.'
-  } catch (error) {
-    modalError.value = error instanceof Error ? error.message : 'Không thể lưu dữ liệu.'
-  }
+    const payload = { tenDanhMuc: form.tenDanhMuc.trim(), moTa: form.moTa.trim() || null }
+    const wasEditing = editingId.value !== null
+    if (wasEditing) await api.patch(`/admin/categories/${editingId.value}`, payload)
+    else await api.post('/admin/categories', payload)
+    editorOpen.value = false
+    await loadRows()
+    successMessage.value = wasEditing ? 'Danh mục đã được cập nhật.' : 'Danh mục đã được tạo.'
+  } catch (error) { errorMessage.value = unwrapResponseError(error, 'Không thể lưu danh mục.') }
+  finally { saving.value = false }
 }
 
-function performConfirmedAction() {
+async function deleteCategory(row) {
+  if (!window.confirm(`Xóa danh mục “${row.tenDanhMuc}”?`)) return
+  errorMessage.value = ''
   try {
-    if (pendingAction.value?.type === 'toggle') {
-      toggleAdminAccount(config.value.key, pendingAction.value.record.id)
-      toastMessage.value = 'Đã cập nhật trạng thái tài khoản trong phiên.'
-    } else if (pendingAction.value?.type === 'delete') {
-      deleteAdminCategory(pendingAction.value.record.id)
-      toastMessage.value = 'Đã xóa danh mục trong phiên.'
-    }
-    modalOpen.value = false
-    pendingAction.value = null
+    await api.delete(`/admin/categories/${row.maDanhMuc}`)
+    await loadRows()
+    successMessage.value = 'Danh mục đã được xóa.'
+  } catch (error) { errorMessage.value = unwrapResponseError(error, 'Không thể xóa danh mục. Có thể danh mục vẫn đang được sử dụng.') }
+}
+
+async function grantExpertRole(user) {
+  if (busyUserId.value !== null || user.tenVaiTro !== 'USER') return
+  if (!window.confirm(`Cấp vai trò EXPERT cho ${user.hoTen || user.email || `tài khoản #${user.maNguoiDung}`}? Tài khoản sẽ được chuyển từ USER sang EXPERT.`)) return
+
+  busyUserId.value = user.maNguoiDung
+  errorMessage.value = ''
+  successMessage.value = ''
+  try {
+    const { data } = await api.post(`/admin/users/${user.maNguoiDung}/expert-role`, {})
+    rows.value = rows.value.map((row) => row.maNguoiDung === data.maNguoiDung ? data : row)
+    successMessage.value = `Đã cấp vai trò EXPERT cho ${data.hoTen || data.email || `tài khoản #${data.maNguoiDung}`}.`
   } catch (error) {
-    modalError.value = error instanceof Error ? error.message : 'Không thể thực hiện thao tác.'
+    errorMessage.value = unwrapResponseError(error, 'Không thể cấp vai trò EXPERT.')
+  } finally {
+    busyUserId.value = null
   }
 }
 
-function closeModal() {
-  modalOpen.value = false
-  pendingAction.value = null
-}
+watch(resource, loadRows)
+onMounted(loadRows)
 </script>
 
 <template>
-  <div v-if="config" class="space-y-5">
-    <section class="flex flex-wrap items-end justify-between gap-3">
-      <div>
-        <p class="text-sm text-muted">{{ config.section }}</p>
-        <h2 class="mt-1 text-2xl font-bold tracking-tight text-navy">{{ config.title }}</h2>
-        <p class="mt-2 max-w-3xl text-sm leading-6 text-muted">{{ config.description }}</p>
-      </div>
-      <button v-if="config.canCreate" type="button" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90" @click="openCreate">
-        <Plus :size="17" aria-hidden="true" /> Thêm mới
-      </button>
-    </section>
+  <main class="space-y-6">
+    <header class="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5"><div><p class="ui-eyebrow">Quản trị</p><h1 class="ui-page-title mt-2">{{ title }}</h1><p class="mt-2 text-sm text-muted"></p></div><UiButton v-if="canEditCategories" @click="openCreate"><Plus :size="16" aria-hidden="true" /> Tạo danh mục</UiButton></header>
+    <p v-if="errorMessage" class="border-l-2 border-danger py-2 pl-3 text-sm text-danger" role="alert">{{ errorMessage }}</p><p v-if="successMessage" class="border-l-2 border-secondary py-2 pl-3 text-sm text-secondary" role="status">{{ successMessage }}</p>
+    <p v-if="loading" class="py-5 text-sm text-muted" role="status">Đang tải dữ liệu…</p>
+    <div v-else-if="['materials', 'providers'].includes(resource) && resource === 'materials'" class="border-l-2 border-accent py-1 pl-4" role="status"><h2 class="font-medium text-navy">Chưa có API quản trị tài liệu</h2><p class="mt-2 text-sm text-muted">Backend hiện chưa cung cấp danh sách tài liệu dành cho quản trị viên.</p></div>
+    <div v-else-if="!rows.length" class="py-6 text-sm text-muted" role="status">{{ resource === 'providers' ? 'Danh sách nhà cung cấp chưa có API riêng; hồ sơ đăng ký được quản lý tại mục Hồ sơ đăng ký.' : 'Chưa có dữ liệu phù hợp.' }}</div>
+    <div v-else class="overflow-x-auto border-y border-border"><table class="w-full min-w-[640px] text-left text-sm"><thead class="border-b border-border text-xs text-muted"><tr><th v-for="column in columns" :key="column.key" class="py-3 pr-4 font-medium">{{ column.label }}</th><th v-if="canEditCategories || resource === 'users'" class="py-3 text-right font-medium">Thao tác</th></tr></thead><tbody class="divide-y divide-border"><tr v-for="row in rows" :key="row.maDanhMuc || row.maNguoiDung || row.maKhoaHoc"><td v-for="column in columns" :key="column.key" class="py-4 pr-4 text-navy">{{ row[column.key] || '—' }}</td><td v-if="canEditCategories" class="py-3 text-right"><button class="px-2 py-1 text-secondary hover:underline" @click="openEdit(row)">Sửa</button><button class="px-2 py-1 text-danger hover:underline" @click="deleteCategory(row)" :aria-label="`Xóa ${row.tenDanhMuc}`"><Trash2 :size="15" /></button></td><td v-else-if="resource === 'users'" class="py-3 text-right"><UiButton v-if="row.tenVaiTro === 'USER'" size="sm" variant="outline" :loading="busyUserId === row.maNguoiDung" :disabled="busyUserId !== null" @click="grantExpertRole(row)">Cấp EXPERT</UiButton><span v-else class="text-xs text-muted">—</span></td></tr></tbody></table></div>
 
-    <p v-if="config.readOnlyContent" class="rounded-xl border border-primary/15 bg-primary/5 p-3 text-sm text-navy">
-      Đây là danh sách nội dung đã được Reviewer phê duyệt. Admin không tạo, đăng tải hoặc thay đổi nội dung khóa học, bài học hay tài liệu.
-    </p>
-
-    <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div class="grid gap-3 border-b border-slate-200 p-4 md:grid-cols-[minmax(240px,1fr)_repeat(auto-fit,minmax(170px,220px))]">
-        <SearchInput v-model="query" :label="`Tìm ${config.title.toLocaleLowerCase('vi')}`" :placeholder="`Tìm theo ${config.searchFields.slice(0, 3).join(', ')}...`" />
-        <label v-for="filter in config.filters" :key="filter.key" class="sr-only" :for="`admin-filter-${filter.key}`">{{ filter.label }}</label>
-        <select
-          v-for="filter in config.filters"
-          :id="`admin-filter-${filter.key}`"
-          :key="filter.key"
-          v-model="filters[filter.key]"
-          class="min-w-0 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-navy outline-none focus:border-primary focus:ring-2 focus:ring-primary/15"
-        >
-          <option value="">{{ filter.label }}</option>
-          <option v-for="option in filter.options" :key="option.value ?? option" :value="option.value ?? option">{{ option.label ?? option }}</option>
-        </select>
-      </div>
-
-      <div v-if="visibleRecords.length" class="overflow-x-auto">
-        <table class="w-full min-w-[880px] text-left text-sm">
-          <thead class="bg-background text-xs uppercase tracking-wide text-muted">
-            <tr>
-              <th v-for="column in config.columns" :key="column.key" scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">{{ column.label }}</th>
-              <th scope="col" class="px-4 py-3 text-right font-semibold">Thao tác</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100">
-            <template v-for="record in visibleRecords" :key="record.id">
-              <tr class="align-top hover:bg-background/70">
-                <td v-for="(column, columnIndex) in config.columns" :key="column.key" class="max-w-72 px-4 py-3.5 text-muted">
-                  <span v-if="column.key === 'status'" class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" :class="record.status === 'active' ? 'bg-accent/10 text-accent' : record.status === 'locked' ? 'bg-primary/10 text-primary' : 'bg-background text-muted'">{{ formatCell(record, column.key) }}</span>
-                  <span v-else-if="column.key === 'visibility'" class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold" :class="record.visibility === 'visible' ? 'bg-accent/10 text-accent' : 'bg-background text-muted'">{{ formatCell(record, column.key) }}</span>
-                  <RouterLink v-else-if="config.detailRoute && columnIndex === 1" :to="{ name: config.detailRoute, params: { id: record.id } }" class="line-clamp-2 font-semibold text-primary hover:underline">{{ formatCell(record, column.key) }}</RouterLink>
-                  <span v-else class="line-clamp-2" :class="columnIndex === 0 ? 'font-medium text-navy' : ''">{{ formatCell(record, column.key) }}</span>
-                </td>
-                <td class="whitespace-nowrap px-4 py-3.5 text-right">
-                  <div class="inline-flex items-center justify-end gap-1">
-                    <button
-                      v-if="config.key === 'courses'"
-                      type="button"
-                      class="flex size-8 items-center justify-center rounded-lg text-muted hover:bg-primary/10 hover:text-primary"
-                      :aria-label="`${expandedCourseId === record.id ? 'Thu gọn' : 'Mở'} bài học của ${record.title}`"
-                      :aria-expanded="expandedCourseId === record.id"
-                      title="Xem bài học trong khóa học"
-                      @click="toggleCourseLessons(record.id)"
-                    >
-                      <ChevronDown :size="16" :class="expandedCourseId === record.id ? 'rotate-180' : ''" aria-hidden="true" />
-                    </button>
-                    <button type="button" class="flex size-8 items-center justify-center rounded-lg text-muted hover:bg-primary/10 hover:text-primary" :aria-label="`Xem ${record.fullName || record.name || record.title || record.id}`" title="Xem chi tiết" @click="config.detailRoute ? openDetailRoute(record) : openView(record)">
-                      <Eye :size="16" aria-hidden="true" />
-                    </button>
-                    <button v-if="config.canEdit && !record.isProtected" type="button" class="flex size-8 items-center justify-center rounded-lg text-muted hover:bg-background hover:text-navy" :aria-label="`Chỉnh sửa ${record.fullName || record.name || record.id}`" title="Chỉnh sửa" @click="openEdit(record)">
-                      <Pencil :size="15" aria-hidden="true" />
-                    </button>
-                    <button v-if="config.canToggle && !record.isProtected" type="button" class="flex size-8 items-center justify-center rounded-lg text-muted hover:bg-background hover:text-primary" :aria-label="record.status === 'active' ? 'Khóa tài khoản' : 'Mở khóa tài khoản'" :title="record.status === 'active' ? 'Khóa tài khoản' : 'Mở khóa tài khoản'" @click="confirmToggle(record)">
-                      <LockKeyhole v-if="record.status === 'active'" :size="15" aria-hidden="true" />
-                      <UnlockKeyhole v-else :size="15" aria-hidden="true" />
-                    </button>
-                    <button v-if="config.canDelete" type="button" class="flex size-8 items-center justify-center rounded-lg text-muted hover:bg-primary/10 hover:text-primary" :aria-label="`Xóa danh mục ${record.name}`" title="Xóa" @click="confirmDelete(record)">
-                      <Trash2 :size="15" aria-hidden="true" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr v-if="config.key === 'courses' && expandedCourseId === record.id" class="bg-background/70">
-                <td :colspan="config.columns.length + 1" class="px-4 py-4">
-                  <div class="flex flex-wrap items-center justify-between gap-2">
-                    <p class="text-sm font-semibold text-navy">Bài học trong khóa học · {{ lessonsForCourse(record.id).length }} bài học có dữ liệu mẫu</p>
-                    <RouterLink :to="{ name: 'admin-course-detail', params: { id: record.id } }" class="text-xs font-semibold text-primary hover:underline">Mở chi tiết khóa học</RouterLink>
-                  </div>
-                  <div v-if="lessonsForCourse(record.id).length" class="mt-3 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white px-3">
-                    <div v-for="lesson in lessonsForCourse(record.id)" :key="lesson.id" class="flex flex-wrap items-center justify-between gap-3 py-3">
-                      <div class="min-w-0">
-                        <p class="text-sm font-semibold text-navy">{{ lesson.order }}. {{ lesson.title }}</p>
-                        <p class="mt-1 text-xs text-muted">{{ lesson.chapter }} · {{ lesson.duration }} · {{ lesson.contentType }}</p>
-                      </div>
-                      <RouterLink :to="{ name: 'admin-lesson-detail', params: { id: lesson.id } }" class="shrink-0 text-xs font-semibold text-primary hover:underline">Xem bài học</RouterLink>
-                    </div>
-                  </div>
-                  <p v-else class="mt-3 rounded-xl border border-dashed border-slate-200 bg-white p-4 text-sm text-muted">Chưa có bài học được duyệt trong dữ liệu mẫu.</p>
-                </td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
-      </div>
-      <EmptyState v-else title="Không có dữ liệu phù hợp" description="Thử đổi từ khóa tìm kiếm hoặc bộ lọc." />
-      <PaginationControls v-if="filteredRecords.length" v-model="currentPage" :total-pages="totalPages" :total-items="filteredRecords.length" />
-    </section>
-
-    <AdminModal
-      :open="modalOpen"
-      :mode="modalMode"
-      :title="pendingAction?.title || (modalMode === 'view' ? 'Thông tin chi tiết' : modalRecord ? 'Chỉnh sửa thông tin' : 'Thêm mới')"
-      :description="pendingAction?.description || ''"
-      :record="modalRecord"
-      :fields="modalMode === 'view' ? config.detailFields : config.fields"
-      :confirm-label="pendingAction?.type === 'delete' ? 'Xóa danh mục' : pendingAction?.type === 'toggle' && modalRecord?.status === 'active' ? 'Khóa tài khoản' : 'Mở khóa tài khoản'"
-      :error="modalError"
-      @close="closeModal"
-      @save="saveRecord"
-      @confirm="performConfirmedAction"
-    >
-      <p v-if="pendingAction?.type === 'delete'">Thao tác này chỉ thực hiện trên dữ liệu mẫu trong phiên hiện tại.</p>
-      <p v-else>Trạng thái kiểm duyệt không thay đổi khi khóa hoặc mở khóa tài khoản.</p>
-    </AdminModal>
-    <ToastMessage :message="toastMessage" @close="toastMessage = ''" />
-  </div>
-  <EmptyState v-else title="Không tìm thấy trang quản lý" description="Đường dẫn Admin không có cấu hình tương ứng." />
+    <div v-if="editorOpen" class="fixed inset-0 z-50 flex items-end justify-center bg-navy/40 p-0 sm:items-center sm:p-4" @click.self="editorOpen = false"><section class="w-full max-w-lg space-y-5 bg-surface p-5 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="category-editor-title"><header class="flex items-start justify-between"><div><p class="ui-eyebrow">Danh mục</p><h2 id="category-editor-title" class="mt-1 text-xl font-medium text-navy">{{ editingId ? 'Sửa danh mục' : 'Tạo danh mục' }}</h2></div><button aria-label="Đóng" class="p-2 text-muted" @click="editorOpen = false"><X :size="18" /></button></header><form class="space-y-4" @submit.prevent="saveCategory"><label class="block text-sm font-medium text-navy">Tên danh mục<input v-model.trim="form.tenDanhMuc" class="ui-input mt-2" maxlength="255" required></label><label class="block text-sm font-medium text-navy">Mô tả<textarea v-model.trim="form.moTa" class="ui-input mt-2 min-h-24" rows="3"></textarea></label><p v-if="errorMessage" class="text-sm text-danger" role="alert">{{ errorMessage }}</p><div class="flex justify-end gap-2"><UiButton variant="quiet" @click="editorOpen = false">Hủy</UiButton><UiButton type="submit" :loading="saving"><Save :size="15" /> Lưu</UiButton></div></form></section></div>
+  </main>
 </template>

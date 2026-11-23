@@ -1,0 +1,22 @@
+# Backend setup (Windows PowerShell)
+
+Run commands from this directory:
+
+```powershell
+.\venv\Scripts\python.exe -m pip install -r requirements.txt
+.\venv\Scripts\python.exe -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Configure local credentials in `.env` before starting the server. Do not commit
+that file. PostgreSQL must be running and its credentials must match the values
+in `.env`.
+
+- Swagger UI: http://127.0.0.1:8000/docs
+- ReDoc: http://127.0.0.1:8000/redoc
+- Health check: http://127.0.0.1:8000/api/health
+- Application log: `logs/system.log`
+
+The health check runs `SELECT 1`; it returns HTTP 503 when PostgreSQL is
+unavailable. The backend does not create or modify database tables.
+.\venv\Scripts\python.exe -m utils.seed_roles
+.\venv\Scripts\uvicorn.exe main:app --reload

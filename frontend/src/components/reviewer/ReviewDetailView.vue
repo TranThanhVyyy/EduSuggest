@@ -1,51 +1,43 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { ArrowLeft } from 'lucide-vue-next'
+import { ArrowLeft, Check, FileText } from 'lucide-vue-next'
 import { REVIEWABLE_STATUSES } from '@/constant/reviewStatus'
-import CourseReviewPreview from '@/components/reviewer/CourseReviewPreview.vue'
-import MaterialReviewPreview from '@/components/reviewer/MaterialReviewPreview.vue'
 import ReviewActionModal from '@/components/reviewer/ReviewActionModal.vue'
 import StatusBadge from '@/components/reviewer/StatusBadge.vue'
-import ToastMessage from '@/components/reviewer/ToastMessage.vue'
-import { getReviewItem, submitReviewDecision } from '@/service/reviewerService'
-
-const props = defineProps({
-  kind: { type: String, required: true },
-})
+import { getExpertCourse, submitExpertCourseDecision } from '@/service/expertApiService'
 
 const route = useRoute()
+const props = defineProps({ kind: { type: String, required: true } })
 const item = ref(null)
+const loading = ref(false)
 const loadError = ref('')
 const actionError = ref('')
 const actionModalOpen = ref(false)
 const selectedAction = ref('')
-const toastMessage = ref('')
-
+const saving = ref(false)
 const isCourse = computed(() => props.kind === 'course')
-const queueRoute = computed(() => ({
-  name: isCourse.value ? 'reviewer-courses' : 'reviewer-materials',
-}))
-const pageTitle = computed(() => (isCourse.value ? 'Chi tiết kiểm duyệt khóa học' : 'Chi tiết kiểm duyệt tài liệu'))
-const canReview = computed(() => item.value && REVIEWABLE_STATUSES.includes(item.value.status))
+const canReview = computed(() => isCourse.value && item.value && REVIEWABLE_STATUSES.includes(item.value.status))
+const queueRoute = computed(() => ({ name: isCourse.value ? 'reviewer-courses' : 'reviewer-materials' }))
 
-watch(
-  () => route.params.id,
-  (id) => {
-    loadError.value = ''
-    item.value = null
-    try {
-      item.value = getReviewItem(props.kind, String(id))
-    } catch (error) {
-      loadError.value = error instanceof Error ? error.message : 'Không thể tải nội dung.'
-    }
-  },
-  { immediate: true },
-)
-
-function formatDate(value) {
-  return new Intl.DateTimeFormat('vi-VN', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(value))
+async function loadCourse(id) {
+  item.value = null
+  loadError.value = ''
+  if (!isCourse.value) {
+    loadError.value = 'Backend hiện chưa cung cấp API chi tiết kiểm duyệt tài liệu.'
+    return
+  }
+  loading.value = true
+  try {
+    item.value = await getExpertCourse(id)
+  } catch (error) {
+    loadError.value = error.response?.data?.detail || 'Không thể tải khóa học. Hãy quay lại danh sách hoặc thử lại.'
+  } finally {
+    loading.value = false
+  }
 }
+
+watch(() => route.params.id, loadCourse, { immediate: true })
 
 function startAction(action) {
   actionError.value = ''
@@ -53,94 +45,42 @@ function startAction(action) {
   actionModalOpen.value = true
 }
 
-function confirmAction({ action, note }) {
+async function confirmAction({ action, note }) {
+  if (!item.value || saving.value) return
+  saving.value = true
+  actionError.value = ''
   try {
-    item.value = submitReviewDecision(props.kind, item.value.id, action, note)
-    toastMessage.value = 'Kết quả kiểm duyệt đã được lưu trong phiên làm việc.'
+    const updatedCourse = await submitExpertCourseDecision(item.value.id, action, note)
+    item.value = {
+      ...item.value,
+      ...updatedCourse,
+      // The decision endpoint returns CourseResponse, not CourseDetailResponse.
+      lectures: item.value.lectures,
+      attachments: item.value.attachments,
+    }
     actionModalOpen.value = false
   } catch (error) {
-    actionError.value = error instanceof Error ? error.message : 'Không thể cập nhật kết quả kiểm duyệt.'
-    actionModalOpen.value = false
+    actionError.value = error.response?.data?.detail || 'Không thể lưu quyết định kiểm duyệt. Hãy thử lại.'
+  } finally {
+    saving.value = false
   }
 }
 </script>
 
 <template>
-  <div class="space-y-5">
-    <RouterLink :to="queueRoute" class="inline-flex items-center gap-2 text-sm font-semibold text-muted transition hover:text-primary">
-      <ArrowLeft :size="17" aria-hidden="true" /> Quay lại danh sách
-    </RouterLink>
-
-    <section v-if="loadError" class="rounded-2xl border border-slate-200 bg-white p-6" role="alert">
-      <h2 class="font-bold text-navy">{{ pageTitle }}</h2>
-      <p class="mt-2 text-sm text-muted">{{ loadError }}</p>
-      <RouterLink :to="queueRoute" class="mt-4 inline-flex rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white">Về danh sách</RouterLink>
-    </section>
-
+  <main class="space-y-6">
+    <RouterLink :to="queueRoute" class="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:underline"><ArrowLeft :size="16" aria-hidden="true" /> Quay lại danh sách</RouterLink>
+    <p v-if="loading" class="py-6 text-sm text-muted" role="status">Đang tải khóa học…</p>
+    <section v-else-if="loadError" class="max-w-2xl border-l-2 border-accent py-1 pl-4" role="alert"><h1 class="ui-page-title">Không thể mở nội dung</h1><p class="mt-2 text-sm leading-6 text-muted">{{ loadError }}</p></section>
     <template v-else-if="item">
-      <section class="flex flex-wrap items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-        <div class="min-w-0">
-          <p class="text-sm text-muted">{{ pageTitle }}</p>
-          <h2 class="mt-1 break-words text-2xl font-bold tracking-tight text-navy">{{ item.title }}</h2>
-          <p class="mt-2 text-sm text-muted">Gửi ngày {{ formatDate(item.submittedAt) }}</p>
-        </div>
+      <header class="flex flex-wrap items-start justify-between gap-4 border-b border-border pb-5">
+        <div><p class="ui-eyebrow">Khóa học #{{ item.id }}</p><h1 class="ui-page-title mt-2">{{ item.title }}</h1><p class="mt-2 max-w-3xl whitespace-pre-line text-sm leading-6 text-muted">{{ item.description || 'Chưa có mô tả.' }}</p></div>
         <StatusBadge :status="item.status" />
-      </section>
-
-      <div class="grid gap-5 xl:grid-cols-[minmax(0,1.55fr)_minmax(280px,0.8fr)]">
-        <CourseReviewPreview v-if="isCourse" :item="item" />
-        <MaterialReviewPreview v-else :item="item" />
-
-        <aside class="space-y-5">
-          <section class="rounded-2xl border border-slate-200 bg-white p-5">
-            <h3 class="font-bold text-navy">Thông tin người tạo</h3>
-            <p class="mt-4 text-sm font-semibold text-navy">{{ item.creator }}</p>
-            <p class="mt-1 break-all text-sm text-muted">{{ item.creatorEmail }}</p>
-            <div class="mt-4 border-t border-slate-100 pt-4">
-              <p class="text-xs font-medium uppercase tracking-wide text-muted">{{ isCourse ? 'Danh mục' : 'Loại tài liệu' }}</p>
-              <p class="mt-1 text-sm font-semibold text-navy">{{ isCourse ? item.category : item.documentType }}</p>
-            </div>
-            <div class="mt-4 border-t border-slate-100 pt-4">
-              <p class="text-xs font-medium uppercase tracking-wide text-muted">Ngày gửi</p>
-              <p class="mt-1 text-sm font-semibold text-navy">{{ formatDate(item.submittedAt) }}</p>
-            </div>
-            <div v-if="!isCourse" class="mt-4 border-t border-slate-100 pt-4">
-              <p class="text-xs font-medium uppercase tracking-wide text-muted">Tệp</p>
-              <p class="mt-1 break-all text-sm font-semibold text-navy">{{ item.fileName || 'Chưa có tệp' }}</p>
-            </div>
-          </section>
-
-          <section class="rounded-2xl border border-slate-200 bg-white p-5">
-            <h3 class="font-bold text-navy">Kết quả kiểm duyệt</h3>
-            <p class="mt-1 text-sm leading-6 text-muted">Ghi nhận quyết định và phản hồi cho người tạo.</p>
-            <p v-if="actionError" class="mt-3 rounded-xl border border-primary/20 bg-primary/5 p-3 text-sm text-primary" role="alert">{{ actionError }}</p>
-            <p v-if="item.reviewNote" class="mt-3 rounded-xl bg-background p-3 text-sm leading-6 text-muted">{{ item.reviewNote }}</p>
-            <div v-if="canReview" class="mt-4 grid gap-2">
-              <button type="button" class="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" @click="startAction('approve')">
-                Phê duyệt
-              </button>
-              <button type="button" class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-navy transition hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-primary" @click="startAction('requestChanges')">
-                Yêu cầu chỉnh sửa
-              </button>
-              <button type="button" class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-muted transition hover:border-navy hover:text-navy focus-visible:outline-2 focus-visible:outline-navy" @click="startAction('reject')">
-                Từ chối
-              </button>
-            </div>
-            <p v-else class="mt-4 rounded-xl bg-background p-3 text-sm text-muted">Nội dung đã được xử lý và không còn thao tác kiểm duyệt.</p>
-          </section>
-        </aside>
-      </div>
+      </header>
+      <dl class="grid gap-x-8 gap-y-4 border-b border-border pb-5 sm:grid-cols-3"><div><dt class="text-xs text-muted">Danh mục</dt><dd class="mt-1 text-sm font-medium text-navy">{{ item.category || 'Chưa có dữ liệu' }}</dd></div><div><dt class="text-xs text-muted">Nhà cung cấp</dt><dd class="mt-1 text-sm font-medium text-navy">{{ item.provider || 'Chưa có dữ liệu' }}</dd></div><div><dt class="text-xs text-muted">Giá</dt><dd class="mt-1 text-sm font-medium text-navy">{{ item.price == null ? 'Chưa có dữ liệu' : new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price) }}</dd></div></dl>
+      <section><h2 class="text-lg font-medium text-navy">Bài học ({{ item.lectures.length }})</h2><ol v-if="item.lectures.length" class="mt-3 divide-y divide-border border-y border-border"><li v-for="(lesson, index) in item.lectures" :key="lesson.id" class="py-4"><h3 class="font-medium text-navy">{{ index + 1 }}. {{ lesson.title }}</h3><p v-if="lesson.content" class="mt-2 whitespace-pre-line text-sm leading-6 text-muted">{{ lesson.content }}</p><ul v-if="lesson.attachments.length" class="mt-3 space-y-2"><li v-for="file in lesson.attachments" :key="file.name" class="flex items-center gap-2 text-sm text-muted"><FileText :size="15" aria-hidden="true" /> {{ file.name }} <a v-if="file.url" :href="file.url" target="_blank" rel="noreferrer" class="text-secondary underline">Mở tài liệu</a></li></ul></li></ol><p v-else class="mt-3 text-sm text-muted">Khóa học chưa có bài học.</p></section>
+      <section class="border-t border-border pt-5"><h2 class="text-lg font-medium text-navy">Quyết định kiểm duyệt</h2><p v-if="item.reviewNote" class="mt-2 text-sm leading-6 text-muted">{{ item.reviewNote }}</p><p v-if="actionError" class="mt-3 text-sm text-danger" role="alert">{{ actionError }}</p><div v-if="canReview" class="mt-4 flex flex-wrap gap-2"><button :disabled="saving" class="inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-sm font-medium text-white disabled:opacity-60" @click="startAction('approve')"><Check :size="16" aria-hidden="true" /> Phê duyệt</button><button :disabled="saving" class="border border-border px-4 py-2.5 text-sm font-medium text-navy disabled:opacity-60" @click="startAction('requestChanges')">Yêu cầu chỉnh sửa</button><button :disabled="saving" class="border border-border px-4 py-2.5 text-sm font-medium text-navy disabled:opacity-60" @click="startAction('reject')">Từ chối</button></div><p v-else class="mt-2 text-sm text-muted">Khóa học đã được xử lý.</p></section>
     </template>
-
-    <ReviewActionModal
-      :open="actionModalOpen"
-      :action="selectedAction"
-      :item-title="item?.title"
-      :item-description="item?.description"
-      :item-kind="isCourse ? 'Khóa học' : 'Tài liệu'"
-      @close="actionModalOpen = false"
-      @confirm="confirmAction"
-    />
-    <ToastMessage :message="toastMessage" @close="toastMessage = ''" />
-  </div>
+    <ReviewActionModal :open="actionModalOpen" :action="selectedAction" :item-title="item?.title" :item-description="item?.description" :saving="saving" :error-message="actionError" item-kind="Khóa học" @close="actionModalOpen = false" @confirm="confirmAction" />
+  </main>
 </template>

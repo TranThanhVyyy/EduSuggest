@@ -6,6 +6,7 @@ defineProps({
 })
 
 function priceLabel(price) {
+  if (price == null) return 'Chưa có thông tin học phí'
   return price > 0 ? new Intl.NumberFormat('vi-VN').format(price) + ' ₫' : 'Miễn phí'
 }
 </script>
@@ -20,18 +21,17 @@ function priceLabel(price) {
     </div>
     <div class="flex flex-1 flex-col p-4">
       <div class="flex flex-wrap items-center gap-2 text-xs">
-        <span class="rounded-full bg-primary/10 px-2.5 py-1 font-semibold text-primary">{{ course.category }}</span>
-        <span class="rounded-full bg-background px-2.5 py-1 text-muted">{{ course.level }}</span>
+        <span class="rounded-full bg-primary/10 px-2.5 py-1 font-semibold text-primary">{{ course.category || 'Chưa phân loại' }}</span>
+        <span v-if="course.level" class="rounded-full bg-background px-2.5 py-1 text-muted">{{ course.level }}</span>
       </div>
       <RouterLink :to="{ name: 'course-detail', params: { id: course.id } }" class="mt-3 line-clamp-2 text-base font-bold text-navy hover:text-primary">
         {{ course.title }}
       </RouterLink>
       <p class="mt-2 line-clamp-2 text-sm leading-5 text-muted">{{ course.description }}</p>
       <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted">
-        <span class="inline-flex items-center gap-1"><GraduationCap :size="14" aria-hidden="true" />{{ course.provider }}</span>
-        <span class="inline-flex items-center gap-1"><Clock3 :size="14" aria-hidden="true" />{{ course.duration }}</span>
+        <span v-if="course.provider" class="inline-flex items-center gap-1"><GraduationCap :size="14" aria-hidden="true" />{{ course.provider }}</span>
+        <span v-if="course.duration" class="inline-flex items-center gap-1"><Clock3 :size="14" aria-hidden="true" />{{ course.duration }}</span>
         <span v-if="course.rating != null" class="inline-flex items-center gap-1"><Star :size="14" class="text-accent" aria-hidden="true" />{{ course.rating }}<span v-if="course.reviewCount">({{ course.reviewCount }})</span></span>
-        <span v-else class="inline-flex items-center gap-1"><Star :size="14" aria-hidden="true" />Chưa có đánh giá</span>
       </div>
       <div class="mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-4">
         <span class="text-sm font-bold text-navy">{{ priceLabel(course.price) }}</span>

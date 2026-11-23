@@ -6,19 +6,50 @@ import PaginationControls from '@/components/reviewer/PaginationControls.vue'
 import SearchInput from '@/components/reviewer/SearchInput.vue'
 import {
   PROVIDER_STATUS_LABELS,
-  getProviderCourses,
-  getProviderReviewHistory,
-} from '@/service/providerService'
+} from '@/service/providerApiService'
+import { loadProviderCourses, loadProviderReviews, mapProviderReview, providerErrorMessage } from '@/service/providerApiService'
 
 const route = useRoute()
 const pageSize = 8
 const query = ref('')
 const statusFilter = ref('')
 const currentPage = ref(1)
+const records = ref([])
+const isLoading = ref(true)
+const loadError = ref('')
 const isHistory = computed(() => route.name === 'provider-review-history')
-const records = computed(() => isHistory.value
-  ? getProviderReviewHistory()
-  : getProviderCourses().filter((course) => course.status !== 'Draft'))
+
+async function refreshRecords() {
+  isLoading.value = true
+  loadError.value = ''
+  try {
+    const courses = await loadProviderCourses()
+    if (!isHistory.value) {
+      records.value = courses.filter((course) => course.status !== 'Draft')
+    } else {
+      const histories = await Promise.all(courses.map(async (course) => {
+        const reviews = await loadProviderReviews(course.id)
+        return reviews.map(mapProviderReview).map((review) => ({
+          id: String(review.maDanhGia),
+          courseId: course.id,
+          title: course.title,
+          category: course.category,
+          status: review.status,
+          action: review.action,
+          createdAt: review.createdAt,
+          feedback: review.feedback,
+        }))
+      }))
+      records.value = histories.flat().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    }
+  } catch (error) {
+    loadError.value = providerErrorMessage(error, 'Không thể tải dữ liệu kiểm duyệt từ Backend.')
+  } finally {
+    isLoading.value = false
+  }
+}
+
+refreshRecords()
 const filteredRecords = computed(() => {
   const search = query.value.trim().toLocaleLowerCase('vi')
   return records.value.filter((record) => {
@@ -32,6 +63,7 @@ const visibleRecords = computed(() =>
 )
 
 watch([query, statusFilter, isHistory], () => { currentPage.value = 1 })
+watch(isHistory, refreshRecords)
 watch(totalPages, (pages) => { if (currentPage.value > pages) currentPage.value = pages })
 
 function formatDate(value) {
@@ -58,7 +90,9 @@ function formatDate(value) {
           <option v-for="(label, status) in PROVIDER_STATUS_LABELS" :key="status" :value="status">{{ label }}</option>
         </select>
       </div>
-      <div v-if="visibleRecords.length" class="overflow-x-auto">
+      <p v-if="isLoading" class="p-5 text-sm text-muted" role="status">Đang tải dữ liệu kiểm duyệt…</p>
+      <p v-else-if="loadError" class="m-4 rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-primary" role="alert">{{ loadError }} <button type="button" class="ml-2 font-semibold underline" @click="refreshRecords">Thử lại</button></p>
+      <div v-else-if="visibleRecords.length" class="overflow-x-auto">
         <table class="w-full min-w-[900px] text-left text-sm">
           <thead class="bg-background text-xs uppercase tracking-wide text-muted">
             <tr>

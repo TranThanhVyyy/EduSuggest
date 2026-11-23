@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import {
   Bell,
   BookOpen,
@@ -10,24 +10,36 @@ import {
   LogIn,
   Menu,
   Search,
-  Sparkles,
   UserRound,
   UserPlus,
   X,
 } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
-import { getRecentLearningActivities, getUserProfile, hasProviderRole } from '@/service/userService'
+import { getRecentLearningActivities } from '@/service/userService'
+import { authState } from '@/service/authState'
+import { getRoleName, loadCurrentUser, logoutAccount } from '@/service/authService'
 
 const route = useRoute()
 const router = useRouter()
-const profile = getUserProfile()
+const fullName = computed(() => authState.user?.hoTen || '')
+const isAuthenticated = computed(() => Boolean(authState.accessToken && authState.user))
+const isProvider = computed(() => getRoleName() === 'PROVIDER')
 const searchQuery = ref(typeof route.query.q === 'string' ? route.query.q : '')
 const mobileOpen = ref(false)
 const accountOpen = ref(false)
 const notificationsOpen = ref(false)
 const feedback = ref('')
 const notifications = computed(() => getRecentLearningActivities(4))
-const initials = computed(() => profile.fullName.split(/\s+/).slice(-2).map((part) => part[0]).join('').toLocaleUpperCase('vi'))
+const initials = computed(() => fullName.value.split(/\s+/).filter(Boolean).slice(-2).map((part) => part[0]).join('').toLocaleUpperCase('vi') || 'ES')
+
+onMounted(async () => {
+  if (!authState.accessToken || authState.user) return
+  try {
+    await loadCurrentUser()
+  } catch {
+    feedback.value = 'Không thể tải phiên đăng nhập từ Backend.'
+  }
+})
 
 async function submitSearch() {
   const query = searchQuery.value.trim()
@@ -35,9 +47,16 @@ async function submitSearch() {
   mobileOpen.value = false
 }
 
-function endDemoSession() {
+async function endSession() {
   accountOpen.value = false
-  feedback.value = 'Chưa có phiên đăng nhập thật để kết thúc. API xác thực chưa được tích hợp.'
+  try {
+    await logoutAccount()
+    feedback.value = 'Đã đăng xuất.'
+    await router.replace({ name: 'login' })
+  } catch {
+    feedback.value = 'Không thể xác nhận đăng xuất trên Backend; phiên cục bộ đã được xóa.'
+    await router.replace({ name: 'login' })
+  }
 }
 </script>
 
@@ -59,7 +78,7 @@ function endDemoSession() {
         <RouterLink :to="{ name: 'course-catalog' }" class="text-sm font-medium text-muted hover:text-primary">Khóa học</RouterLink>
         <RouterLink :to="{ name: 'material-catalog' }" class="text-sm font-medium text-muted hover:text-primary">Tài liệu</RouterLink>
         <RouterLink :to="{ name: 'learning-progress' }" class="text-sm font-medium text-muted hover:text-primary">Khóa học của tôi</RouterLink>
-        <RouterLink :to="{ name: 'course-recommendations' }" class="inline-flex items-center gap-1 text-sm font-medium text-muted hover:text-primary"><Sparkles :size="14" aria-hidden="true" /> Gợi ý</RouterLink>
+        <RouterLink :to="{ name: 'course-recommendations' }" class="text-sm font-medium text-muted hover:text-primary">Gợi ý</RouterLink>
       </nav>
 
       <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
@@ -86,23 +105,22 @@ function endDemoSession() {
 
         <div class="relative">
           <button type="button" class="flex items-center gap-2 rounded-xl p-1.5 hover:bg-background" aria-label="Mở menu tài khoản" :aria-expanded="accountOpen" @click="accountOpen = !accountOpen; notificationsOpen = false">
-            <span v-if="profile.avatarUrl" class="size-9 overflow-hidden rounded-full"><img :src="profile.avatarUrl" alt="" class="h-full w-full object-cover"></span>
-            <span v-else class="flex size-9 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{{ initials }}</span>
-            <span class="hidden max-w-28 truncate text-sm font-semibold text-navy xl:block">{{ profile.fullName }}</span>
+            <span class="flex size-9 items-center justify-center rounded-full bg-background text-xs font-semibold text-navy">{{ initials }}</span>
+            <span class="hidden max-w-28 truncate text-sm font-semibold text-navy xl:block">{{ fullName }}</span>
             <ChevronDown class="hidden text-muted xl:block" :size="14" aria-hidden="true" />
           </button>
           <div v-if="accountOpen" class="absolute right-0 top-12 z-40 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
-            <p class="px-3 py-2 text-xs text-muted">Hồ sơ minh họa · chưa đăng nhập thật</p>
+            <p class="px-3 py-2 text-xs text-muted">{{ isAuthenticated ? `Đăng nhập · ${authState.user.tenVaiTro}` : 'Khách truy cập' }}</p>
             <RouterLink :to="{ name: 'user-profile' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false"><UserRound :size="15" aria-hidden="true" /> Hồ sơ cá nhân</RouterLink>
             <RouterLink :to="{ name: 'user-dashboard' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false"><LayoutDashboard :size="15" aria-hidden="true" /> Dashboard học tập</RouterLink>
             <RouterLink :to="{ name: 'learning-progress' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false"><LayoutDashboard :size="15" aria-hidden="true" /> Tiến độ học tập</RouterLink>
             <RouterLink :to="{ name: 'learning-history' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false"><History :size="15" aria-hidden="true" /> Lịch sử học tập</RouterLink>
             <RouterLink :to="{ name: 'expert-reviews' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false"><BookOpen :size="15" aria-hidden="true" /> Đánh giá chuyên gia</RouterLink>
-            <RouterLink v-if="!hasProviderRole()" :to="{ name: 'provider-application' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false"><UserPlus :size="15" aria-hidden="true" /> Đăng ký Provider</RouterLink>
-            <RouterLink v-else :to="{ name: 'provider-dashboard' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false"><GraduationCap :size="15" aria-hidden="true" /> Quản lý khóa học</RouterLink>
-            <RouterLink :to="{ name: 'login' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-primary hover:bg-background" @click="accountOpen = false"><LogIn :size="15" aria-hidden="true" /> Đăng nhập</RouterLink>
-            <RouterLink :to="{ name: 'register' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-primary hover:bg-background" @click="accountOpen = false"><UserPlus :size="15" aria-hidden="true" /> Đăng ký tài khoản</RouterLink>
-            <button type="button" class="mt-1 w-full rounded-lg px-3 py-2 text-left text-sm text-muted hover:bg-background" @click="endDemoSession">Đăng xuất</button>
+            <RouterLink v-if="isAuthenticated && !isProvider" :to="{ name: 'provider-application' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false"><UserPlus :size="15" aria-hidden="true" /> Đăng ký Provider</RouterLink>
+            <RouterLink v-else-if="isProvider" :to="{ name: 'provider-dashboard' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false"><GraduationCap :size="15" aria-hidden="true" /> Quản lý khóa học</RouterLink>
+            <RouterLink v-if="!isAuthenticated" :to="{ name: 'login' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-primary hover:bg-background" @click="accountOpen = false"><LogIn :size="15" aria-hidden="true" /> Đăng nhập</RouterLink>
+            <RouterLink v-if="!isAuthenticated" :to="{ name: 'register' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-primary hover:bg-background" @click="accountOpen = false"><UserPlus :size="15" aria-hidden="true" /> Đăng ký tài khoản</RouterLink>
+            <button v-else type="button" class="mt-1 w-full rounded-lg px-3 py-2 text-left text-sm text-muted hover:bg-background" @click="endSession">Đăng xuất</button>
           </div>
         </div>
       </div>
