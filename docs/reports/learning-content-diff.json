@@ -1,0 +1,4505 @@
+{
+  "generated_at": "2026-11-26T17:03:29.815714+00:00",
+  "target_db": "edusuggest_phase54_staging",
+  "total_enhanced_lessons": 346,
+  "changes": [
+    {
+      "course_id": 3,
+      "lesson_id": 3,
+      "lesson_title": "Giới thiệu Kiến trúc Vue 3 và Thiết lập Dự án Vite",
+      "content_type": "project_and_assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=bzlFvdnC11E",
+      "new_video_url": null,
+      "old_content_len": 407,
+      "new_content_len": 1724,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 3,
+      "lesson_id": 4,
+      "lesson_title": "Reactivity Core: Ref, Reactive và Computed Properties",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=bzlFvdnC11E",
+      "new_video_url": null,
+      "old_content_len": 394,
+      "new_content_len": 1250,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 3,
+      "lesson_id": 5,
+      "lesson_title": "Tạo Component Tái sử dụng và Tích hợp Tailwind CSS",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=bzlFvdnC11E",
+      "new_video_url": null,
+      "old_content_len": 385,
+      "new_content_len": 1235,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 3,
+      "lesson_id": 6,
+      "lesson_title": "Điều hướng Ứng dụng Chuyên sâu với Vue Router 4",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=bzlFvdnC11E",
+      "new_video_url": null,
+      "old_content_len": 419,
+      "new_content_len": 1263,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 3,
+      "lesson_id": 7,
+      "lesson_title": "Kết nối Backend REST API và Hoàn thiện Ứng dụng",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=bzlFvdnC11E",
+      "new_video_url": null,
+      "old_content_len": 423,
+      "new_content_len": 1267,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 4,
+      "lesson_id": 8,
+      "lesson_title": "Kiến trúc State Management với Pinia Store",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=u0BqPd_rC1E",
+      "new_video_url": null,
+      "old_content_len": 304,
+      "new_content_len": 1157,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 4,
+      "lesson_id": 9,
+      "lesson_title": "Xây dựng Auth Store và Quản lý Phiên Người dùng",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=u0BqPd_rC1E",
+      "new_video_url": null,
+      "old_content_len": 288,
+      "new_content_len": 1151,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 4,
+      "lesson_id": 10,
+      "lesson_title": "Quản lý Giỏ hàng và Trạng thái Ghi danh Khóa học",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=u0BqPd_rC1E",
+      "new_video_url": null,
+      "old_content_len": 326,
+      "new_content_len": 1191,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 4,
+      "lesson_id": 11,
+      "lesson_title": "Tối ưu hóa Hiệu năng Re-render và Pinia Plugins",
+      "content_type": "practical_exercise",
+      "old_video_url": "https://www.youtube.com/watch?v=u0BqPd_rC1E",
+      "new_video_url": null,
+      "old_content_len": 320,
+      "new_content_len": 1479,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 4,
+      "lesson_id": 12,
+      "lesson_title": "Kiểm thử Tự động Pinia Store với Vitest",
+      "content_type": "assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=u0BqPd_rC1E",
+      "new_video_url": null,
+      "old_content_len": 279,
+      "new_content_len": 1623,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 17,
+      "lesson_id": 73,
+      "lesson_title": "Nguyên lý Hệ thống Gợi ý Content-Based Filtering",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=9gBC9Ar4Ssg",
+      "new_video_url": null,
+      "old_content_len": 427,
+      "new_content_len": 1287,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 17,
+      "lesson_id": 74,
+      "lesson_title": "Kỹ thuật Tiền xử lý Ngôn ngữ Tự nhiên và Vector Hóa Văn bản TF-IDF",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=9gBC9Ar4Ssg",
+      "new_video_url": null,
+      "old_content_len": 446,
+      "new_content_len": 1342,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 17,
+      "lesson_id": 75,
+      "lesson_title": "Tính toán Ma trận Độ Tương đồng Ngữ cảnh Cosine Similarity",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=9gBC9Ar4Ssg",
+      "new_video_url": null,
+      "old_content_len": 408,
+      "new_content_len": 1288,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 17,
+      "lesson_id": 76,
+      "lesson_title": "Tích hợp Gợi ý Cá nhân hóa Dựa trên Lịch sử Học tập của Người dùng",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=9gBC9Ar4Ssg",
+      "new_video_url": null,
+      "old_content_len": 442,
+      "new_content_len": 1338,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 17,
+      "lesson_id": 77,
+      "lesson_title": "Đánh giá Hiệu năng Hệ thống Gợi ý: Precision, Recall và MAP",
+      "content_type": "assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=9gBC9Ar4Ssg",
+      "new_video_url": null,
+      "old_content_len": 442,
+      "new_content_len": 1785,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 19,
+      "lesson_id": 83,
+      "lesson_title": "Kiến trúc Hệ điều hành Linux, File System Hierarchy và Phân quyền",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=sWbGOq-JrIQ",
+      "new_video_url": null,
+      "old_content_len": 364,
+      "new_content_len": 1238,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 19,
+      "lesson_id": 84,
+      "lesson_title": "Quản lý Tiến trình, Bộ nhớ và Dịch vụ Hệ thống với Systemd",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=sWbGOq-JrIQ",
+      "new_video_url": null,
+      "old_content_len": 370,
+      "new_content_len": 1230,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 19,
+      "lesson_id": 85,
+      "lesson_title": "Lập trình Bash Shell Script: Biến, Vòng lặp và Xử lý Text với Awk/Sed",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=sWbGOq-JrIQ",
+      "new_video_url": null,
+      "old_content_len": 390,
+      "new_content_len": 1272,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 19,
+      "lesson_id": 86,
+      "lesson_title": "Quản trị Mạng Linux: Iptables, UFW, SSH Hardening và Socket",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=sWbGOq-JrIQ",
+      "new_video_url": null,
+      "old_content_len": 397,
+      "new_content_len": 1259,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 19,
+      "lesson_id": 87,
+      "lesson_title": "Tự động hóa Tác vụ Định kỳ với Cronjob và Giám sát Server",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=sWbGOq-JrIQ",
+      "new_video_url": null,
+      "old_content_len": 394,
+      "new_content_len": 1252,
+      "reasons": [
+        "Loại bỏ URL YouTube 404 đã chết và chuyển sang bài đọc/thực hành hoàn chỉnh"
+      ]
+    },
+    {
+      "course_id": 20,
+      "lesson_id": 88,
+      "lesson_title": "Tổng quan Infrastructure as Code và Cú pháp Terraform HCL",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 392,
+      "new_content_len": 1245,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 20,
+      "lesson_id": 89,
+      "lesson_title": "Thiết kế VPC Mạng Đám mây AWS và Quản lý Security Group",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 378,
+      "new_content_len": 1227,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 20,
+      "lesson_id": 90,
+      "lesson_title": "Tự động khởi tạo Cụm EC2 Compute và Cơ sở dữ liệu RDS",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 421,
+      "new_content_len": 1266,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 20,
+      "lesson_id": 91,
+      "lesson_title": "Quản lý Terraform State Từ xa với S3 và DynamoDB State Locking",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 414,
+      "new_content_len": 1277,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 20,
+      "lesson_id": 92,
+      "lesson_title": "Xây dựng Terraform Modules và Tái sử dụng Hạ tầng Đa môi trường",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 401,
+      "new_content_len": 1266,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 21,
+      "lesson_id": 93,
+      "lesson_title": "Tổng quan OWASP Top 10 và Nguyên tắc Thiết kế Bảo mật Web",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 389,
+      "new_content_len": 1291,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 21,
+      "lesson_id": 94,
+      "lesson_title": "Khai thác và Phòng chống Tấn công Injection (SQL Injection, Command Injection)",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 418,
+      "new_content_len": 1362,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 21,
+      "lesson_id": 95,
+      "lesson_title": "Lỗ hổng Cross-Site Scripting (XSS) và Chính sách Content Security Policy (CSP)",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 418,
+      "new_content_len": 1362,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 21,
+      "lesson_id": 96,
+      "lesson_title": "Lỗ hổng Phân quyền Broken Access Control và IDOR (Insecure Direct Object Reference)",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 481,
+      "new_content_len": 1435,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 21,
+      "lesson_id": 97,
+      "lesson_title": "Bảo mật Xác thực, Quản lý Phiên và Phòng chống CSRF / JWT Forgery",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 431,
+      "new_content_len": 1349,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 22,
+      "lesson_id": 98,
+      "lesson_title": "Quy trình Kiểm thử Xâm nhập Chuẩn PTES và Khung Pháp lý",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 411,
+      "new_content_len": 1305,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 22,
+      "lesson_id": 99,
+      "lesson_title": "Kỹ thuật Thu thập Thông tin Reconnaissance và OSINT",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 399,
+      "new_content_len": 1285,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 22,
+      "lesson_id": 100,
+      "lesson_title": "Quét Cổng Mạng và Nhận diện Dịch vụ với Nmap Toàn tập",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 416,
+      "new_content_len": 1306,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 22,
+      "lesson_id": 101,
+      "lesson_title": "Khai thác Lỗ hổng Hệ thống bằng Metasploit Framework",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 452,
+      "new_content_len": 1340,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 22,
+      "lesson_id": 102,
+      "lesson_title": "Leo thang Đặc quyền (Privilege Escalation) và Viết Báo cáo Pentest",
+      "content_type": "assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 511,
+      "new_content_len": 1878,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 23,
+      "lesson_id": 103,
+      "lesson_title": "Quy trình Phản ứng Sự cố Chuẩn NIST SP 800-61 Rev 2",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 466,
+      "new_content_len": 1355,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 23,
+      "lesson_id": 104,
+      "lesson_title": "Phân tích Hành vi Mã độc Cơ bản (Static and Dynamic Analysis)",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 485,
+      "new_content_len": 1394,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 23,
+      "lesson_id": 105,
+      "lesson_title": "Điều tra Chứng cứ Kỹ thuật số Bộ nhớ RAM với Volatility Framework",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 462,
+      "new_content_len": 1379,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 23,
+      "lesson_id": 106,
+      "lesson_title": "Phân tích Nhật ký Log Tấn công trên Windows Event Log và Linux Syslog",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 473,
+      "new_content_len": 1398,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 23,
+      "lesson_id": 107,
+      "lesson_title": "Xây dựng Báo cáo Khắc phục và Kế hoạch Nâng cao Năng lực Phòng thủ",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 450,
+      "new_content_len": 1369,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 24,
+      "lesson_id": 108,
+      "lesson_title": "Nguyên lý Cơ bản về Kiểm thử Phần mềm theo Chuẩn ISTQB",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 403,
+      "new_content_len": 1301,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 24,
+      "lesson_id": 109,
+      "lesson_title": "Kỹ thuật Thiết kế Test Case Black-Box Testing Chuyên nghiệp",
+      "content_type": "assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 451,
+      "new_content_len": 1818,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 24,
+      "lesson_id": 110,
+      "lesson_title": "Quy trình Báo cáo và Quản lý Vòng đời Khiếm khuyết (Defect Lifecycle) trên Jira",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 465,
+      "new_content_len": 1413,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 24,
+      "lesson_id": 111,
+      "lesson_title": "Kiểm thử Giao diện Lập trình Ứng dụng REST API với Postman",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 422,
+      "new_content_len": 1328,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 24,
+      "lesson_id": 112,
+      "lesson_title": "Chiến lược Chuyển đổi từ Manual Tester sang Automation Test Engineer",
+      "content_type": "assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 481,
+      "new_content_len": 1857,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 25,
+      "lesson_id": 113,
+      "lesson_title": "Thiết lập Môi trường Selenium 4 với Python và Cấu hình Trình duyệt Chrome",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 417,
+      "new_content_len": 1345,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 25,
+      "lesson_id": 114,
+      "lesson_title": "Kỹ thuật Định vị Phần tử Web (Locator Strategy) bằng XPath và CSS Selector",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 424,
+      "new_content_len": 1354,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 25,
+      "lesson_id": 115,
+      "lesson_title": "Xử lý Phần tử Động với Cơ chế Chờ Explicit Wait và Fluent Wait",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 438,
+      "new_content_len": 1344,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 25,
+      "lesson_id": 116,
+      "lesson_title": "Thiết kế Kiến trúc Kiểm thử Chuẩn Page Object Model (POM)",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 431,
+      "new_content_len": 1327,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 25,
+      "lesson_id": 117,
+      "lesson_title": "Tích hợp PyTest Fixtures, Chụp ảnh Màn hình Lỗi và Xuất Báo cáo Allure",
+      "content_type": "assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 450,
+      "new_content_len": 1812,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 26,
+      "lesson_id": 118,
+      "lesson_title": "Nguyên lý Kiểm thử Hiệu năng (Performance Testing) và Cài đặt Apache JMeter",
+      "content_type": "assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 488,
+      "new_content_len": 1847,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 26,
+      "lesson_id": 119,
+      "lesson_title": "Thiết kế Kịch bản Tải Người dùng Đồng thời (Thread Group) và Timer Giả lập",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 505,
+      "new_content_len": 1431,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 26,
+      "lesson_id": 120,
+      "lesson_title": "Trích xuất Dữ liệu Động với Regular Expression Extractor và JSON Extractor",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 416,
+      "new_content_len": 1342,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 26,
+      "lesson_id": 121,
+      "lesson_title": "Kiểm thử Dữ liệu Lớn Data-Driven Testing với CSV Data Set Config",
+      "content_type": "assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 477,
+      "new_content_len": 1825,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 26,
+      "lesson_id": 122,
+      "lesson_title": "Chạy Tải CLI Non-GUI Mode và Xuất Báo cáo Hiệu năng Dashboard HTML",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 516,
+      "new_content_len": 1426,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 27,
+      "lesson_id": 123,
+      "lesson_title": "Tổng quan Giáo trình Full-Stack Chuyên sâu Nội bộ",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 85,
+      "new_content_len": 962,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 27,
+      "lesson_id": 124,
+      "lesson_title": "Cấu hình Môi trường Triển khai Bản nháp",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 84,
+      "new_content_len": 941,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 27,
+      "lesson_id": 125,
+      "lesson_title": "Đánh giá Độ trễ Mạng và Phân cụm Máy chủ",
+      "content_type": "assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 65,
+      "new_content_len": 1412,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 27,
+      "lesson_id": 126,
+      "lesson_title": "Tự động hóa Kiểm thử Hạ tầng Bản nháp",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 83,
+      "new_content_len": 936,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 27,
+      "lesson_id": 127,
+      "lesson_title": "Tổng kết và Phê duyệt Giáo trình Nội bộ",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 75,
+      "new_content_len": 932,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 28,
+      "lesson_id": 128,
+      "lesson_title": "Tổng quan Đề cương Rust và WebAssembly Mới",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 75,
+      "new_content_len": 908,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 28,
+      "lesson_id": 129,
+      "lesson_title": "Lý thuyết Nền tảng về Bộ nhớ và Con trỏ trong Rust",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 72,
+      "new_content_len": 921,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 28,
+      "lesson_id": 130,
+      "lesson_title": "Biên dịch Rust sang WebAssembly Module",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 74,
+      "new_content_len": 899,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 28,
+      "lesson_id": 131,
+      "lesson_title": "Đánh giá Hiệu năng Hệ thống Thẩm định",
+      "content_type": "assessment",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 68,
+      "new_content_len": 1383,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 28,
+      "lesson_id": 132,
+      "lesson_title": "Chuẩn bị Hồ sơ Thẩm định Chuyên môn",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 71,
+      "new_content_len": 890,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 29,
+      "lesson_id": 133,
+      "lesson_title": "Nội dung Cũ Không Đạt Chuẩn - Bài 1",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 64,
+      "new_content_len": 922,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 29,
+      "lesson_id": 134,
+      "lesson_title": "Nội dung Cũ Không Đạt Chuẩn - Bài 2",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 64,
+      "new_content_len": 922,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 29,
+      "lesson_id": 135,
+      "lesson_title": "Nội dung Cũ Không Đạt Chuẩn - Bài 3",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 64,
+      "new_content_len": 922,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 29,
+      "lesson_id": 136,
+      "lesson_title": "Nội dung Cũ Không Đạt Chuẩn - Bài 4",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 64,
+      "new_content_len": 922,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 29,
+      "lesson_id": 137,
+      "lesson_title": "Nội dung Cũ Không Đạt Chuẩn - Bài 5",
+      "content_type": "reading",
+      "old_video_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "new_video_url": null,
+      "old_content_len": 64,
+      "new_content_len": 922,
+      "reasons": [
+        "Loại bỏ video SQL gán nhầm trên khóa khác chủ đề và bổ sung nội dung đúng chuyên ngành"
+      ]
+    },
+    {
+      "course_id": 124,
+      "lesson_id": 414,
+      "lesson_title": "Nền tảng và thiết lập: Python nhập môn và tư duy giải quyết bài toán",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 652,
+      "new_content_len": 1521,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 124,
+      "lesson_id": 415,
+      "lesson_title": "Thực hành có hướng dẫn: Python nhập môn và tư duy giải quyết bài toán",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1773,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 124,
+      "lesson_id": 416,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Python nhập môn và tư duy giải quyết bài toán",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 630,
+      "new_content_len": 1939,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 125,
+      "lesson_id": 417,
+      "lesson_title": "Nền tảng và thiết lập: C căn bản: bộ nhớ, con trỏ và cấu trúc chương trình",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 658,
+      "new_content_len": 1578,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 125,
+      "lesson_id": 418,
+      "lesson_title": "Thực hành có hướng dẫn: C căn bản: bộ nhớ, con trỏ và cấu trúc chương trình",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 643,
+      "new_content_len": 1836,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 125,
+      "lesson_id": 419,
+      "lesson_title": "Bài toán tích hợp và đánh giá: C căn bản: bộ nhớ, con trỏ và cấu trúc chương trình",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 636,
+      "new_content_len": 1996,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 126,
+      "lesson_id": 420,
+      "lesson_title": "Nền tảng và thiết lập: Java căn bản với lập trình hướng đối tượng",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 649,
+      "new_content_len": 1511,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 126,
+      "lesson_id": 421,
+      "lesson_title": "Thực hành có hướng dẫn: Java căn bản với lập trình hướng đối tượng",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 634,
+      "new_content_len": 1760,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 126,
+      "lesson_id": 422,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Java căn bản với lập trình hướng đối tượng",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 627,
+      "new_content_len": 1929,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 127,
+      "lesson_id": 423,
+      "lesson_title": "Nền tảng và thiết lập: JavaScript nền tảng cho người mới bắt đầu",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 648,
+      "new_content_len": 1506,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 127,
+      "lesson_id": 424,
+      "lesson_title": "Thực hành có hướng dẫn: JavaScript nền tảng cho người mới bắt đầu",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 633,
+      "new_content_len": 1754,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 127,
+      "lesson_id": 425,
+      "lesson_title": "Bài toán tích hợp và đánh giá: JavaScript nền tảng cho người mới bắt đầu",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 626,
+      "new_content_len": 1924,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 128,
+      "lesson_id": 426,
+      "lesson_title": "Nền tảng và thiết lập: Git và kỹ năng làm việc với mã nguồn",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 643,
+      "new_content_len": 1479,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 128,
+      "lesson_id": 427,
+      "lesson_title": "Thực hành có hướng dẫn: Git và kỹ năng làm việc với mã nguồn",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 628,
+      "new_content_len": 1722,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 128,
+      "lesson_id": 428,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Git và kỹ năng làm việc với mã nguồn",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1897,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 129,
+      "lesson_id": 429,
+      "lesson_title": "Nền tảng và thiết lập: HTML, CSS và Responsive Web Design thực hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 646,
+      "new_content_len": 1767,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 129,
+      "lesson_id": 430,
+      "lesson_title": "Thực hành có hướng dẫn: HTML, CSS và Responsive Web Design thực hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1754,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 129,
+      "lesson_id": 431,
+      "lesson_title": "Bài toán tích hợp và đánh giá: HTML, CSS và Responsive Web Design thực hành",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 624,
+      "new_content_len": 1926,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 130,
+      "lesson_id": 432,
+      "lesson_title": "Nền tảng và thiết lập: Xây dựng REST API với FastAPI và PostgreSQL",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 644,
+      "new_content_len": 1495,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 130,
+      "lesson_id": 433,
+      "lesson_title": "Thực hành có hướng dẫn: Xây dựng REST API với FastAPI và PostgreSQL",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 629,
+      "new_content_len": 1745,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 130,
+      "lesson_id": 434,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Xây dựng REST API với FastAPI và PostgreSQL",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1919,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 131,
+      "lesson_id": 435,
+      "lesson_title": "Nền tảng và thiết lập: Fullstack Vue 3 và FastAPI",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1472,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 131,
+      "lesson_id": 436,
+      "lesson_title": "Thực hành có hướng dẫn: Fullstack Vue 3 và FastAPI",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1705,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 131,
+      "lesson_id": 437,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Fullstack Vue 3 và FastAPI",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 615,
+      "new_content_len": 1886,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 132,
+      "lesson_id": 438,
+      "lesson_title": "Nền tảng và thiết lập: Fullstack React và Node.js",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1453,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 132,
+      "lesson_id": 439,
+      "lesson_title": "Thực hành có hướng dẫn: Fullstack React và Node.js",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1686,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 132,
+      "lesson_id": 440,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Fullstack React và Node.js",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 615,
+      "new_content_len": 1867,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 133,
+      "lesson_id": 441,
+      "lesson_title": "Nền tảng và thiết lập: Next.js và PostgreSQL cho sản phẩm web",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 649,
+      "new_content_len": 1501,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 133,
+      "lesson_id": 442,
+      "lesson_title": "Thực hành có hướng dẫn: Next.js và PostgreSQL cho sản phẩm web",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 634,
+      "new_content_len": 1746,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 133,
+      "lesson_id": 443,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Next.js và PostgreSQL cho sản phẩm web",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 627,
+      "new_content_len": 1915,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 134,
+      "lesson_id": 444,
+      "lesson_title": "Nền tảng và thiết lập: Spring Boot kết hợp Vue cho hệ thống doanh nghiệp",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 660,
+      "new_content_len": 1564,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 134,
+      "lesson_id": 445,
+      "lesson_title": "Thực hành có hướng dẫn: Spring Boot kết hợp Vue cho hệ thống doanh nghiệp",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 645,
+      "new_content_len": 1820,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 134,
+      "lesson_id": 446,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Spring Boot kết hợp Vue cho hệ thống doanh nghiệp",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 638,
+      "new_content_len": 1978,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 135,
+      "lesson_id": 447,
+      "lesson_title": "Nền tảng và thiết lập: Xây dựng SaaS Fullstack từ thiết kế đến vận hành",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 659,
+      "new_content_len": 1578,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 135,
+      "lesson_id": 448,
+      "lesson_title": "Thực hành có hướng dẫn: Xây dựng SaaS Fullstack từ thiết kế đến vận hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 644,
+      "new_content_len": 1833,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 135,
+      "lesson_id": 449,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Xây dựng SaaS Fullstack từ thiết kế đến vận hành",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1992,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 136,
+      "lesson_id": 450,
+      "lesson_title": "Nền tảng và thiết lập: Flutter và Dart từ nền tảng đến ứng dụng",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 646,
+      "new_content_len": 1498,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 136,
+      "lesson_id": 451,
+      "lesson_title": "Thực hành có hướng dẫn: Flutter và Dart từ nền tảng đến ứng dụng",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1745,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 136,
+      "lesson_id": 452,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Flutter và Dart từ nền tảng đến ứng dụng",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 624,
+      "new_content_len": 1917,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 137,
+      "lesson_id": 453,
+      "lesson_title": "Nền tảng và thiết lập: React Native và TypeScript thực chiến",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 643,
+      "new_content_len": 1482,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 137,
+      "lesson_id": 454,
+      "lesson_title": "Thực hành có hướng dẫn: React Native và TypeScript thực chiến",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 628,
+      "new_content_len": 1726,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 137,
+      "lesson_id": 455,
+      "lesson_title": "Bài toán tích hợp và đánh giá: React Native và TypeScript thực chiến",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1901,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 138,
+      "lesson_id": 456,
+      "lesson_title": "Nền tảng và thiết lập: Unity và C# cho Game 2D",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 627,
+      "new_content_len": 1432,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 138,
+      "lesson_id": 457,
+      "lesson_title": "Thực hành có hướng dẫn: Unity và C# cho Game 2D",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 612,
+      "new_content_len": 1662,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 138,
+      "lesson_id": 458,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Unity và C# cho Game 2D",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 605,
+      "new_content_len": 1853,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 139,
+      "lesson_id": 459,
+      "lesson_title": "Nền tảng và thiết lập: Unity 3D và hệ thống vật lý",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1455,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 139,
+      "lesson_id": 460,
+      "lesson_title": "Thực hành có hướng dẫn: Unity 3D và hệ thống vật lý",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 616,
+      "new_content_len": 1689,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 139,
+      "lesson_id": 461,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Unity 3D và hệ thống vật lý",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 609,
+      "new_content_len": 1876,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 140,
+      "lesson_id": 462,
+      "lesson_title": "Nền tảng và thiết lập: Unreal Engine và Blueprint căn bản",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 638,
+      "new_content_len": 1483,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 140,
+      "lesson_id": 463,
+      "lesson_title": "Thực hành có hướng dẫn: Unreal Engine và Blueprint căn bản",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 623,
+      "new_content_len": 1724,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 140,
+      "lesson_id": 464,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Unreal Engine và Blueprint căn bản",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 616,
+      "new_content_len": 1904,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 141,
+      "lesson_id": 465,
+      "lesson_title": "Nền tảng và thiết lập: Godot và GDScript cho Indie Game",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 636,
+      "new_content_len": 1475,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 141,
+      "lesson_id": 466,
+      "lesson_title": "Thực hành có hướng dẫn: Godot và GDScript cho Indie Game",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1714,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 141,
+      "lesson_id": 467,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Godot và GDScript cho Indie Game",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 614,
+      "new_content_len": 1896,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 142,
+      "lesson_id": 468,
+      "lesson_title": "Nền tảng và thiết lập: Thiết kế AI và hành vi nhân vật trong Game",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 646,
+      "new_content_len": 1515,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 142,
+      "lesson_id": 469,
+      "lesson_title": "Thực hành có hướng dẫn: Thiết kế AI và hành vi nhân vật trong Game",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1764,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 142,
+      "lesson_id": 470,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Thiết kế AI và hành vi nhân vật trong Game",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 624,
+      "new_content_len": 1936,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 143,
+      "lesson_id": 471,
+      "lesson_title": "Nền tảng và thiết lập: Ứng dụng Desktop với C# và WPF",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1469,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 143,
+      "lesson_id": 472,
+      "lesson_title": "Thực hành có hướng dẫn: Ứng dụng Desktop với C# và WPF",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1706,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 143,
+      "lesson_id": 473,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Ứng dụng Desktop với C# và WPF",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 615,
+      "new_content_len": 1887,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 144,
+      "lesson_id": 474,
+      "lesson_title": "Nền tảng và thiết lập: JavaFX và kiến trúc ứng dụng Desktop",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 643,
+      "new_content_len": 1487,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 144,
+      "lesson_id": 475,
+      "lesson_title": "Thực hành có hướng dẫn: JavaFX và kiến trúc ứng dụng Desktop",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 628,
+      "new_content_len": 1730,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 144,
+      "lesson_id": 476,
+      "lesson_title": "Bài toán tích hợp và đánh giá: JavaFX và kiến trúc ứng dụng Desktop",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1905,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 145,
+      "lesson_id": 477,
+      "lesson_title": "Nền tảng và thiết lập: Python, PySide và công cụ nội bộ",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 639,
+      "new_content_len": 1469,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 145,
+      "lesson_id": 478,
+      "lesson_title": "Thực hành có hướng dẫn: Python, PySide và công cụ nội bộ",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 624,
+      "new_content_len": 1708,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 145,
+      "lesson_id": 479,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Python, PySide và công cụ nội bộ",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 617,
+      "new_content_len": 1887,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 146,
+      "lesson_id": 480,
+      "lesson_title": "Nền tảng và thiết lập: Electron và TypeScript cho ứng dụng đa nền tảng",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 654,
+      "new_content_len": 1530,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 146,
+      "lesson_id": 481,
+      "lesson_title": "Thực hành có hướng dẫn: Electron và TypeScript cho ứng dụng đa nền tảng",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 639,
+      "new_content_len": 1784,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 146,
+      "lesson_id": 482,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Electron và TypeScript cho ứng dụng đa nền tảng",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 632,
+      "new_content_len": 1948,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 147,
+      "lesson_id": 483,
+      "lesson_title": "Nền tảng và thiết lập: Tauri và Rust cho Desktop nhẹ, an toàn",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 645,
+      "new_content_len": 1527,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 147,
+      "lesson_id": 484,
+      "lesson_title": "Thực hành có hướng dẫn: Tauri và Rust cho Desktop nhẹ, an toàn",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 630,
+      "new_content_len": 1772,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 147,
+      "lesson_id": 485,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Tauri và Rust cho Desktop nhẹ, an toàn",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 623,
+      "new_content_len": 1945,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 148,
+      "lesson_id": 486,
+      "lesson_title": "Nền tảng và thiết lập: SQL nền tảng và mô hình dữ liệu quan hệ",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 648,
+      "new_content_len": 1521,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 148,
+      "lesson_id": 487,
+      "lesson_title": "Thực hành có hướng dẫn: SQL nền tảng và mô hình dữ liệu quan hệ",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 633,
+      "new_content_len": 1767,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 148,
+      "lesson_id": 488,
+      "lesson_title": "Bài toán tích hợp và đánh giá: SQL nền tảng và mô hình dữ liệu quan hệ",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 626,
+      "new_content_len": 1937,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 149,
+      "lesson_id": 489,
+      "lesson_title": "Nền tảng và thiết lập: PostgreSQL từ thiết kế đến vận hành",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 644,
+      "new_content_len": 1505,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 149,
+      "lesson_id": 490,
+      "lesson_title": "Thực hành có hướng dẫn: PostgreSQL từ thiết kế đến vận hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 629,
+      "new_content_len": 1747,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 149,
+      "lesson_id": 491,
+      "lesson_title": "Bài toán tích hợp và đánh giá: PostgreSQL từ thiết kế đến vận hành",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1921,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 150,
+      "lesson_id": 492,
+      "lesson_title": "Nền tảng và thiết lập: Phân tích dữ liệu với Excel và SQL",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 641,
+      "new_content_len": 1495,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 150,
+      "lesson_id": 493,
+      "lesson_title": "Thực hành có hướng dẫn: Phân tích dữ liệu với Excel và SQL",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 626,
+      "new_content_len": 1736,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 150,
+      "lesson_id": 494,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Phân tích dữ liệu với Excel và SQL",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 619,
+      "new_content_len": 1913,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 151,
+      "lesson_id": 495,
+      "lesson_title": "Nền tảng và thiết lập: Python Pandas cho phân tích dữ liệu",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 642,
+      "new_content_len": 1481,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 151,
+      "lesson_id": 496,
+      "lesson_title": "Thực hành có hướng dẫn: Python Pandas cho phân tích dữ liệu",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 627,
+      "new_content_len": 1723,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 151,
+      "lesson_id": 497,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Python Pandas cho phân tích dữ liệu",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 620,
+      "new_content_len": 1899,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 152,
+      "lesson_id": 498,
+      "lesson_title": "Nền tảng và thiết lập: Trực quan hóa dữ liệu với Power BI",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 641,
+      "new_content_len": 1491,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 152,
+      "lesson_id": 499,
+      "lesson_title": "Thực hành có hướng dẫn: Trực quan hóa dữ liệu với Power BI",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 626,
+      "new_content_len": 1732,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 152,
+      "lesson_id": 500,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Trực quan hóa dữ liệu với Power BI",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 619,
+      "new_content_len": 1909,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 153,
+      "lesson_id": 501,
+      "lesson_title": "Nền tảng và thiết lập: Thống kê ứng dụng cho Data Analyst",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 641,
+      "new_content_len": 1491,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 153,
+      "lesson_id": 502,
+      "lesson_title": "Thực hành có hướng dẫn: Thống kê ứng dụng cho Data Analyst",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 626,
+      "new_content_len": 1732,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 153,
+      "lesson_id": 503,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Thống kê ứng dụng cho Data Analyst",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 619,
+      "new_content_len": 1909,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 154,
+      "lesson_id": 504,
+      "lesson_title": "Nền tảng và thiết lập: Xây dựng báo cáo và Data Storytelling",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 644,
+      "new_content_len": 1503,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 154,
+      "lesson_id": 505,
+      "lesson_title": "Thực hành có hướng dẫn: Xây dựng báo cáo và Data Storytelling",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 629,
+      "new_content_len": 1747,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 154,
+      "lesson_id": 506,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Xây dựng báo cáo và Data Storytelling",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1921,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 155,
+      "lesson_id": 507,
+      "lesson_title": "Nền tảng và thiết lập: Quy trình Khoa học dữ liệu với Python",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 643,
+      "new_content_len": 1486,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 155,
+      "lesson_id": 508,
+      "lesson_title": "Thực hành có hướng dẫn: Quy trình Khoa học dữ liệu với Python",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 628,
+      "new_content_len": 1730,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 155,
+      "lesson_id": 509,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Quy trình Khoa học dữ liệu với Python",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1905,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 156,
+      "lesson_id": 510,
+      "lesson_title": "Nền tảng và thiết lập: Feature Engineering và chuẩn bị dữ liệu",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 645,
+      "new_content_len": 1508,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 156,
+      "lesson_id": 511,
+      "lesson_title": "Thực hành có hướng dẫn: Feature Engineering và chuẩn bị dữ liệu",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 630,
+      "new_content_len": 1754,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 156,
+      "lesson_id": 512,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Feature Engineering và chuẩn bị dữ liệu",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 623,
+      "new_content_len": 1927,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 157,
+      "lesson_id": 513,
+      "lesson_title": "Nền tảng và thiết lập: Machine Learning với Scikit-learn",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 639,
+      "new_content_len": 1470,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 157,
+      "lesson_id": 514,
+      "lesson_title": "Thực hành có hướng dẫn: Machine Learning với Scikit-learn",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 624,
+      "new_content_len": 1710,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 157,
+      "lesson_id": 515,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Machine Learning với Scikit-learn",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 617,
+      "new_content_len": 1889,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 158,
+      "lesson_id": 516,
+      "lesson_title": "Nền tảng và thiết lập: Hồi quy, phân loại và đánh giá mô hình",
+      "content_type": "assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 644,
+      "new_content_len": 1923,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 158,
+      "lesson_id": 517,
+      "lesson_title": "Thực hành có hướng dẫn: Hồi quy, phân loại và đánh giá mô hình",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 629,
+      "new_content_len": 1735,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 158,
+      "lesson_id": 518,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Hồi quy, phân loại và đánh giá mô hình",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1909,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 159,
+      "lesson_id": 519,
+      "lesson_title": "Nền tảng và thiết lập: Clustering và học không giám sát",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 638,
+      "new_content_len": 1466,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 159,
+      "lesson_id": 520,
+      "lesson_title": "Thực hành có hướng dẫn: Clustering và học không giám sát",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 623,
+      "new_content_len": 1705,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 159,
+      "lesson_id": 521,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Clustering và học không giám sát",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 616,
+      "new_content_len": 1885,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 160,
+      "lesson_id": 522,
+      "lesson_title": "Nền tảng và thiết lập: MLOps căn bản và theo dõi mô hình",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 639,
+      "new_content_len": 1470,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 160,
+      "lesson_id": 523,
+      "lesson_title": "Thực hành có hướng dẫn: MLOps căn bản và theo dõi mô hình",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 624,
+      "new_content_len": 1710,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 160,
+      "lesson_id": 524,
+      "lesson_title": "Bài toán tích hợp và đánh giá: MLOps căn bản và theo dõi mô hình",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 617,
+      "new_content_len": 1889,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 161,
+      "lesson_id": 525,
+      "lesson_title": "Nền tảng và thiết lập: Hệ thống gợi ý với TF-IDF và Cosine Similarity",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 652,
+      "new_content_len": 1522,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 161,
+      "lesson_id": 526,
+      "lesson_title": "Thực hành có hướng dẫn: Hệ thống gợi ý với TF-IDF và Cosine Similarity",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1775,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 161,
+      "lesson_id": 527,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Hệ thống gợi ý với TF-IDF và Cosine Similarity",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 630,
+      "new_content_len": 1941,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 162,
+      "lesson_id": 528,
+      "lesson_title": "Nền tảng và thiết lập: Deep Learning với PyTorch",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 646,
+      "new_content_len": 1483,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 162,
+      "lesson_id": 529,
+      "lesson_title": "Thực hành có hướng dẫn: Deep Learning với PyTorch",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1715,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 162,
+      "lesson_id": 530,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Deep Learning với PyTorch",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 624,
+      "new_content_len": 1887,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 163,
+      "lesson_id": 531,
+      "lesson_title": "Nền tảng và thiết lập: Mạng CNN cho phân loại hình ảnh",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 652,
+      "new_content_len": 1541,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 163,
+      "lesson_id": 532,
+      "lesson_title": "Thực hành có hướng dẫn: Mạng CNN cho phân loại hình ảnh",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1779,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 163,
+      "lesson_id": 533,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Mạng CNN cho phân loại hình ảnh",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 630,
+      "new_content_len": 1945,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 164,
+      "lesson_id": 534,
+      "lesson_title": "Nền tảng và thiết lập: Object Detection và xử lý video",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 652,
+      "new_content_len": 1540,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 164,
+      "lesson_id": 535,
+      "lesson_title": "Thực hành có hướng dẫn: Object Detection và xử lý video",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1778,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 164,
+      "lesson_id": 536,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Object Detection và xử lý video",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 630,
+      "new_content_len": 1944,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 165,
+      "lesson_id": 537,
+      "lesson_title": "Nền tảng và thiết lập: Transfer Learning cho Computer Vision",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 658,
+      "new_content_len": 1564,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 165,
+      "lesson_id": 538,
+      "lesson_title": "Thực hành có hướng dẫn: Transfer Learning cho Computer Vision",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 643,
+      "new_content_len": 1808,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 165,
+      "lesson_id": 539,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Transfer Learning cho Computer Vision",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 636,
+      "new_content_len": 1968,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 166,
+      "lesson_id": 540,
+      "lesson_title": "Nền tảng và thiết lập: Triển khai mô hình thị giác hiệu quả",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 657,
+      "new_content_len": 1560,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 166,
+      "lesson_id": 541,
+      "lesson_title": "Thực hành có hướng dẫn: Triển khai mô hình thị giác hiệu quả",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 642,
+      "new_content_len": 1803,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 166,
+      "lesson_id": 542,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Triển khai mô hình thị giác hiệu quả",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 635,
+      "new_content_len": 1964,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 167,
+      "lesson_id": 543,
+      "lesson_title": "Nền tảng và thiết lập: NLP nền tảng với Python",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 632,
+      "new_content_len": 1439,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 167,
+      "lesson_id": 544,
+      "lesson_title": "Thực hành có hướng dẫn: NLP nền tảng với Python",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 617,
+      "new_content_len": 1669,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 167,
+      "lesson_id": 545,
+      "lesson_title": "Bài toán tích hợp và đánh giá: NLP nền tảng với Python",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 610,
+      "new_content_len": 1855,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 168,
+      "lesson_id": 546,
+      "lesson_title": "Nền tảng và thiết lập: Transformer và Attention từ trực giác đến thực hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 660,
+      "new_content_len": 1822,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 168,
+      "lesson_id": 547,
+      "lesson_title": "Thực hành có hướng dẫn: Transformer và Attention từ trực giác đến thực hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 645,
+      "new_content_len": 1809,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 168,
+      "lesson_id": 548,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Transformer và Attention từ trực giác đến thực hành",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 638,
+      "new_content_len": 1967,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 169,
+      "lesson_id": 549,
+      "lesson_title": "Nền tảng và thiết lập: Xây dựng ứng dụng RAG có trích dẫn",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 643,
+      "new_content_len": 1483,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 169,
+      "lesson_id": 550,
+      "lesson_title": "Thực hành có hướng dẫn: Xây dựng ứng dụng RAG có trích dẫn",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 628,
+      "new_content_len": 1724,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 169,
+      "lesson_id": 551,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Xây dựng ứng dụng RAG có trích dẫn",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1899,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 170,
+      "lesson_id": 552,
+      "lesson_title": "Nền tảng và thiết lập: Prompt Engineering và đánh giá đầu ra",
+      "content_type": "assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 646,
+      "new_content_len": 1925,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 170,
+      "lesson_id": 553,
+      "lesson_title": "Thực hành có hướng dẫn: Prompt Engineering và đánh giá đầu ra",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1739,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 170,
+      "lesson_id": 554,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Prompt Engineering và đánh giá đầu ra",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 624,
+      "new_content_len": 1911,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 171,
+      "lesson_id": 555,
+      "lesson_title": "Nền tảng và thiết lập: Vận hành ứng dụng Generative AI an toàn",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 648,
+      "new_content_len": 1503,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 171,
+      "lesson_id": 556,
+      "lesson_title": "Thực hành có hướng dẫn: Vận hành ứng dụng Generative AI an toàn",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 633,
+      "new_content_len": 1749,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 171,
+      "lesson_id": 557,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Vận hành ứng dụng Generative AI an toàn",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 626,
+      "new_content_len": 1919,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 172,
+      "lesson_id": 558,
+      "lesson_title": "Nền tảng và thiết lập: Git workflow và CI/CD căn bản",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 633,
+      "new_content_len": 1446,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 172,
+      "lesson_id": 559,
+      "lesson_title": "Thực hành có hướng dẫn: Git workflow và CI/CD căn bản",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 618,
+      "new_content_len": 1682,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 172,
+      "lesson_id": 560,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Git workflow và CI/CD căn bản",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 611,
+      "new_content_len": 1867,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 173,
+      "lesson_id": 561,
+      "lesson_title": "Nền tảng và thiết lập: Docker từ image đến Compose",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1438,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 173,
+      "lesson_id": 562,
+      "lesson_title": "Thực hành có hướng dẫn: Docker từ image đến Compose",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 616,
+      "new_content_len": 1672,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 173,
+      "lesson_id": 563,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Docker từ image đến Compose",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 609,
+      "new_content_len": 1859,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 174,
+      "lesson_id": 564,
+      "lesson_title": "Nền tảng và thiết lập: Nền tảng Cloud và kiến trúc phân tán",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 643,
+      "new_content_len": 1475,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 174,
+      "lesson_id": 565,
+      "lesson_title": "Thực hành có hướng dẫn: Nền tảng Cloud và kiến trúc phân tán",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 628,
+      "new_content_len": 1718,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 174,
+      "lesson_id": 566,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Nền tảng Cloud và kiến trúc phân tán",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1893,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 175,
+      "lesson_id": 567,
+      "lesson_title": "Nền tảng và thiết lập: AWS cho Developer và Solution Architect",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 646,
+      "new_content_len": 1487,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 175,
+      "lesson_id": 568,
+      "lesson_title": "Thực hành có hướng dẫn: AWS cho Developer và Solution Architect",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1733,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 175,
+      "lesson_id": 569,
+      "lesson_title": "Bài toán tích hợp và đánh giá: AWS cho Developer và Solution Architect",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 624,
+      "new_content_len": 1905,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 176,
+      "lesson_id": 570,
+      "lesson_title": "Nền tảng và thiết lập: Microsoft Azure căn bản thực hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 640,
+      "new_content_len": 1716,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 176,
+      "lesson_id": 571,
+      "lesson_title": "Thực hành có hướng dẫn: Microsoft Azure căn bản thực hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 625,
+      "new_content_len": 1703,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 176,
+      "lesson_id": 572,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Microsoft Azure căn bản thực hành",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 618,
+      "new_content_len": 1881,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 177,
+      "lesson_id": 573,
+      "lesson_title": "Nền tảng và thiết lập: Google Cloud cho ứng dụng dữ liệu",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 640,
+      "new_content_len": 1463,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 177,
+      "lesson_id": 574,
+      "lesson_title": "Thực hành có hướng dẫn: Google Cloud cho ứng dụng dữ liệu",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 625,
+      "new_content_len": 1703,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 177,
+      "lesson_id": 575,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Google Cloud cho ứng dụng dữ liệu",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 618,
+      "new_content_len": 1881,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 178,
+      "lesson_id": 576,
+      "lesson_title": "Nền tảng và thiết lập: FinOps và tối ưu chi phí Cloud",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1701,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 178,
+      "lesson_id": 577,
+      "lesson_title": "Thực hành có hướng dẫn: FinOps và tối ưu chi phí Cloud",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1688,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 178,
+      "lesson_id": 578,
+      "lesson_title": "Bài toán tích hợp và đánh giá: FinOps và tối ưu chi phí Cloud",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 615,
+      "new_content_len": 1869,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 179,
+      "lesson_id": 579,
+      "lesson_title": "Nền tảng và thiết lập: Mạng máy tính từ TCP/IP đến HTTP",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 635,
+      "new_content_len": 1491,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 179,
+      "lesson_id": 580,
+      "lesson_title": "Thực hành có hướng dẫn: Mạng máy tính từ TCP/IP đến HTTP",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 620,
+      "new_content_len": 1730,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 179,
+      "lesson_id": 581,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Mạng máy tính từ TCP/IP đến HTTP",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 613,
+      "new_content_len": 1913,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 180,
+      "lesson_id": 582,
+      "lesson_title": "Nền tảng và thiết lập: Routing và Switching thực hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 633,
+      "new_content_len": 1733,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 180,
+      "lesson_id": 583,
+      "lesson_title": "Thực hành có hướng dẫn: Routing và Switching thực hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 618,
+      "new_content_len": 1720,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 180,
+      "lesson_id": 584,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Routing và Switching thực hành",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 611,
+      "new_content_len": 1905,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 181,
+      "lesson_id": 585,
+      "lesson_title": "Nền tảng và thiết lập: DNS, DHCP và dịch vụ mạng cốt lõi",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 636,
+      "new_content_len": 1495,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 181,
+      "lesson_id": 586,
+      "lesson_title": "Thực hành có hướng dẫn: DNS, DHCP và dịch vụ mạng cốt lõi",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1735,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 181,
+      "lesson_id": 587,
+      "lesson_title": "Bài toán tích hợp và đánh giá: DNS, DHCP và dịch vụ mạng cốt lõi",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 614,
+      "new_content_len": 1917,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 182,
+      "lesson_id": 588,
+      "lesson_title": "Nền tảng và thiết lập: Thiết kế mạng doanh nghiệp an toàn",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1499,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 182,
+      "lesson_id": 589,
+      "lesson_title": "Thực hành có hướng dẫn: Thiết kế mạng doanh nghiệp an toàn",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1740,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 182,
+      "lesson_id": 590,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Thiết kế mạng doanh nghiệp an toàn",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 615,
+      "new_content_len": 1921,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 183,
+      "lesson_id": 591,
+      "lesson_title": "Nền tảng và thiết lập: Giám sát và xử lý sự cố mạng",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1475,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 183,
+      "lesson_id": 592,
+      "lesson_title": "Thực hành có hướng dẫn: Giám sát và xử lý sự cố mạng",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 616,
+      "new_content_len": 1710,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 183,
+      "lesson_id": 593,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Giám sát và xử lý sự cố mạng",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 609,
+      "new_content_len": 1897,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 184,
+      "lesson_id": 594,
+      "lesson_title": "Nền tảng và thiết lập: Linux cho Developer và SysAdmin",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 641,
+      "new_content_len": 1486,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 184,
+      "lesson_id": 595,
+      "lesson_title": "Thực hành có hướng dẫn: Linux cho Developer và SysAdmin",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 626,
+      "new_content_len": 1724,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 184,
+      "lesson_id": 596,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Linux cho Developer và SysAdmin",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 619,
+      "new_content_len": 1901,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 185,
+      "lesson_id": 597,
+      "lesson_title": "Nền tảng và thiết lập: Shell Script và tự động hóa công việc",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 647,
+      "new_content_len": 1510,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 185,
+      "lesson_id": 598,
+      "lesson_title": "Thực hành có hướng dẫn: Shell Script và tự động hóa công việc",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 632,
+      "new_content_len": 1754,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 185,
+      "lesson_id": 599,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Shell Script và tự động hóa công việc",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 625,
+      "new_content_len": 1925,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 186,
+      "lesson_id": 600,
+      "lesson_title": "Nền tảng và thiết lập: Tiến trình, bộ nhớ và hệ thống tệp",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 644,
+      "new_content_len": 1498,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 186,
+      "lesson_id": 601,
+      "lesson_title": "Thực hành có hướng dẫn: Tiến trình, bộ nhớ và hệ thống tệp",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 629,
+      "new_content_len": 1739,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 186,
+      "lesson_id": 602,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Tiến trình, bộ nhớ và hệ thống tệp",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1913,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 187,
+      "lesson_id": 603,
+      "lesson_title": "Nền tảng và thiết lập: Quản trị dịch vụ Linux với systemd",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 644,
+      "new_content_len": 1498,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 187,
+      "lesson_id": 604,
+      "lesson_title": "Thực hành có hướng dẫn: Quản trị dịch vụ Linux với systemd",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 629,
+      "new_content_len": 1739,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 187,
+      "lesson_id": 605,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Quản trị dịch vụ Linux với systemd",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1913,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 188,
+      "lesson_id": 606,
+      "lesson_title": "Nền tảng và thiết lập: Hardening và xử lý sự cố Linux",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 640,
+      "new_content_len": 1482,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 188,
+      "lesson_id": 607,
+      "lesson_title": "Thực hành có hướng dẫn: Hardening và xử lý sự cố Linux",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 625,
+      "new_content_len": 1719,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 188,
+      "lesson_id": 608,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Hardening và xử lý sự cố Linux",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 618,
+      "new_content_len": 1897,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 189,
+      "lesson_id": 609,
+      "lesson_title": "Nền tảng và thiết lập: Nhập môn An toàn thông tin",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 633,
+      "new_content_len": 1479,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 189,
+      "lesson_id": 610,
+      "lesson_title": "Thực hành có hướng dẫn: Nhập môn An toàn thông tin",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 618,
+      "new_content_len": 1712,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 189,
+      "lesson_id": 611,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Nhập môn An toàn thông tin",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 611,
+      "new_content_len": 1897,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 190,
+      "lesson_id": 612,
+      "lesson_title": "Nền tảng và thiết lập: Cấu trúc dữ liệu với Python",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 646,
+      "new_content_len": 1485,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 190,
+      "lesson_id": 613,
+      "lesson_title": "Thực hành có hướng dẫn: Cấu trúc dữ liệu với Python",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1719,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 190,
+      "lesson_id": 614,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Cấu trúc dữ liệu với Python",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 624,
+      "new_content_len": 1891,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 191,
+      "lesson_id": 615,
+      "lesson_title": "Nền tảng và thiết lập: Giải thuật sắp xếp và tìm kiếm",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 649,
+      "new_content_len": 1511,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 191,
+      "lesson_id": 616,
+      "lesson_title": "Thực hành có hướng dẫn: Giải thuật sắp xếp và tìm kiếm",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 634,
+      "new_content_len": 1748,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 191,
+      "lesson_id": 617,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Giải thuật sắp xếp và tìm kiếm",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 627,
+      "new_content_len": 1917,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 192,
+      "lesson_id": 618,
+      "lesson_title": "Nền tảng và thiết lập: Cây, đồ thị và thuật toán duyệt",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 650,
+      "new_content_len": 1515,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 192,
+      "lesson_id": 619,
+      "lesson_title": "Thực hành có hướng dẫn: Cây, đồ thị và thuật toán duyệt",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 635,
+      "new_content_len": 1753,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 192,
+      "lesson_id": 620,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Cây, đồ thị và thuật toán duyệt",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 628,
+      "new_content_len": 1921,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 193,
+      "lesson_id": 621,
+      "lesson_title": "Nền tảng và thiết lập: Dynamic Programming từ cơ bản đến ứng dụng",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 661,
+      "new_content_len": 1559,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 193,
+      "lesson_id": 622,
+      "lesson_title": "Thực hành có hướng dẫn: Dynamic Programming từ cơ bản đến ứng dụng",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 646,
+      "new_content_len": 1808,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 193,
+      "lesson_id": 623,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Dynamic Programming từ cơ bản đến ứng dụng",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 639,
+      "new_content_len": 1965,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 194,
+      "lesson_id": 624,
+      "lesson_title": "Nền tảng và thiết lập: Luyện tư duy giải thuật và phân tích Big-O",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 661,
+      "new_content_len": 1559,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 194,
+      "lesson_id": 625,
+      "lesson_title": "Thực hành có hướng dẫn: Luyện tư duy giải thuật và phân tích Big-O",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 646,
+      "new_content_len": 1808,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 194,
+      "lesson_id": 626,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Luyện tư duy giải thuật và phân tích Big-O",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 639,
+      "new_content_len": 1965,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 195,
+      "lesson_id": 627,
+      "lesson_title": "Nền tảng và thiết lập: SOLID và Design Patterns thực hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 653,
+      "new_content_len": 1800,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 195,
+      "lesson_id": 628,
+      "lesson_title": "Thực hành có hướng dẫn: SOLID và Design Patterns thực hành",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 638,
+      "new_content_len": 1787,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 195,
+      "lesson_id": 629,
+      "lesson_title": "Bài toán tích hợp và đánh giá: SOLID và Design Patterns thực hành",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 631,
+      "new_content_len": 1952,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 196,
+      "lesson_id": 630,
+      "lesson_title": "Nền tảng và thiết lập: Clean Architecture cho ứng dụng Backend",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 658,
+      "new_content_len": 1566,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 196,
+      "lesson_id": 631,
+      "lesson_title": "Thực hành có hướng dẫn: Clean Architecture cho ứng dụng Backend",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 643,
+      "new_content_len": 1812,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 196,
+      "lesson_id": 632,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Clean Architecture cho ứng dụng Backend",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 636,
+      "new_content_len": 1972,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 197,
+      "lesson_id": 633,
+      "lesson_title": "Nền tảng và thiết lập: Domain-Driven Design căn bản",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 647,
+      "new_content_len": 1522,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 197,
+      "lesson_id": 634,
+      "lesson_title": "Thực hành có hướng dẫn: Domain-Driven Design căn bản",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 632,
+      "new_content_len": 1757,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 197,
+      "lesson_id": 635,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Domain-Driven Design căn bản",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 625,
+      "new_content_len": 1928,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 198,
+      "lesson_id": 636,
+      "lesson_title": "Nền tảng và thiết lập: Microservices và giao tiếp phân tán",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 654,
+      "new_content_len": 1550,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 198,
+      "lesson_id": 637,
+      "lesson_title": "Thực hành có hướng dẫn: Microservices và giao tiếp phân tán",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 639,
+      "new_content_len": 1792,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 198,
+      "lesson_id": 638,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Microservices và giao tiếp phân tán",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 632,
+      "new_content_len": 1956,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 199,
+      "lesson_id": 639,
+      "lesson_title": "Nền tảng và thiết lập: Event-Driven Architecture và tính nhất quán",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 662,
+      "new_content_len": 1582,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 199,
+      "lesson_id": 640,
+      "lesson_title": "Thực hành có hướng dẫn: Event-Driven Architecture và tính nhất quán",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 647,
+      "new_content_len": 1832,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 199,
+      "lesson_id": 641,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Event-Driven Architecture và tính nhất quán",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 640,
+      "new_content_len": 1988,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 200,
+      "lesson_id": 642,
+      "lesson_title": "Nền tảng và thiết lập: Manual Testing và thiết kế Test Case",
+      "content_type": "assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 648,
+      "new_content_len": 1951,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 200,
+      "lesson_id": 643,
+      "lesson_title": "Thực hành có hướng dẫn: Manual Testing và thiết kế Test Case",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 633,
+      "new_content_len": 1767,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 200,
+      "lesson_id": 644,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Manual Testing và thiết kế Test Case",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 626,
+      "new_content_len": 1937,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 201,
+      "lesson_id": 645,
+      "lesson_title": "Nền tảng và thiết lập: Nền tảng UI/UX và tư duy thiết kế",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1500,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 201,
+      "lesson_id": 646,
+      "lesson_title": "Thực hành có hướng dẫn: Nền tảng UI/UX và tư duy thiết kế",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1740,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 201,
+      "lesson_id": 647,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Nền tảng UI/UX và tư duy thiết kế",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 615,
+      "new_content_len": 1921,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 202,
+      "lesson_id": 648,
+      "lesson_title": "Nền tảng và thiết lập: Figma từ Wireframe đến Prototype",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 636,
+      "new_content_len": 1496,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 202,
+      "lesson_id": 649,
+      "lesson_title": "Thực hành có hướng dẫn: Figma từ Wireframe đến Prototype",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1735,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 202,
+      "lesson_id": 650,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Figma từ Wireframe đến Prototype",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 614,
+      "new_content_len": 1917,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 203,
+      "lesson_id": 651,
+      "lesson_title": "Nền tảng và thiết lập: Design System và quản lý component",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 638,
+      "new_content_len": 1504,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 203,
+      "lesson_id": 652,
+      "lesson_title": "Thực hành có hướng dẫn: Design System và quản lý component",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 623,
+      "new_content_len": 1745,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 203,
+      "lesson_id": 653,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Design System và quản lý component",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 616,
+      "new_content_len": 1925,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 204,
+      "lesson_id": 654,
+      "lesson_title": "Nền tảng và thiết lập: UX Research và kiểm thử khả dụng",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 636,
+      "new_content_len": 1484,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 204,
+      "lesson_id": 655,
+      "lesson_title": "Thực hành có hướng dẫn: UX Research và kiểm thử khả dụng",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1723,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 204,
+      "lesson_id": 656,
+      "lesson_title": "Bài toán tích hợp và đánh giá: UX Research và kiểm thử khả dụng",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 614,
+      "new_content_len": 1905,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 205,
+      "lesson_id": 657,
+      "lesson_title": "Nền tảng và thiết lập: Thiết kế giao diện Web dễ tiếp cận",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 638,
+      "new_content_len": 1504,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 205,
+      "lesson_id": 658,
+      "lesson_title": "Thực hành có hướng dẫn: Thiết kế giao diện Web dễ tiếp cận",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 623,
+      "new_content_len": 1745,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 205,
+      "lesson_id": 659,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Thiết kế giao diện Web dễ tiếp cận",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 616,
+      "new_content_len": 1925,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 206,
+      "lesson_id": 660,
+      "lesson_title": "Nền tảng và thiết lập: Arduino và điện tử căn bản",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 636,
+      "new_content_len": 1453,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 206,
+      "lesson_id": 661,
+      "lesson_title": "Thực hành có hướng dẫn: Arduino và điện tử căn bản",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1686,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 206,
+      "lesson_id": 662,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Arduino và điện tử căn bản",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 614,
+      "new_content_len": 1868,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 207,
+      "lesson_id": 663,
+      "lesson_title": "Nền tảng và thiết lập: ESP32 và giao tiếp cảm biến",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 637,
+      "new_content_len": 1457,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 207,
+      "lesson_id": 664,
+      "lesson_title": "Thực hành có hướng dẫn: ESP32 và giao tiếp cảm biến",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1691,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 207,
+      "lesson_id": 665,
+      "lesson_title": "Bài toán tích hợp và đánh giá: ESP32 và giao tiếp cảm biến",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 615,
+      "new_content_len": 1872,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 208,
+      "lesson_id": 666,
+      "lesson_title": "Nền tảng và thiết lập: Embedded C cho vi điều khiển",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 638,
+      "new_content_len": 1461,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 208,
+      "lesson_id": 667,
+      "lesson_title": "Thực hành có hướng dẫn: Embedded C cho vi điều khiển",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 623,
+      "new_content_len": 1696,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 208,
+      "lesson_id": 668,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Embedded C cho vi điều khiển",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 616,
+      "new_content_len": 1876,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 209,
+      "lesson_id": 669,
+      "lesson_title": "Nền tảng và thiết lập: MQTT và kiến trúc nền tảng IoT",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 640,
+      "new_content_len": 1469,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 209,
+      "lesson_id": 670,
+      "lesson_title": "Thực hành có hướng dẫn: MQTT và kiến trúc nền tảng IoT",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 625,
+      "new_content_len": 1706,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 209,
+      "lesson_id": 671,
+      "lesson_title": "Bài toán tích hợp và đánh giá: MQTT và kiến trúc nền tảng IoT",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 618,
+      "new_content_len": 1884,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 210,
+      "lesson_id": 672,
+      "lesson_title": "Nền tảng và thiết lập: Bảo mật và quản lý thiết bị IoT",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 641,
+      "new_content_len": 1508,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 210,
+      "lesson_id": 673,
+      "lesson_title": "Thực hành có hướng dẫn: Bảo mật và quản lý thiết bị IoT",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 626,
+      "new_content_len": 1746,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 210,
+      "lesson_id": 674,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Bảo mật và quản lý thiết bị IoT",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 619,
+      "new_content_len": 1923,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 211,
+      "lesson_id": 675,
+      "lesson_title": "Nền tảng và thiết lập: Blockchain từ nguyên lý đến ứng dụng",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 643,
+      "new_content_len": 1502,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 211,
+      "lesson_id": 676,
+      "lesson_title": "Thực hành có hướng dẫn: Blockchain từ nguyên lý đến ứng dụng",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 628,
+      "new_content_len": 1745,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 211,
+      "lesson_id": 677,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Blockchain từ nguyên lý đến ứng dụng",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 621,
+      "new_content_len": 1920,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 212,
+      "lesson_id": 678,
+      "lesson_title": "Nền tảng và thiết lập: Smart Contract với Solidity",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 634,
+      "new_content_len": 1466,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 212,
+      "lesson_id": 679,
+      "lesson_title": "Thực hành có hướng dẫn: Smart Contract với Solidity",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 619,
+      "new_content_len": 1700,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 212,
+      "lesson_id": 680,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Smart Contract với Solidity",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 612,
+      "new_content_len": 1884,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 213,
+      "lesson_id": 681,
+      "lesson_title": "Nền tảng và thiết lập: Phát triển DApp với Ethereum",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 635,
+      "new_content_len": 1470,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 213,
+      "lesson_id": 682,
+      "lesson_title": "Thực hành có hướng dẫn: Phát triển DApp với Ethereum",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 620,
+      "new_content_len": 1705,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 213,
+      "lesson_id": 683,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Phát triển DApp với Ethereum",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 613,
+      "new_content_len": 1888,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 214,
+      "lesson_id": 684,
+      "lesson_title": "Nền tảng và thiết lập: Kiểm thử và bảo mật Smart Contract",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 641,
+      "new_content_len": 1511,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 214,
+      "lesson_id": 685,
+      "lesson_title": "Thực hành có hướng dẫn: Kiểm thử và bảo mật Smart Contract",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 626,
+      "new_content_len": 1752,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 214,
+      "lesson_id": 686,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Kiểm thử và bảo mật Smart Contract",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 619,
+      "new_content_len": 1929,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 215,
+      "lesson_id": 687,
+      "lesson_title": "Nền tảng và thiết lập: Thiết kế sản phẩm Web3 có trách nhiệm",
+      "content_type": "reading",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 644,
+      "new_content_len": 1506,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 215,
+      "lesson_id": 688,
+      "lesson_title": "Thực hành có hướng dẫn: Thiết kế sản phẩm Web3 có trách nhiệm",
+      "content_type": "practical_exercise",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 629,
+      "new_content_len": 1750,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    },
+    {
+      "course_id": 215,
+      "lesson_id": 689,
+      "lesson_title": "Bài toán tích hợp và đánh giá: Thiết kế sản phẩm Web3 có trách nhiệm",
+      "content_type": "project_and_assessment",
+      "old_video_url": null,
+      "new_video_url": null,
+      "old_content_len": 622,
+      "new_content_len": 1924,
+      "reasons": [
+        "Chuẩn hóa cấu trúc bài học theo đúng công nghệ khóa học & bổ sung nguồn tham khảo chính thức"
+      ]
+    }
+  ]
+}

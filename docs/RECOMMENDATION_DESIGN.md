@@ -187,3 +187,54 @@ Implemented the bounded Content-Based baseline in the existing Backend layers; n
 Added USER-only APIs: `GET /api/recommendations/courses?limit=10`, `GET /api/courses/{course_id}/similar?limit=10`, and `GET /api/recommendations/materials?course_id=...&lesson_id=...&limit=10`. The limit is bounded to 1-20. Similar-course recommendations require a public source course. Material recommendations require an APPROVED + VISIBLE course in the current user's enrollment scope and validate that an optional lesson belongs to that course. Responses omit file paths and other internal material storage details. No recommendation persistence or new table is used.
 
 **Evidence:** 9 pure algorithm unit tests pass; Python `compileall`, application import, OpenAPI generation (46 paths, including all 3 new paths), and `pip check` pass. There is no DB-backed integration or browser evidence. The configured primary EduSuggest database was verified in the preceding environment audit as having no recommendation candidate catalog or interaction rows, and no isolated test database is configured; therefore authorization/data filtering against PostgreSQL, actual ranking quality, and frontend behavior remain **NOT TESTED**. The OpenAPI check imports the application only and does not start lifespan or issue a database request. Content-Based implementation is **PARTIAL / UNVERIFIED** pending isolated DB integration tests and Frontend integration. CF and Hybrid remain out of scope and unimplemented.
+
+## 14. Giai đoạn 8.4 - Đặc tả Bộ dữ liệu kiểm thử và Kịch bản đánh giá (2026-11-24)
+
+Nhằm phục vụ kiểm thử và đánh giá thuật toán Content-Based Filtering mà không ảnh hưởng tới database chính `EduSuggest`, bộ dữ liệu kiểm thử chuẩn (Dataset Specification) đã được thiết kế và đóng gói trong script an toàn `backend/scripts/seed_recommendation_demo.py`:
+
+- **6 Danh mục kiểm thử:**
+  1. `Lập trình Web Frontend`: HTML5, CSS3, JavaScript, TypeScript, Vue.js, React, UI/UX.
+  2. `Lập trình Web Backend`: Python FastAPI, Node.js, Go, RESTful API, Microservices.
+  3. `Cơ sở dữ liệu & SQL`: PostgreSQL, MySQL, NoSQL, tối ưu hóa truy vấn, Indexing.
+  4. `Phát triển ứng dụng Di động`: Flutter, Dart, React Native, iOS, Android.
+  5. `Khoa học dữ liệu & Machine Learning`: Python Pandas, Scikit-Learn, EDA, phân tích dữ liệu, ML.
+  6. `DevOps & Điện toán đám mây`: Docker, Kubernetes, CI/CD, Cloud GCP/AWS, Infrastructure.
+
+- **13 Khóa học kiểm thử:**
+  * 10 khóa APPROVED + VISIBLE: Các ứng viên hợp lệ phục vụ xếp hạng gợi ý.
+  * 1 khóa APPROVED + HIDDEN: Đảm bảo bộ lọc loại bỏ khóa học ẩn.
+  * 1 khóa PENDING + VISIBLE: Đảm bảo bộ lọc loại bỏ khóa học chờ duyệt.
+  * 1 khóa REJECTED + HIDDEN: Đảm bảo bộ lọc loại bỏ khóa học bị từ chối.
+  * Bao quát các trình độ: Beginner, Intermediate, Advanced.
+
+- **Bài học và Tài liệu:**
+  * Mỗi bài học có tiêu đề và nội dung làm giàu vector TF-IDF.
+  * Tài liệu gắn với bài học có phân loại: `PDF`, `SLIDE`, `CHEATSHEET`, `CODE`, `DATASET`.
+
+- **5 User Personas & Kịch bản tương tác:**
+  * `learner_frontend_newbie`: Người dùng mới (Cold-start) -> kỳ vọng fallback `strategy="latest"`.
+  * `learner_vue_specialist`: Học viên chuyên sâu Frontend Vue -> đã học 100% C1 -> kỳ vọng loại trừ C1, gợi ý Top 1 là C2 ("Vue 3 & Pinia").
+  * `learner_fullstack_hybrid`: Học viên đa sở thích (50% Frontend, 80% Backend) -> kỳ vọng gợi ý pha trộn giữa C2, C5, C6.
+  * `learner_unauthorized_materials`: Kiểm tra Enrollment Gate -> từ chối 403 Forbidden nếu chưa đăng ký.
+
+- **Cơ chế bảo vệ Database an toàn:**
+  * Script `backend/scripts/seed_recommendation_demo.py` tích hợp kiểm tra tên DB (từ chối `EduSuggest`), yêu cầu cờ `--confirm-seed-test-data`, kiểm tra Idempotent và bọc toàn bộ trong Atomic Transaction.
+  * Không chạy script vào DB hiện tại cho đến khi có database test độc lập được phê duyệt.
+
+## 15. Giai đoạn 8.5 - Kết quả Thực nghiệm và Nghiệm thu Recommendation trên Database thật (2026-11-24)
+
+- **Môi trường thực thi:** Database độc lập `EduSuggest_test`, Alembic revision `d8a41f6c2b90`. Database chính `EduSuggest` được bảo toàn nguyên vẹn 100%.
+- **Dữ liệu thực nghiệm:** 6 danh mục, 13 khóa học, 16 bài học, 21 tài liệu, 3 đăng ký, 5 lịch sử hoàn thành bài học, 5 tài khoản demo theo persona.
+- **Nghiệm thu 7 Kịch bản tích hợp (`backend/tests/integration/test_recommendation_integration.py`):**
+  1. *Lọc trạng thái:* 100% kết quả chỉ chứa khóa `APPROVED + VISIBLE`. Các khóa C11 (`HIDDEN`), C12 (`PENDING`), C13 (`REJECTED`) bị loại bỏ triệt để.
+  2. *Similar Courses (C1: Vue 3 cơ bản):*
+     - Khóa nguồn C1 tự động bị loại trừ khỏi kết quả.
+     - C3 (React & Next.js UI/UX): Điểm tương đồng `0.5563` (Top 1) do trùng danh mục Frontend (`+0.20`), cùng trình độ Beginner (`+0.08`), tương đương thời lượng (`+0.06`) và học phí (`+0.06`), cùng từ khóa giao diện/Tailwind.
+     - C2 (Vue 3 Composition API & Pinia): Điểm tương đồng `0.4134` (Top 2) do trùng danh mục Frontend (`+0.20`), tương đồng thời lượng và giá, nhưng khác trình độ Intermediate (không nhận điểm thưởng level `0.08`).
+     - Cả C2 và C3 đều vượt trội hoàn toàn so với các khóa khác chuyên ngành (C7 Mobile: `0.2427`, C8 Data Science: `0.1893`, C22 ML: `0.0957`).
+  3. *Loại trừ khóa đã học:* User `learner_vue_specialist` đã học C1 -> C1 không bao giờ xuất hiện trong gợi ý; `personalized=True`, `strategy="content_based"`.
+  4. *Tài liệu theo ngữ cảnh:* User học C1 được gợi ý tài liệu bài học 1.1 xếp vị trí số 1 khi truy vấn theo ngữ cảnh bài học.
+  5. *Cold-start:* User `learner_frontend_newbie` không có lịch sử -> trả về `strategy="latest"`, `personalized=False`, reasonCodes `RECENT_COURSE`.
+  6. *Đa sở thích:* User `learner_fullstack_hybrid` (học cả C1 Frontend và C4 Backend) được gợi ý kết hợp đa dạng các chủ đề Frontend và Backend/Database.
+  7. *Enrollment Gate:* User chưa đăng ký C4 bị chặn HTTP 403 Forbidden khi yêu cầu tài liệu C4. User đã đăng ký C1 được phép truy cập tài liệu C1.
+- **Kết luận:** Hệ thống Recommendation Content-Based và Authorization Enrollment Gate đã đạt tiêu chuẩn nghiệm thu trên môi trường dữ liệu quan hệ PostgreSQL thật.

@@ -70,8 +70,9 @@ class PreferenceProfile:
 @dataclass(frozen=True)
 class MaterialFeatures:
     material_id: int
-    course_id: int
-    lesson_id: int
+    course_id: int | None = None
+    lesson_id: int | None = None
+    category_id: int | None = None
     title: str | None = None
     description: str | None = None
     material_type: str | None = None
@@ -79,6 +80,17 @@ class MaterialFeatures:
     lesson_content: str | None = None
     course_title: str | None = None
     category_text: str | None = None
+    review_status: str | None = None
+    visibility: str | None = None
+    created_at: object | None = None
+    updated_at: object | None = None
+
+    @property
+    def is_public(self) -> bool:
+        return (
+            (self.review_status or "").upper() == "APPROVED"
+            and (self.visibility or "").upper() == "VISIBLE"
+        )
 
 
 @dataclass(frozen=True)
@@ -176,17 +188,29 @@ def _text_similarity(
     corpus: Sequence[Mapping[str, float]],
     *,
     minimum_shared_terms: int = 2,
+    idf_cache: Mapping[str, float] | None = None,
+    left_vec_cache: tuple[Mapping[str, float], float] | None = None,
 ) -> float:
     shared_words = {
         term for term in left.keys() & right.keys() if not term.startswith("__bigram__")
     }
     if len(shared_words) < minimum_shared_terms:
         return 0.0
-    inverse_document_frequency = _idf(corpus)
-    return _cosine(
-        _vector(left, inverse_document_frequency),
-        _vector(right, inverse_document_frequency),
-    )
+    inverse_document_frequency = idf_cache if idf_cache is not None else _idf(corpus)
+    if left_vec_cache is not None:
+        left_vec, left_norm = left_vec_cache
+    else:
+        left_vec = _vector(left, inverse_document_frequency)
+        left_norm = math.sqrt(sum(v * v for v in left_vec.values()))
+    right_vec = _vector(right, inverse_document_frequency)
+    if not left_vec or not right_vec or not left_norm:
+        return 0.0
+    shared = left_vec.keys() & right_vec.keys()
+    if not shared:
+        return 0.0
+    dot = sum(left_vec[k] * right_vec[k] for k in shared)
+    right_norm = math.sqrt(sum(v * v for v in right_vec.values()))
+    return dot / (left_norm * right_norm) if right_norm else 0.0
 
 
 def _has_course_content(course: CourseFeatures) -> bool:
@@ -223,12 +247,19 @@ def _course_pair_score(
     left: CourseFeatures,
     right: CourseFeatures,
     corpus: Sequence[Mapping[str, float]],
+    *,
+    left_terms: Mapping[str, float] | None = None,
+    right_terms: Mapping[str, float] | None = None,
+    idf_cache: Mapping[str, float] | None = None,
+    left_vec_cache: tuple[Mapping[str, float], float] | None = None,
 ) -> tuple[float, tuple[str, ...]]:
-    left_terms = _course_terms(left)
-    right_terms = _course_terms(right)
+    l_terms = left_terms if left_terms is not None else _course_terms(left)
+    r_terms = right_terms if right_terms is not None else _course_terms(right)
     text_score = (
-        _text_similarity(left_terms, right_terms, corpus)
-        if left_terms and right_terms
+        _text_similarity(
+            l_terms, r_terms, corpus, idf_cache=idf_cache, left_vec_cache=left_vec_cache
+        )
+        if l_terms and r_terms
         else None
     )
     category_score = (
@@ -268,23 +299,44 @@ def rank_similar_courses(
     source: CourseFeatures,
     candidates: Sequence[CourseFeatures],
     limit: int = 10,
+    *,
+    precomputed_terms: Mapping[int, Counter[str]] | None = None,
 ) -> list[RankedItem]:
-    if not source.is_public or not _has_course_content(source):
+    terms_cache: dict[int, Counter[str]] = dict(precomputed_terms) if precomputed_terms else {}
+
+    def get_terms(c: CourseFeatures) -> Counter[str]:
+        t = terms_cache.get(c.course_id)
+        if t is None:
+            t = _course_terms(c)
+            terms_cache[c.course_id] = t
+        return t
+
+    if not source.is_public or not (source.category_id is not None or get_terms(source)):
         return []
     unique_candidates: dict[int, CourseFeatures] = {}
     for candidate in candidates:
         if (
             candidate.course_id != source.course_id
             and candidate.is_public
-            and _has_course_content(candidate)
+            and (candidate.category_id is not None or get_terms(candidate))
         ):
             unique_candidates.setdefault(candidate.course_id, candidate)
     corpus_courses = [source, *unique_candidates.values()]
-    corpus = [_course_terms(course) for course in corpus_courses]
+    corpus = [get_terms(course) for course in corpus_courses]
+    idf_cache = _idf(corpus)
+    src_terms = get_terms(source)
+    src_vec = _vector(src_terms, idf_cache)
+    src_norm = math.sqrt(sum(v * v for v in src_vec.values()))
     ranked: list[RankedItem] = []
     for candidate in unique_candidates.values():
         score, reasons = _course_pair_score(
-            source, candidate, corpus
+            source,
+            candidate,
+            corpus,
+            left_terms=src_terms,
+            right_terms=get_terms(candidate),
+            idf_cache=idf_cache,
+            left_vec_cache=(src_vec, src_norm),
         )
         if score > 0:
             ranked.append(RankedItem(candidate, score, reasons))
@@ -295,11 +347,22 @@ def rank_similar_courses(
 def build_preference_profile(
     signals: Sequence[CourseSignal],
     candidate_courses: Sequence[CourseFeatures],
+    *,
+    precomputed_terms: Mapping[int, Counter[str]] | None = None,
 ) -> PreferenceProfile | None:
+    terms_cache: dict[int, Counter[str]] = dict(precomputed_terms) if precomputed_terms else {}
+
+    def get_terms(c: CourseFeatures) -> Counter[str]:
+        t = terms_cache.get(c.course_id)
+        if t is None:
+            t = _course_terms(c)
+            terms_cache[c.course_id] = t
+        return t
+
     usable_signals = [
         signal
         for signal in signals
-        if signal.weight > 0 and _has_course_content(signal.course)
+        if signal.weight > 0 and (signal.course.category_id is not None or get_terms(signal.course))
     ]
     if not usable_signals:
         return None
@@ -315,7 +378,7 @@ def build_preference_profile(
     for signal in usable_signals:
         course = signal.course
         corpus_courses.setdefault(course.course_id, course)
-        for term, value in _course_terms(course).items():
+        for term, value in get_terms(course).items():
             text_counts[term] += value * signal.weight
         if course.category_id is not None:
             category_weights[course.category_id] += signal.weight
@@ -341,12 +404,21 @@ def build_preference_profile(
 def _profile_pair_score(
     profile: PreferenceProfile,
     candidate: CourseFeatures,
+    *,
+    candidate_terms: Mapping[str, float] | None = None,
+    corpus_terms: Sequence[Mapping[str, float]] | None = None,
+    idf_cache: Mapping[str, float] | None = None,
+    profile_vec_cache: tuple[Mapping[str, float], float] | None = None,
 ) -> tuple[float, tuple[str, ...]]:
-    candidate_terms = _course_terms(candidate)
-    corpus_terms = [_course_terms(course) for course in profile.corpus]
-    if profile.text_counts and candidate_terms:
+    c_terms = candidate_terms if candidate_terms is not None else _course_terms(candidate)
+    all_corpus_terms = corpus_terms if corpus_terms is not None else [_course_terms(course) for course in profile.corpus]
+    if profile.text_counts and c_terms:
         text_score: float | None = _text_similarity(
-            profile.text_counts, candidate_terms, corpus_terms
+            profile.text_counts,
+            c_terms,
+            all_corpus_terms,
+            idf_cache=idf_cache,
+            left_vec_cache=profile_vec_cache,
         )
     else:
         text_score = None
@@ -392,16 +464,26 @@ def rank_personalized_courses(
     *,
     excluded_course_ids: set[int] | None = None,
     limit: int = 10,
+    precomputed_terms: Mapping[int, Counter[str]] | None = None,
 ) -> list[RankedItem]:
     if profile is None:
         return []
+    terms_cache: dict[int, Counter[str]] = dict(precomputed_terms) if precomputed_terms else {}
+
+    def get_terms(c: CourseFeatures) -> Counter[str]:
+        t = terms_cache.get(c.course_id)
+        if t is None:
+            t = _course_terms(c)
+            terms_cache[c.course_id] = t
+        return t
+
     excluded = excluded_course_ids or set()
     unique_candidates: dict[int, CourseFeatures] = {}
     for candidate in candidates:
         if (
             candidate.course_id not in excluded
             and candidate.is_public
-            and _has_course_content(candidate)
+            and (candidate.category_id is not None or get_terms(candidate))
         ):
             unique_candidates.setdefault(candidate.course_id, candidate)
     usable_corpus = {
@@ -415,9 +497,22 @@ def rank_personalized_courses(
         price=profile.price,
         corpus=tuple(usable_corpus.values()),
     )
+    # Precompute corpus terms, IDF, and profile TF-IDF vector ONCE (O(N) instead of O(N^2))
+    corpus_terms = [get_terms(course) for course in scoring_profile.corpus]
+    idf_cache = _idf(corpus_terms)
+    prof_vec = _vector(scoring_profile.text_counts, idf_cache) if scoring_profile.text_counts else {}
+    prof_norm = math.sqrt(sum(v * v for v in prof_vec.values()))
+
     ranked: list[RankedItem] = []
     for candidate in unique_candidates.values():
-        score, reasons = _profile_pair_score(scoring_profile, candidate)
+        score, reasons = _profile_pair_score(
+            scoring_profile,
+            candidate,
+            candidate_terms=get_terms(candidate),
+            corpus_terms=corpus_terms,
+            idf_cache=idf_cache,
+            profile_vec_cache=(prof_vec, prof_norm),
+        )
         if score > 0:
             ranked.append(RankedItem(candidate, score, reasons))
     ranked.sort(key=lambda item: (-item.score, item.item.course_id))
@@ -435,6 +530,10 @@ def rank_materials(
     usable: dict[int, MaterialFeatures] = {}
     material_terms: dict[int, Counter[str]] = {}
     for material in materials:
+        if (
+            material.review_status is not None or material.visibility is not None
+        ) and not material.is_public:
+            continue
         terms = _weighted_terms(
             {
                 "title": (material.title or "",),
@@ -468,5 +567,158 @@ def rank_materials(
             reasons.append("SAME_LESSON")
         if score > 0:
             ranked.append(RankedItem(material, score, tuple(reasons)))
+    ranked.sort(key=lambda item: (-item.score, item.item.material_id))
+    return ranked[: max(0, limit)]
+
+
+def _material_fields(material: MaterialFeatures) -> dict[str, tuple[str, ...]]:
+    return {
+        "title": (material.title or "",),
+        "description": (material.description or "",),
+        "category": (material.category_text or "", material.material_type or ""),
+        "lessons": (material.lesson_title or "", material.lesson_content or ""),
+        "materials": (material.course_title or "",),
+    }
+
+
+def _material_terms(material: MaterialFeatures) -> Counter[str]:
+    return _weighted_terms(_material_fields(material))
+
+
+def rank_standalone_materials(
+    profile: PreferenceProfile | None,
+    materials: Sequence[MaterialFeatures],
+    *,
+    limit: int = 10,
+) -> tuple[list[RankedItem], str, bool]:
+    public_materials = [m for m in materials if m.is_public]
+    if not public_materials:
+        return [], "none", False
+
+    usable_materials: dict[int, MaterialFeatures] = {}
+    material_terms: dict[int, Counter[str]] = {}
+    for material in public_materials:
+        terms = _material_terms(material)
+        if terms:
+            usable_materials[material.material_id] = material
+            material_terms[material.material_id] = terms
+
+    if not profile or not profile.text_counts or not usable_materials:
+        sorted_latest = sorted(
+            public_materials,
+            key=lambda m: (str(m.created_at or ""), m.material_id),
+            reverse=True,
+        )
+        items = [
+            RankedItem(item=m, score=0.0, reason_codes=("RECENT_MATERIAL",))
+            for m in sorted_latest[: max(0, limit)]
+        ]
+        return items, "latest", False
+
+    corpus = [profile.text_counts, *material_terms.values()]
+    idf_cache = _idf(corpus)
+    prof_vec = _vector(profile.text_counts, idf_cache)
+    prof_norm = math.sqrt(sum(v * v for v in prof_vec.values()))
+    ranked: list[RankedItem] = []
+    category_total = sum(profile.category_weights.values())
+
+    for material_id, material in usable_materials.items():
+        terms = material_terms[material_id]
+        text_score = _text_similarity(
+            profile.text_counts,
+            terms,
+            corpus,
+            minimum_shared_terms=1,
+            idf_cache=idf_cache,
+            left_vec_cache=(prof_vec, prof_norm),
+        )
+        category_score = (
+            profile.category_weights.get(material.category_id, 0.0) / category_total
+            if material.category_id is not None and category_total
+            else 0.0
+        )
+        combined_score = 0.70 * text_score + 0.30 * category_score
+        reasons: list[str] = []
+        if text_score > 0:
+            reasons.append("CONTENT_SIMILARITY")
+        if category_score > 0:
+            reasons.append("SAME_CATEGORY")
+        if material.material_type:
+            reasons.append("RECOMMENDED_TYPE")
+
+        if combined_score > 0:
+            ranked.append(RankedItem(material, round(combined_score, 4), tuple(reasons)))
+
+    if not ranked:
+        sorted_latest = sorted(
+            public_materials,
+            key=lambda m: (str(m.created_at or ""), m.material_id),
+            reverse=True,
+        )
+        items = [
+            RankedItem(item=m, score=0.0, reason_codes=("RECENT_MATERIAL",))
+            for m in sorted_latest[: max(0, limit)]
+        ]
+        return items, "latest", False
+
+    ranked.sort(key=lambda item: (-item.score, item.item.material_id))
+    return ranked[: max(0, limit)], "content_based", True
+
+
+def rank_similar_materials(
+    source: MaterialFeatures,
+    candidates: Sequence[MaterialFeatures],
+    *,
+    limit: int = 10,
+) -> list[RankedItem]:
+    source_terms = _material_terms(source)
+    if not source_terms:
+        return []
+
+    unique_candidates: dict[int, MaterialFeatures] = {}
+    material_terms: dict[int, Counter[str]] = {}
+    for c in candidates:
+        if c.material_id != source.material_id and c.is_public:
+            terms = _material_terms(c)
+            if terms:
+                unique_candidates[c.material_id] = c
+                material_terms[c.material_id] = terms
+
+    if not unique_candidates:
+        return []
+
+    corpus = [source_terms, *material_terms.values()]
+    ranked: list[RankedItem] = []
+    for material_id, candidate in unique_candidates.items():
+        terms = material_terms[material_id]
+        text_score = _text_similarity(
+            source_terms,
+            terms,
+            corpus,
+            minimum_shared_terms=1,
+        )
+        same_cat = source.category_id is not None and source.category_id == candidate.category_id
+        same_type = bool(source.material_type and source.material_type == candidate.material_type)
+        same_course = source.course_id is not None and source.course_id == candidate.course_id
+
+        score = (
+            0.60 * text_score
+            + (0.20 if same_cat else 0.0)
+            + (0.10 if same_type else 0.0)
+            + (0.10 if same_course else 0.0)
+        )
+        reasons: list[str] = []
+        if text_score > 0:
+            reasons.append("CONTENT_SIMILARITY")
+        if same_cat:
+            reasons.append("SAME_CATEGORY")
+        if same_type:
+            reasons.append("SAME_TYPE")
+        if same_course:
+            reasons.append("SAME_COURSE")
+
+        if score > 0:
+            ranked.append(RankedItem(candidate, round(score, 4), tuple(reasons)))
+
     ranked.sort(key=lambda item: (-item.score, item.item.material_id))
     return ranked[: max(0, limit)]

@@ -113,6 +113,8 @@ class UserResponse(BaseModel):
     hoTen: str
     email: EmailStr
     soDienThoai: str | None
+    trangThai: str = "ACTIVE"
+    batBuocDoiMatKhau: bool = False
 
     @classmethod
     def from_user(cls, user: NguoiDung) -> "UserResponse":
@@ -124,6 +126,8 @@ class UserResponse(BaseModel):
             hoTen=user.hoTen or "",
             email=user.email or "",
             soDienThoai=user.soDienThoai,
+            trangThai=getattr(user, "trangThai", None) or "ACTIVE",
+            batBuocDoiMatKhau=bool(getattr(user, "batBuocDoiMatKhau", False)),
         )
 
 

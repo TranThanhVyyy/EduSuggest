@@ -12,7 +12,7 @@ const routes = [
         path: '',
         name: 'home',
         component: () => import('@/views/user/UserHome.vue'),
-        meta: { title: 'EduSuggest – Học tập theo mục tiêu', actor: 'user', demoOnly: true },
+        meta: { title: 'EduSuggest – Nền tảng gợi ý khóa học & tài liệu học tập', actor: 'user' },
       },
       {
         path: 'dashboard',
@@ -36,13 +36,13 @@ const routes = [
         path: 'courses',
         name: 'course-catalog',
         component: () => import('@/views/user/CourseCatalog.vue'),
-        meta: { title: 'Danh sách khóa học', actor: 'user', requiresRole: 'USER' },
+        meta: { title: 'Danh sách khóa học', actor: 'user' },
       },
       {
         path: 'courses/:id',
         name: 'course-detail',
         component: () => import('@/views/user/CourseDetail.vue'),
-        meta: { title: 'Chi tiết khóa học', actor: 'user', requiresRole: 'USER' },
+        meta: { title: 'Chi tiết khóa học', actor: 'user' },
       },
       {
         path: 'learning/:courseId',
@@ -66,13 +66,13 @@ const routes = [
         path: 'materials',
         name: 'material-catalog',
         component: () => import('@/views/user/MaterialCatalog.vue'),
-        meta: { title: 'Tài liệu học tập', actor: 'user', requiresRole: 'USER' },
+        meta: { title: 'Tài liệu học tập', actor: 'user' },
       },
       {
         path: 'materials/:id',
         name: 'material-detail',
         component: () => import('@/views/user/MaterialDetail.vue'),
-        meta: { title: 'Chi tiết tài liệu', actor: 'user', requiresRole: 'USER' },
+        meta: { title: 'Chi tiết tài liệu', actor: 'user' },
       },
       {
         path: 'recommendations/courses',
@@ -91,6 +91,48 @@ const routes = [
         name: 'expert-reviews',
         component: () => import('@/views/user/ExpertReviews.vue'),
         meta: { title: 'Đánh giá chuyên gia', actor: 'user', requiresRole: 'USER' },
+      },
+      {
+        path: 'wishlist',
+        name: 'wishlist',
+        component: () => import('@/views/user/WishlistView.vue'),
+        meta: { title: 'Danh sách yêu thích', actor: 'user', requiresRole: 'USER' },
+      },
+      {
+        path: 'cart',
+        name: 'cart',
+        component: () => import('@/views/user/CartView.vue'),
+        meta: { title: 'Giỏ hàng', actor: 'user', requiresRole: 'USER' },
+      },
+      {
+        path: 'checkout',
+        name: 'checkout',
+        component: () => import('@/views/user/CheckoutView.vue'),
+        meta: { title: 'Thanh toán đơn hàng', actor: 'user', requiresRole: 'USER' },
+      },
+      {
+        path: 'payment/mock-sandbox',
+        name: 'mock-payment',
+        component: () => import('@/views/user/MockPaymentView.vue'),
+        meta: { title: 'Thanh toán mô phỏng (Sandbox)', actor: 'user', requiresRole: 'USER' },
+      },
+      {
+        path: 'payment/result',
+        name: 'payment-result',
+        component: () => import('@/views/user/PaymentResultView.vue'),
+        meta: { title: 'Kết quả thanh toán', actor: 'user', requiresRole: 'USER' },
+      },
+      {
+        path: 'orders',
+        name: 'order-history',
+        component: () => import('@/views/user/OrderHistoryView.vue'),
+        meta: { title: 'Lịch sử mua hàng', actor: 'user', requiresRole: 'USER' },
+      },
+      {
+        path: 'orders/:id',
+        name: 'order-detail',
+        component: () => import('@/views/user/OrderDetailView.vue'),
+        meta: { title: 'Chi tiết đơn hàng', actor: 'user', requiresRole: 'USER' },
       },
     ],
   },
@@ -145,6 +187,12 @@ const routes = [
         component: () => import('@/views/admin/AdminProviderApplications.vue'),
         meta: { title: 'Hồ sơ nhà cung cấp', adminSection: 'Quản lý người dùng', requiresRole: 'ADMIN' },
       },
+      {
+        path: 'specialties',
+        name: 'admin-specialties',
+        component: () => import('@/views/admin/AdminSpecialtiesView.vue'),
+        meta: { title: 'Danh mục chuyên môn', adminSection: 'Nội dung & Kiểm duyệt', requiresRole: 'ADMIN' },
+      },
       ...[
         ['users', 'admin-users', 'Tài khoản', 'users'],
         ['reviewers', 'admin-reviewers', 'Chuyên gia', 'reviewers'],
@@ -198,13 +246,43 @@ const routes = [
         path: 'reviewers/assignment',
         name: 'admin-assign-reviewer',
         component: () => import('@/views/admin/AdminReviewerAssignment.vue'),
-        meta: { title: 'Phân công Reviewer', adminSection: 'Kiểm duyệt', requiresRole: 'ADMIN' },
+        meta: { title: 'Phân công kiểm duyệt', adminSection: 'Kiểm duyệt', requiresRole: 'ADMIN' },
       },
       {
         path: 'reviews',
         name: 'admin-review-monitor',
         component: () => import('@/views/admin/AdminReviewMonitor.vue'),
-        meta: { title: 'Theo dõi kiểm duyệt', adminSection: 'Kiểm duyệt', requiresRole: 'ADMIN' },
+        meta: { title: 'Hàng đợi phân công', adminSection: 'Kiểm duyệt', requiresRole: 'ADMIN' },
+      },
+      {
+        path: 'experts-overview',
+        name: 'admin-expert-overview',
+        component: () => import('@/views/admin/AdminExpertOverview.vue'),
+        meta: { title: 'Tổng quan chuyên gia', adminSection: 'Điều hành chuyên gia', requiresRole: 'ADMIN' },
+      },
+      {
+        path: 'accountability',
+        name: 'admin-accountability',
+        component: () => import('@/views/admin/AdminAccountabilityView.vue'),
+        meta: { title: 'Vi phạm & Kỷ luật', adminSection: 'Điều hành chuyên gia', requiresRole: 'ADMIN' },
+      },
+      {
+        path: 'availability',
+        name: 'admin-availability',
+        component: () => import('@/views/admin/AdminAvailabilityView.vue'),
+        meta: { title: 'Yêu cầu tạm ngừng', adminSection: 'Điều hành chuyên gia', requiresRole: 'ADMIN' },
+      },
+      {
+        path: 'assignment-config',
+        name: 'admin-assignment-config',
+        component: () => import('@/views/admin/AdminAssignmentConfigView.vue'),
+        meta: { title: 'Cấu hình phân công', adminSection: 'Hệ thống', requiresRole: 'ADMIN' },
+      },
+      {
+        path: 'notifications',
+        name: 'admin-notifications',
+        component: () => import('@/views/admin/AdminNotificationsView.vue'),
+        meta: { title: 'Trung tâm thông báo', adminSection: 'Hệ thống', requiresRole: 'ADMIN' },
       },
       {
         path: 'recommendations',
@@ -217,6 +295,12 @@ const routes = [
         name: 'admin-analytics',
         component: () => import('@/views/admin/AdminAnalytics.vue'),
         meta: { title: 'Thống kê hệ thống', adminSection: 'Hệ thống', requiresRole: 'ADMIN' },
+      },
+      {
+        path: 'commerce',
+        name: 'admin-commerce',
+        component: () => import('@/views/admin/AdminCommerceView.vue'),
+        meta: { title: 'Quản lý Thương mại & Doanh thu', adminSection: 'Tổng quan', requiresRole: 'ADMIN' },
       },
       {
         path: 'profile',
@@ -248,6 +332,36 @@ const routes = [
         name: 'reviewer-dashboard',
         component: () => import('@/views/reviewer/ReviewerDashboard.vue'),
         meta: { title: 'Tổng quan kiểm duyệt', requiresRole: 'EXPERT' },
+      },
+      {
+        path: 'assignments',
+        name: 'reviewer-assignments',
+        component: () => import('@/views/reviewer/ReviewerAssignmentsView.vue'),
+        meta: { title: 'Nhiệm vụ của tôi', requiresRole: 'EXPERT' },
+      },
+      {
+        path: 'assignments/:assignmentId',
+        name: 'reviewer-assignment-detail',
+        component: () => import('@/views/reviewer/ReviewerAssignmentDetailView.vue'),
+        meta: { title: 'Không gian kiểm duyệt', requiresRole: 'EXPERT' },
+      },
+      {
+        path: 'accountability',
+        name: 'reviewer-accountability',
+        component: () => import('@/views/reviewer/ReviewerAccountabilityView.vue'),
+        meta: { title: 'Kỷ luật & Vi phạm', requiresRole: 'EXPERT' },
+      },
+      {
+        path: 'availability',
+        name: 'reviewer-availability',
+        component: () => import('@/views/reviewer/ReviewerAvailabilityView.vue'),
+        meta: { title: 'Tạm ngừng nhận nhiệm vụ', requiresRole: 'EXPERT' },
+      },
+      {
+        path: 'notifications',
+        name: 'reviewer-notifications',
+        component: () => import('@/views/reviewer/ReviewerNotificationsView.vue'),
+        meta: { title: 'Thông báo chuyên gia', requiresRole: 'EXPERT' },
       },
       {
         path: 'courses',
@@ -316,6 +430,12 @@ const routes = [
         meta: { title: 'Tổng quan Provider', providerSection: 'Tổng quan', demoOnly: true },
       },
       {
+        path: 'sales',
+        name: 'provider-sales',
+        component: () => import('@/views/provider/ProviderSalesView.vue'),
+        meta: { title: 'Doanh thu & Bán hàng', providerSection: 'Biên soạn', requiresRole: 'PROVIDER' },
+      },
+      {
         path: 'profile',
         name: 'provider-profile',
         component: () => import('@/views/provider/ProviderProfile.vue'),
@@ -326,6 +446,12 @@ const routes = [
         name: 'provider-courses',
         component: () => import('@/views/provider/ProviderCourseList.vue'),
         meta: { title: 'Khóa học của tôi', providerSection: 'Quản lý khóa học', demoOnly: true },
+      },
+      {
+        path: 'materials',
+        name: 'provider-materials-manage',
+        component: () => import('@/views/provider/ProviderMaterialsView.vue'),
+        meta: { title: 'Tài liệu của tôi', providerSection: 'Quản lý nội dung', demoOnly: true },
       },
       {
         path: 'courses/create',
@@ -419,21 +545,6 @@ router.beforeEach(async (to) => {
   const pageTitle = to.meta.title || 'EduSuggest – Gợi ý học tập thông minh'
   document.title = to.name === 'home' ? pageTitle : `${pageTitle} | EduSuggest`
 
-  if (to.name === 'home') {
-    if (!authState.accessToken) return { name: 'login' }
-
-    try {
-      const user = await loadCurrentUser()
-      return user ? { name: getRoleLandingRouteName(user) } : { name: 'login' }
-    } catch (error) {
-      const query = {}
-      if (error.response?.status !== 401 && authState.accessToken) {
-        query.authError = 'unavailable'
-      }
-      return { name: 'login', query }
-    }
-  }
-
   if (to.meta.publicOnly && authState.accessToken && to.query.authError !== 'unavailable') {
     try {
       const user = await loadCurrentUser()
@@ -449,7 +560,20 @@ router.beforeEach(async (to) => {
   }
 
   const requiredRole = to.meta.requiresRole
-  if (!requiredRole) return true
+  if (!requiredRole) {
+    if (authState.accessToken && !authState.user) {
+      try {
+        await loadCurrentUser()
+      } catch {
+        // Keep public route accessible even if session hydration fails
+      }
+    }
+    const role = getRoleName()
+    if (to.name === 'home' && ['PROVIDER', 'EXPERT'].includes(role)) {
+      return { name: getRoleLandingRouteName(authState.user) }
+    }
+    return true
+  }
 
   if (!authState.accessToken) {
     return {
@@ -474,6 +598,13 @@ router.beforeEach(async (to) => {
   const allowedRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole]
   if (!allowedRoles.includes(getRoleName())) {
     return { name: 'access-denied' }
+  }
+  if (
+    getRoleName() === 'EXPERT' &&
+    authState.user?.batBuocDoiMatKhau &&
+    to.name !== 'reviewer-profile'
+  ) {
+    return { name: 'reviewer-profile' }
   }
   return true
 })

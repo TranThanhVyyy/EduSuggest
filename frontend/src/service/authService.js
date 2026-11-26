@@ -39,6 +39,14 @@ export async function logoutAccount() {
   }
 }
 
+export async function changePassword(currentPassword, newPassword) {
+  const { data } = await api.put('/users/change-password', {
+    matKhauHienTai: currentPassword,
+    matKhauMoi: newPassword,
+  })
+  return data
+}
+
 export function getRoleName(user = authState.user) {
   return String(user?.tenVaiTro || '').trim().toUpperCase()
 }

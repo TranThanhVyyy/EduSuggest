@@ -106,3 +106,18 @@ desktop.ini
 *.temp
 *.swp
 *~
+
+# Local agent tooling and generated project artifacts
+.agents/
+skills-lock.json
+frontend/dist_old/
+backend/database/
+backend/private_storage/
+backups/
+
+# Keep production course covers, ignore staging/audit media outputs
+media/*
+!media/courses/
+media/courses/*
+!media/courses/v5-realistic/
+!media/courses/v5-realistic/**

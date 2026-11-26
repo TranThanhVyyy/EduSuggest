@@ -6,8 +6,12 @@ import PaginationControls from '@/components/reviewer/PaginationControls.vue'
 import SearchInput from '@/components/reviewer/SearchInput.vue'
 import {
   PROVIDER_STATUS_LABELS,
+  loadProviderCourses,
+  loadProviderMaterials,
+  loadProviderReviews,
+  mapProviderReview,
+  providerErrorMessage,
 } from '@/service/providerApiService'
-import { loadProviderCourses, loadProviderReviews, mapProviderReview, providerErrorMessage } from '@/service/providerApiService'
 
 const route = useRoute()
 const pageSize = 8
@@ -23,14 +27,41 @@ async function refreshRecords() {
   isLoading.value = true
   loadError.value = ''
   try {
-    const courses = await loadProviderCourses()
+    const [courses, materials] = await Promise.all([
+      loadProviderCourses(),
+      loadProviderMaterials().catch(() => []),
+    ])
     if (!isHistory.value) {
-      records.value = courses.filter((course) => course.status !== 'Draft')
+      const submittedCourses = courses
+        .filter((course) => course.status !== 'Draft')
+        .map((course) => ({
+          ...course,
+          recordType: 'course',
+          recordKey: `course-${course.id}`,
+        }))
+      const submittedMaterials = materials
+        .filter((mat) => mat.reviewStatus !== 'Draft' && mat.reviewStatus !== 'DRAFT')
+        .map((mat) => ({
+          id: mat.id,
+          recordKey: `material-${mat.id}`,
+          recordType: 'material',
+          title: mat.title,
+          category: mat.documentType || 'Tài liệu',
+          submittedAt: mat.updatedAt || mat.createdAt,
+          reviewerName: '',
+          status: mat.reviewStatus,
+          reviewFeedback: mat.rejectionReason || '',
+        }))
+      records.value = [...submittedCourses, ...submittedMaterials].sort(
+        (a, b) => new Date(b.submittedAt || b.updatedAt || 0) - new Date(a.submittedAt || a.updatedAt || 0),
+      )
     } else {
       const histories = await Promise.all(courses.map(async (course) => {
         const reviews = await loadProviderReviews(course.id)
         return reviews.map(mapProviderReview).map((review) => ({
           id: String(review.maDanhGia),
+          recordKey: `review-${review.maDanhGia}`,
+          recordType: 'course',
           courseId: course.id,
           title: course.title,
           category: course.category,
@@ -96,25 +127,59 @@ function formatDate(value) {
         <table class="w-full min-w-[900px] text-left text-sm">
           <thead class="bg-background text-xs uppercase tracking-wide text-muted">
             <tr>
-              <th scope="col" class="px-4 py-3 font-semibold">Khóa học</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Ngày gửi</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Reviewer phụ trách</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Trạng thái</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Phản hồi</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Chi tiết</th>
+              <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Nội dung</th>
+              <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Ngày cập nhật</th>
+              <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Reviewer phụ trách</th>
+              <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Trạng thái</th>
+              <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Phản hồi</th>
+              <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Chi tiết</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
-            <tr v-for="record in visibleRecords" :key="record.id" class="align-top hover:bg-background/70">
-              <th scope="row" class="max-w-72 px-4 py-4">
-                <RouterLink :to="{ name: 'provider-review-detail', params: { id: isHistory ? record.courseId : record.id } }" class="font-semibold text-primary hover:underline">{{ record.title || 'Khóa học chưa đặt tên' }}</RouterLink>
-                <span class="mt-1 block text-xs font-normal text-muted">{{ isHistory ? record.action : record.category || 'Chưa có danh mục' }}</span>
+            <tr v-for="record in visibleRecords" :key="record.recordKey || record.id" class="align-middle hover:bg-background/70">
+              <th scope="row" class="max-w-72 px-4 py-4 font-normal">
+                <span
+                  class="mb-1 inline-flex rounded px-1.5 py-0.5 text-[10px] font-bold uppercase"
+                  :class="record.recordType === 'material' ? 'bg-teal/10 text-teal-dark' : 'bg-navy/10 text-navy'"
+                >
+                  {{ record.recordType === 'material' ? 'Tài liệu' : 'Khóa học' }}
+                </span>
+                <RouterLink
+                  v-if="record.recordType !== 'material'"
+                  :to="{ name: 'provider-review-detail', params: { id: isHistory ? record.courseId : record.id } }"
+                  class="block font-semibold text-navy hover:text-teal hover:underline"
+                >
+                  {{ record.title || 'Khóa học chưa đặt tên' }}
+                </RouterLink>
+                <RouterLink
+                  v-else
+                  :to="{ name: 'provider-materials-manage' }"
+                  class="block font-semibold text-navy hover:text-teal hover:underline"
+                >
+                  {{ record.title || 'Tài liệu chưa đặt tên' }}
+                </RouterLink>
+                <span class="mt-0.5 block text-xs font-normal text-muted">{{ isHistory ? record.action : record.category || 'Chưa có danh mục' }}</span>
               </th>
-              <td class="whitespace-nowrap px-4 py-4 text-muted">{{ formatDate(isHistory ? record.createdAt : record.submittedAt) }}</td>
-              <td class="px-4 py-4 text-muted">{{ record.reviewerName || 'Chưa có dữ liệu phân công' }}</td>
-              <td class="px-4 py-4"><span class="inline-flex rounded-full bg-background px-2.5 py-1 text-xs font-semibold text-navy">{{ PROVIDER_STATUS_LABELS[record.status] || record.status }}</span></td>
-              <td class="max-w-60 px-4 py-4 text-muted">{{ isHistory ? (record.feedback || 'Chưa có phản hồi được lưu.') : (record.reviewFeedback || 'Chưa có nhận xét được lưu.') }}</td>
-              <td class="px-4 py-4"><RouterLink :to="{ name: 'provider-review-detail', params: { id: isHistory ? record.courseId : record.id } }" class="text-xs font-semibold text-primary hover:underline">{{ isHistory ? 'Xem mốc' : 'Xem tiến trình' }}</RouterLink></td>
+              <td class="whitespace-nowrap px-4 py-4 text-muted">{{ formatDate(isHistory ? record.createdAt : (record.submittedAt || record.updatedAt)) }}</td>
+              <td class="px-4 py-4 text-muted">{{ record.reviewerName || 'Đang phân công' }}</td>
+              <td class="whitespace-nowrap px-4 py-4"><span class="inline-flex rounded-full bg-background px-2.5 py-1 text-xs font-semibold text-navy">{{ PROVIDER_STATUS_LABELS[record.status] || record.status }}</span></td>
+              <td class="max-w-60 px-4 py-4 text-muted">{{ isHistory ? (record.feedback || 'Chưa có phản hồi.') : (record.reviewFeedback || 'Chưa có nhận xét.') }}</td>
+              <td class="whitespace-nowrap px-4 py-4">
+                <RouterLink
+                  v-if="record.recordType !== 'material'"
+                  :to="{ name: 'provider-review-detail', params: { id: isHistory ? record.courseId : record.id } }"
+                  class="text-xs font-semibold text-teal hover:underline"
+                >
+                  {{ isHistory ? 'Xem mốc' : 'Xem tiến trình' }}
+                </RouterLink>
+                <RouterLink
+                  v-else
+                  :to="{ name: 'provider-materials-manage' }"
+                  class="text-xs font-semibold text-teal hover:underline"
+                >
+                  Quản lý tài liệu
+                </RouterLink>
+              </td>
             </tr>
           </tbody>
         </table>

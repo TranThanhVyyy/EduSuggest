@@ -2,6 +2,7 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { Save } from 'lucide-vue-next'
 import UiButton from '@/components/ui/UiButton.vue'
+import UiSkeleton from '@/components/ui/UiSkeleton.vue'
 import { authState, setCurrentUser } from '@/service/authState'
 import { loadCurrentUser } from '@/service/authService'
 import api from '@/service/api'
@@ -32,10 +33,13 @@ async function saveProfile() {
   errorMessage.value = ''
   successMessage.value = ''
   try {
-    const { data } = await api.put('/users/me', { hoTen: form.fullName.trim(), soDienThoai: form.phone.trim() || null })
+    const { data } = await api.put('/users/me', {
+      hoTen: form.fullName.trim(),
+      soDienThoai: form.phone.trim() || null,
+    })
     setCurrentUser(data)
     Object.assign(form, { fullName: data.hoTen || '', phone: data.soDienThoai || '' })
-    successMessage.value = 'Hồ sơ đã được cập nhật.'
+    successMessage.value = 'Hồ sơ quản trị đã được cập nhật.'
   } catch (error) {
     errorMessage.value = error.response?.data?.detail || 'Không thể cập nhật hồ sơ. Hãy kiểm tra kết nối rồi thử lại.'
   } finally {
@@ -47,19 +51,77 @@ onMounted(loadProfile)
 </script>
 
 <template>
-  <main class="max-w-3xl space-y-6">
-    <header class="border-b border-border pb-5"><p class="ui-eyebrow">Tài khoản</p><h1 class="ui-page-title mt-2">Hồ sơ quản trị</h1><p class="mt-2 text-sm text-muted">Thông tin được tải và lưu qua tài khoản hiện tại.</p></header>
-    <p v-if="loading" class="py-4 text-sm text-muted" role="status">Đang tải hồ sơ…</p>
-    <form v-else class="max-w-2xl space-y-5" @submit.prevent="saveProfile">
-      <div class="grid gap-5 sm:grid-cols-2">
-        <label class="text-sm font-medium text-navy">Họ và tên<input v-model.trim="form.fullName" class="ui-input mt-2" autocomplete="name" maxlength="255" required></label>
-        <label class="text-sm font-medium text-navy">Tên tài khoản<input :value="username" class="ui-input mt-2" disabled></label>
-        <label class="text-sm font-medium text-navy">Email<input :value="email" class="ui-input mt-2" disabled type="email"></label>
-        <label class="text-sm font-medium text-navy">Số điện thoại<input v-model.trim="form.phone" class="ui-input mt-2" autocomplete="tel" type="tel"></label>
+  <div class="max-w-3xl space-y-6">
+    <section>
+      <p class="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">Tài khoản</p>
+      <h1 class="mt-1 font-display text-2xl font-bold tracking-tight text-navy">Hồ sơ quản trị</h1>
+      <p class="mt-1.5 text-sm text-slate-600">
+        Quản lý thông tin liên hệ của tài khoản quản trị hệ thống.
+      </p>
+    </section>
+
+    <section class="rounded-2xl border border-border bg-surface p-6 shadow-xs">
+      <div v-if="loading" class="space-y-4">
+        <UiSkeleton variant="rect" height="60px" rounded="0.75rem" />
+        <UiSkeleton variant="rect" height="120px" rounded="0.75rem" />
       </div>
-      <p v-if="errorMessage" class="border-l-2 border-danger py-1 pl-3 text-sm text-danger" role="alert">{{ errorMessage }}</p>
-      <p v-if="successMessage" class="border-l-2 border-secondary py-1 pl-3 text-sm text-secondary" role="status">{{ successMessage }}</p>
-      <UiButton type="submit" :loading="saving"><Save :size="15" aria-hidden="true" /> Lưu thay đổi</UiButton>
-    </form>
-  </main>
+
+      <form v-else class="space-y-5" @submit.prevent="saveProfile">
+        <dl class="grid gap-4 rounded-xl bg-background/80 p-4 sm:grid-cols-2 text-sm">
+          <div>
+            <dt class="text-xs font-medium text-slate-500">Tên tài khoản</dt>
+            <dd class="mt-1 font-semibold text-navy">{{ username || '—' }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-medium text-slate-500">Email</dt>
+            <dd class="mt-1 break-all font-semibold text-navy">{{ email || '—' }}</dd>
+          </div>
+        </dl>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="admin-fullname" class="mb-1.5 block text-xs font-semibold text-navy">
+              Họ và tên <span class="text-danger">*</span>
+            </label>
+            <input
+              id="admin-fullname"
+              v-model.trim="form.fullName"
+              class="ui-input"
+              autocomplete="name"
+              maxlength="255"
+              required
+            >
+          </div>
+
+          <div>
+            <label for="admin-phone" class="mb-1.5 block text-xs font-semibold text-navy">
+              Số điện thoại
+            </label>
+            <input
+              id="admin-phone"
+              v-model.trim="form.phone"
+              class="ui-input"
+              autocomplete="tel"
+              type="tel"
+              placeholder="09xx xxx xxx"
+            >
+          </div>
+        </div>
+
+        <p v-if="errorMessage" class="rounded-xl border border-danger/25 bg-danger/5 px-3.5 py-2.5 text-xs font-medium text-danger" role="alert">
+          {{ errorMessage }}
+        </p>
+        <p v-if="successMessage" class="rounded-xl border border-teal/25 bg-teal/5 px-3.5 py-2.5 text-xs font-medium text-teal-dark" role="status">
+          {{ successMessage }}
+        </p>
+
+        <div class="flex justify-end border-t border-border/70 pt-4">
+          <UiButton type="submit" :loading="saving" class="inline-flex items-center gap-1.5">
+            <Save :size="15" aria-hidden="true" />
+            <span>Lưu thay đổi</span>
+          </UiButton>
+        </div>
+      </form>
+    </section>
+  </div>
 </template>

@@ -1,0 +1,2727 @@
+{
+  "config": {
+    "evaluation_date": "2026-11-26T18:11:01.263055+00:00",
+    "dataset": "edusuggest-official-v2 (EduSuggest READ ONLY)",
+    "python_version": "3.11.0",
+    "eligible_courses_count": 101,
+    "eligible_standalone_materials_count": 226,
+    "personas_evaluated": 8,
+    "k_values": [
+      5,
+      10
+    ],
+    "random_seeds": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61
+    ],
+    "ground_truth_methodology": "Independent domain-category relevance labels mapped from the 24 EduSuggest taxonomy categories prior to evaluation; already-enrolled courses are excluded from each persona's eligible candidate pool.",
+    "limitations": [
+      "8 Official Personas with simulated learning histories (3-4 enrollments each) represent structured domain archetypes rather than real production student clickstreams.",
+      "Category-level relevance labels evaluate domain alignment rather than fine-grained user satisfaction or completion rate.",
+      "Results should be presented in thesis defense as offline simulation evaluation on Official Dataset V2, NOT as a live human user survey."
+    ]
+  },
+  "macro_courses_all_8_personas": {
+    "tfidf_cosine": {
+      "k5": {
+        "precision": 0.25,
+        "recall": 0.0615,
+        "hit_rate": 0.625,
+        "ndcg": 0.2712,
+        "mrr": 0.4625
+      },
+      "k10": {
+        "precision": 0.2375,
+        "recall": 0.1169,
+        "hit_rate": 0.75,
+        "ndcg": 0.2569,
+        "mrr": 0.4833
+      },
+      "diversity_at_10": 0.55,
+      "catalog_coverage_at_10": 0.5743
+    },
+    "latest": {
+      "k5": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit_rate": 0.0,
+        "ndcg": 0.0,
+        "mrr": 0.0
+      },
+      "k10": {
+        "precision": 0.0625,
+        "recall": 0.0359,
+        "hit_rate": 0.25,
+        "ndcg": 0.0411,
+        "mrr": 0.0295
+      },
+      "diversity_at_10": 0.3,
+      "catalog_coverage_at_10": 0.1089
+    },
+    "popularity": {
+      "k5": {
+        "precision": 0.425,
+        "recall": 0.1038,
+        "hit_rate": 0.75,
+        "ndcg": 0.4309,
+        "mrr": 0.5667
+      },
+      "k10": {
+        "precision": 0.35,
+        "recall": 0.1734,
+        "hit_rate": 0.875,
+        "ndcg": 0.376,
+        "mrr": 0.5875
+      },
+      "diversity_at_10": 0.6375,
+      "catalog_coverage_at_10": 0.1089
+    },
+    "random_20seeds": {
+      "k5": {
+        "precision": 0.1938,
+        "recall": 0.0494,
+        "hit_rate": 0.6562,
+        "ndcg": 0.1985,
+        "mrr": 0.3697
+      },
+      "k10": {
+        "precision": 0.1969,
+        "recall": 0.1001,
+        "hit_rate": 0.8938,
+        "ndcg": 0.1997,
+        "mrr": 0.4037
+      },
+      "diversity_at_10": 0.8469,
+      "catalog_coverage_at_10": 1.0
+    }
+  },
+  "macro_courses_personalized_7_personas": {
+    "tfidf_cosine": {
+      "k5": {
+        "precision": 0.1429,
+        "recall": 0.0378,
+        "hit_rate": 0.5714,
+        "ndcg": 0.1671,
+        "mrr": 0.3857
+      },
+      "k10": {
+        "precision": 0.1857,
+        "recall": 0.0947,
+        "hit_rate": 0.7143,
+        "ndcg": 0.1897,
+        "mrr": 0.4095
+      },
+      "diversity_at_10": 0.5714,
+      "catalog_coverage_at_10": 0.5743
+    },
+    "latest": {
+      "k5": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit_rate": 0.0,
+        "ndcg": 0.0,
+        "mrr": 0.0
+      },
+      "k10": {
+        "precision": 0.0714,
+        "recall": 0.0411,
+        "hit_rate": 0.2857,
+        "ndcg": 0.047,
+        "mrr": 0.0337
+      },
+      "diversity_at_10": 0.3,
+      "catalog_coverage_at_10": 0.1089
+    },
+    "popularity": {
+      "k5": {
+        "precision": 0.3714,
+        "recall": 0.0926,
+        "hit_rate": 0.7143,
+        "ndcg": 0.3738,
+        "mrr": 0.5048
+      },
+      "k10": {
+        "precision": 0.3143,
+        "recall": 0.1592,
+        "hit_rate": 0.8571,
+        "ndcg": 0.3321,
+        "mrr": 0.5286
+      },
+      "diversity_at_10": 0.6429,
+      "catalog_coverage_at_10": 0.1089
+    },
+    "random_20seeds": {
+      "k5": {
+        "precision": 0.1943,
+        "recall": 0.0503,
+        "hit_rate": 0.6643,
+        "ndcg": 0.1989,
+        "mrr": 0.3719
+      },
+      "k10": {
+        "precision": 0.1907,
+        "recall": 0.0988,
+        "hit_rate": 0.8929,
+        "ndcg": 0.1954,
+        "mrr": 0.4048
+      },
+      "diversity_at_10": 0.845,
+      "catalog_coverage_at_10": 1.0
+    }
+  },
+  "macro_materials_all_8_personas": {
+    "tfidf_cosine": {
+      "k5": {
+        "precision": 0.2,
+        "recall": 0.0198,
+        "hit_rate": 0.375,
+        "ndcg": 0.1779,
+        "mrr": 0.2292
+      },
+      "k10": {
+        "precision": 0.1375,
+        "recall": 0.0274,
+        "hit_rate": 0.5,
+        "ndcg": 0.1426,
+        "mrr": 0.25
+      },
+      "diversity_at_10": 0.5,
+      "catalog_coverage_at_10": 0.3142
+    },
+    "latest": {
+      "k5": {
+        "precision": 0.3,
+        "recall": 0.0287,
+        "hit_rate": 0.625,
+        "ndcg": 0.2653,
+        "mrr": 0.3333
+      },
+      "k10": {
+        "precision": 0.225,
+        "recall": 0.0426,
+        "hit_rate": 0.625,
+        "ndcg": 0.2217,
+        "mrr": 0.3333
+      },
+      "diversity_at_10": 1.0,
+      "catalog_coverage_at_10": 0.0442
+    },
+    "random_20seeds": {
+      "k5": {
+        "precision": 0.2313,
+        "recall": 0.0217,
+        "hit_rate": 0.6625,
+        "ndcg": 0.2233,
+        "mrr": 0.3614
+      },
+      "k10": {
+        "precision": 0.2537,
+        "recall": 0.0475,
+        "hit_rate": 0.9125,
+        "ndcg": 0.2421,
+        "mrr": 0.3974
+      },
+      "diversity_at_10": 0.0,
+      "catalog_coverage_at_10": 0.7257
+    }
+  },
+  "per_persona_courses": {
+    "tfidf_cosine": [
+      {
+        "persona": "official_persona_frontend",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.2,
+          "recall": 0.0588,
+          "hit_rate": 1.0,
+          "ndcg": 0.1312,
+          "mrr": 0.2
+        },
+        "k10": {
+          "precision": 0.1,
+          "recall": 0.0588,
+          "hit_rate": 1.0,
+          "ndcg": 0.0851,
+          "mrr": 0.2
+        },
+        "diversity_at_10": 0.7
+      },
+      {
+        "persona": "official_persona_backend",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.4
+      },
+      {
+        "persona": "official_persona_fullstack",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.3,
+          "recall": 0.1429,
+          "hit_rate": 1.0,
+          "ndcg": 0.2154,
+          "mrr": 0.1667
+        },
+        "diversity_at_10": 0.6
+      },
+      {
+        "persona": "official_persona_ai",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.4,
+          "recall": 0.1,
+          "hit_rate": 1.0,
+          "ndcg": 0.4852,
+          "mrr": 1.0
+        },
+        "k10": {
+          "precision": 0.3,
+          "recall": 0.15,
+          "hit_rate": 1.0,
+          "ndcg": 0.3933,
+          "mrr": 1.0
+        },
+        "diversity_at_10": 0.6
+      },
+      {
+        "persona": "official_persona_data",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.2,
+          "recall": 0.0556,
+          "hit_rate": 1.0,
+          "ndcg": 0.214,
+          "mrr": 0.5
+        },
+        "k10": {
+          "precision": 0.2,
+          "recall": 0.1111,
+          "hit_rate": 1.0,
+          "ndcg": 0.2025,
+          "mrr": 0.5
+        },
+        "diversity_at_10": 0.6
+      },
+      {
+        "persona": "official_persona_devops",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.2,
+          "recall": 0.05,
+          "hit_rate": 1.0,
+          "ndcg": 0.3392,
+          "mrr": 1.0
+        },
+        "k10": {
+          "precision": 0.4,
+          "recall": 0.2,
+          "hit_rate": 1.0,
+          "ndcg": 0.4315,
+          "mrr": 1.0
+        },
+        "diversity_at_10": 0.7
+      },
+      {
+        "persona": "official_persona_mobile",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.4
+      },
+      {
+        "persona": "official_persona_new",
+        "strategy": "latest",
+        "k5": {
+          "precision": 1.0,
+          "recall": 0.2273,
+          "hit_rate": 1.0,
+          "ndcg": 1.0,
+          "mrr": 1.0
+        },
+        "k10": {
+          "precision": 0.6,
+          "recall": 0.2727,
+          "hit_rate": 1.0,
+          "ndcg": 0.7273,
+          "mrr": 1.0
+        },
+        "diversity_at_10": 0.4
+      }
+    ],
+    "latest": [
+      {
+        "persona": "official_persona_frontend",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.3,
+          "recall": 0.1765,
+          "hit_rate": 1.0,
+          "ndcg": 0.1993,
+          "mrr": 0.125
+        },
+        "diversity_at_10": 0.3
+      },
+      {
+        "persona": "official_persona_backend",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.3
+      },
+      {
+        "persona": "official_persona_fullstack",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.3
+      },
+      {
+        "persona": "official_persona_ai",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.3
+      },
+      {
+        "persona": "official_persona_data",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.3
+      },
+      {
+        "persona": "official_persona_devops",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.3
+      },
+      {
+        "persona": "official_persona_mobile",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.2,
+          "recall": 0.1111,
+          "hit_rate": 1.0,
+          "ndcg": 0.1299,
+          "mrr": 0.1111
+        },
+        "diversity_at_10": 0.3
+      },
+      {
+        "persona": "official_persona_new",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.3
+      }
+    ],
+    "popularity": [
+      {
+        "persona": "official_persona_frontend",
+        "strategy": "popularity",
+        "k5": {
+          "precision": 0.2,
+          "recall": 0.0588,
+          "hit_rate": 1.0,
+          "ndcg": 0.1312,
+          "mrr": 0.2
+        },
+        "k10": {
+          "precision": 0.2,
+          "recall": 0.1176,
+          "hit_rate": 1.0,
+          "ndcg": 0.1546,
+          "mrr": 0.2
+        },
+        "diversity_at_10": 0.7
+      },
+      {
+        "persona": "official_persona_backend",
+        "strategy": "popularity",
+        "k5": {
+          "precision": 1.0,
+          "recall": 0.2381,
+          "hit_rate": 1.0,
+          "ndcg": 1.0,
+          "mrr": 1.0
+        },
+        "k10": {
+          "precision": 0.7,
+          "recall": 0.3333,
+          "hit_rate": 1.0,
+          "ndcg": 0.7859,
+          "mrr": 1.0
+        },
+        "diversity_at_10": 0.6
+      },
+      {
+        "persona": "official_persona_fullstack",
+        "strategy": "popularity",
+        "k5": {
+          "precision": 0.8,
+          "recall": 0.1905,
+          "hit_rate": 1.0,
+          "ndcg": 0.8304,
+          "mrr": 1.0
+        },
+        "k10": {
+          "precision": 0.6,
+          "recall": 0.2857,
+          "hit_rate": 1.0,
+          "ndcg": 0.6719,
+          "mrr": 1.0
+        },
+        "diversity_at_10": 0.7
+      },
+      {
+        "persona": "official_persona_ai",
+        "strategy": "popularity",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.7
+      },
+      {
+        "persona": "official_persona_data",
+        "strategy": "popularity",
+        "k5": {
+          "precision": 0.4,
+          "recall": 0.1111,
+          "hit_rate": 1.0,
+          "ndcg": 0.4852,
+          "mrr": 1.0
+        },
+        "k10": {
+          "precision": 0.2,
+          "recall": 0.1111,
+          "hit_rate": 1.0,
+          "ndcg": 0.3149,
+          "mrr": 1.0
+        },
+        "diversity_at_10": 0.6
+      },
+      {
+        "persona": "official_persona_devops",
+        "strategy": "popularity",
+        "k5": {
+          "precision": 0.2,
+          "recall": 0.05,
+          "hit_rate": 1.0,
+          "ndcg": 0.1696,
+          "mrr": 0.3333
+        },
+        "k10": {
+          "precision": 0.2,
+          "recall": 0.1,
+          "hit_rate": 1.0,
+          "ndcg": 0.1834,
+          "mrr": 0.3333
+        },
+        "diversity_at_10": 0.6
+      },
+      {
+        "persona": "official_persona_mobile",
+        "strategy": "popularity",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.3,
+          "recall": 0.1667,
+          "hit_rate": 1.0,
+          "ndcg": 0.2141,
+          "mrr": 0.1667
+        },
+        "diversity_at_10": 0.6
+      },
+      {
+        "persona": "official_persona_new",
+        "strategy": "popularity",
+        "k5": {
+          "precision": 0.8,
+          "recall": 0.1818,
+          "hit_rate": 1.0,
+          "ndcg": 0.8304,
+          "mrr": 1.0
+        },
+        "k10": {
+          "precision": 0.6,
+          "recall": 0.2727,
+          "hit_rate": 1.0,
+          "ndcg": 0.6835,
+          "mrr": 1.0
+        },
+        "diversity_at_10": 0.6
+      }
+    ],
+    "random_20seeds": [
+      {
+        "persona": "official_persona_frontend",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.17,
+          "recall": 0.05,
+          "hit_rate": 0.65,
+          "ndcg": 0.1743,
+          "mrr": 0.3475
+        },
+        "k5_std": {
+          "precision": 0.149,
+          "recall": 0.0438,
+          "hit_rate": 0.4894,
+          "ndcg": 0.1638,
+          "mrr": 0.3732
+        },
+        "k10": {
+          "precision": 0.18,
+          "recall": 0.1059,
+          "hit_rate": 0.9,
+          "ndcg": 0.1805,
+          "mrr": 0.3871
+        },
+        "k10_std": {
+          "precision": 0.124,
+          "recall": 0.0729,
+          "hit_rate": 0.3078,
+          "ndcg": 0.1184,
+          "mrr": 0.3396
+        },
+        "diversity_at_10": 0.845
+      },
+      {
+        "persona": "official_persona_backend",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.19,
+          "recall": 0.0452,
+          "hit_rate": 0.65,
+          "ndcg": 0.1814,
+          "mrr": 0.3083
+        },
+        "k5_std": {
+          "precision": 0.1774,
+          "recall": 0.0422,
+          "hit_rate": 0.4894,
+          "ndcg": 0.178,
+          "mrr": 0.306
+        },
+        "k10": {
+          "precision": 0.185,
+          "recall": 0.0881,
+          "hit_rate": 0.8,
+          "ndcg": 0.1811,
+          "mrr": 0.3288
+        },
+        "k10_std": {
+          "precision": 0.1599,
+          "recall": 0.0761,
+          "hit_rate": 0.4104,
+          "ndcg": 0.1447,
+          "mrr": 0.288
+        },
+        "diversity_at_10": 0.83
+      },
+      {
+        "persona": "official_persona_fullstack",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.21,
+          "recall": 0.05,
+          "hit_rate": 0.75,
+          "ndcg": 0.2147,
+          "mrr": 0.4117
+        },
+        "k5_std": {
+          "precision": 0.1518,
+          "recall": 0.0362,
+          "hit_rate": 0.4443,
+          "ndcg": 0.1768,
+          "mrr": 0.3811
+        },
+        "k10": {
+          "precision": 0.21,
+          "recall": 0.1,
+          "hit_rate": 0.9,
+          "ndcg": 0.2143,
+          "mrr": 0.4333
+        },
+        "k10_std": {
+          "precision": 0.121,
+          "recall": 0.0576,
+          "hit_rate": 0.3078,
+          "ndcg": 0.1275,
+          "mrr": 0.3598
+        },
+        "diversity_at_10": 0.86
+      },
+      {
+        "persona": "official_persona_ai",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.25,
+          "recall": 0.0625,
+          "hit_rate": 0.8,
+          "ndcg": 0.2527,
+          "mrr": 0.4458
+        },
+        "k5_std": {
+          "precision": 0.1701,
+          "recall": 0.0425,
+          "hit_rate": 0.4104,
+          "ndcg": 0.1894,
+          "mrr": 0.364
+        },
+        "k10": {
+          "precision": 0.22,
+          "recall": 0.11,
+          "hit_rate": 0.95,
+          "ndcg": 0.2311,
+          "mrr": 0.4696
+        },
+        "k10_std": {
+          "precision": 0.124,
+          "recall": 0.062,
+          "hit_rate": 0.2236,
+          "ndcg": 0.1256,
+          "mrr": 0.337
+        },
+        "diversity_at_10": 0.83
+      },
+      {
+        "persona": "official_persona_data",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.22,
+          "recall": 0.0611,
+          "hit_rate": 0.7,
+          "ndcg": 0.2253,
+          "mrr": 0.4292
+        },
+        "k5_std": {
+          "precision": 0.1936,
+          "recall": 0.0538,
+          "hit_rate": 0.4702,
+          "ndcg": 0.172,
+          "mrr": 0.3883
+        },
+        "k10": {
+          "precision": 0.185,
+          "recall": 0.1028,
+          "hit_rate": 0.95,
+          "ndcg": 0.1989,
+          "mrr": 0.4629
+        },
+        "k10_std": {
+          "precision": 0.0933,
+          "recall": 0.0519,
+          "hit_rate": 0.2236,
+          "ndcg": 0.1077,
+          "mrr": 0.3522
+        },
+        "diversity_at_10": 0.84
+      },
+      {
+        "persona": "official_persona_devops",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.2,
+          "recall": 0.05,
+          "hit_rate": 0.6,
+          "ndcg": 0.2085,
+          "mrr": 0.3617
+        },
+        "k5_std": {
+          "precision": 0.2052,
+          "recall": 0.0513,
+          "hit_rate": 0.5026,
+          "ndcg": 0.2411,
+          "mrr": 0.4104
+        },
+        "k10": {
+          "precision": 0.22,
+          "recall": 0.11,
+          "hit_rate": 0.95,
+          "ndcg": 0.2211,
+          "mrr": 0.4111
+        },
+        "k10_std": {
+          "precision": 0.1399,
+          "recall": 0.07,
+          "hit_rate": 0.2236,
+          "ndcg": 0.1752,
+          "mrr": 0.3686
+        },
+        "diversity_at_10": 0.86
+      },
+      {
+        "persona": "official_persona_mobile",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.12,
+          "recall": 0.0333,
+          "hit_rate": 0.5,
+          "ndcg": 0.1354,
+          "mrr": 0.2992
+        },
+        "k5_std": {
+          "precision": 0.1361,
+          "recall": 0.0378,
+          "hit_rate": 0.513,
+          "ndcg": 0.1727,
+          "mrr": 0.3949
+        },
+        "k10": {
+          "precision": 0.135,
+          "recall": 0.075,
+          "hit_rate": 0.8,
+          "ndcg": 0.1405,
+          "mrr": 0.3407
+        },
+        "k10_std": {
+          "precision": 0.1089,
+          "recall": 0.0605,
+          "hit_rate": 0.4104,
+          "ndcg": 0.1293,
+          "mrr": 0.3664
+        },
+        "diversity_at_10": 0.85
+      },
+      {
+        "persona": "official_persona_new",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.19,
+          "recall": 0.0432,
+          "hit_rate": 0.6,
+          "ndcg": 0.1954,
+          "mrr": 0.3542
+        },
+        "k5_std": {
+          "precision": 0.1889,
+          "recall": 0.0429,
+          "hit_rate": 0.5026,
+          "ndcg": 0.2007,
+          "mrr": 0.3803
+        },
+        "k10": {
+          "precision": 0.24,
+          "recall": 0.1091,
+          "hit_rate": 0.9,
+          "ndcg": 0.2299,
+          "mrr": 0.3964
+        },
+        "k10_std": {
+          "precision": 0.1231,
+          "recall": 0.056,
+          "hit_rate": 0.3078,
+          "ndcg": 0.1296,
+          "mrr": 0.3431
+        },
+        "diversity_at_10": 0.86
+      }
+    ]
+  },
+  "per_persona_materials": {
+    "tfidf_cosine": [
+      {
+        "persona": "official_persona_frontend",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.5
+      },
+      {
+        "persona": "official_persona_backend",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.4
+      },
+      {
+        "persona": "official_persona_fullstack",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.1,
+          "recall": 0.0152,
+          "hit_rate": 1.0,
+          "ndcg": 0.0784,
+          "mrr": 0.1667
+        },
+        "diversity_at_10": 0.6
+      },
+      {
+        "persona": "official_persona_ai",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.4,
+          "recall": 0.0526,
+          "hit_rate": 1.0,
+          "ndcg": 0.4852,
+          "mrr": 1.0
+        },
+        "k10": {
+          "precision": 0.3,
+          "recall": 0.0789,
+          "hit_rate": 1.0,
+          "ndcg": 0.3843,
+          "mrr": 1.0
+        },
+        "diversity_at_10": 0.4
+      },
+      {
+        "persona": "official_persona_data",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.4
+      },
+      {
+        "persona": "official_persona_devops",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.6,
+          "recall": 0.06,
+          "hit_rate": 1.0,
+          "ndcg": 0.4913,
+          "mrr": 0.5
+        },
+        "k10": {
+          "precision": 0.4,
+          "recall": 0.08,
+          "hit_rate": 1.0,
+          "ndcg": 0.3882,
+          "mrr": 0.5
+        },
+        "diversity_at_10": 0.4
+      },
+      {
+        "persona": "official_persona_mobile",
+        "strategy": "content_based",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 0.3
+      },
+      {
+        "persona": "official_persona_new",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.6,
+          "recall": 0.0455,
+          "hit_rate": 1.0,
+          "ndcg": 0.4469,
+          "mrr": 0.3333
+        },
+        "k10": {
+          "precision": 0.3,
+          "recall": 0.0455,
+          "hit_rate": 1.0,
+          "ndcg": 0.29,
+          "mrr": 0.3333
+        },
+        "diversity_at_10": 1.0
+      }
+    ],
+    "latest": [
+      {
+        "persona": "official_persona_frontend",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.6,
+          "recall": 0.0833,
+          "hit_rate": 1.0,
+          "ndcg": 0.4913,
+          "mrr": 0.5
+        },
+        "k10": {
+          "precision": 0.4,
+          "recall": 0.1111,
+          "hit_rate": 1.0,
+          "ndcg": 0.3882,
+          "mrr": 0.5
+        },
+        "diversity_at_10": 1.0
+      },
+      {
+        "persona": "official_persona_backend",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.2,
+          "recall": 0.0133,
+          "hit_rate": 1.0,
+          "ndcg": 0.1696,
+          "mrr": 0.3333
+        },
+        "k10": {
+          "precision": 0.3,
+          "recall": 0.04,
+          "hit_rate": 1.0,
+          "ndcg": 0.2399,
+          "mrr": 0.3333
+        },
+        "diversity_at_10": 1.0
+      },
+      {
+        "persona": "official_persona_fullstack",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.6,
+          "recall": 0.0455,
+          "hit_rate": 1.0,
+          "ndcg": 0.5296,
+          "mrr": 0.5
+        },
+        "k10": {
+          "precision": 0.4,
+          "recall": 0.0606,
+          "hit_rate": 1.0,
+          "ndcg": 0.4073,
+          "mrr": 0.5
+        },
+        "diversity_at_10": 1.0
+      },
+      {
+        "persona": "official_persona_ai",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 1.0
+      },
+      {
+        "persona": "official_persona_data",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 1.0
+      },
+      {
+        "persona": "official_persona_devops",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "k10": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "ndcg": 0.0,
+          "mrr": 0.0
+        },
+        "diversity_at_10": 1.0
+      },
+      {
+        "persona": "official_persona_mobile",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.4,
+          "recall": 0.0417,
+          "hit_rate": 1.0,
+          "ndcg": 0.4852,
+          "mrr": 1.0
+        },
+        "k10": {
+          "precision": 0.4,
+          "recall": 0.0833,
+          "hit_rate": 1.0,
+          "ndcg": 0.4479,
+          "mrr": 1.0
+        },
+        "diversity_at_10": 1.0
+      },
+      {
+        "persona": "official_persona_new",
+        "strategy": "latest",
+        "k5": {
+          "precision": 0.6,
+          "recall": 0.0455,
+          "hit_rate": 1.0,
+          "ndcg": 0.4469,
+          "mrr": 0.3333
+        },
+        "k10": {
+          "precision": 0.3,
+          "recall": 0.0455,
+          "hit_rate": 1.0,
+          "ndcg": 0.29,
+          "mrr": 0.3333
+        },
+        "diversity_at_10": 1.0
+      }
+    ],
+    "random_20seeds": [
+      {
+        "persona": "official_persona_frontend",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.2,
+          "recall": 0.0278,
+          "hit_rate": 0.65,
+          "ndcg": 0.1871,
+          "mrr": 0.31
+        },
+        "k10": {
+          "precision": 0.205,
+          "recall": 0.0569,
+          "hit_rate": 0.95,
+          "ndcg": 0.1955,
+          "mrr": 0.35
+        },
+        "diversity_at_10": 0.0
+      },
+      {
+        "persona": "official_persona_backend",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.33,
+          "recall": 0.022,
+          "hit_rate": 0.8,
+          "ndcg": 0.3383,
+          "mrr": 0.5242
+        },
+        "k10": {
+          "precision": 0.33,
+          "recall": 0.044,
+          "hit_rate": 0.95,
+          "ndcg": 0.3349,
+          "mrr": 0.5459
+        },
+        "diversity_at_10": 0.0
+      },
+      {
+        "persona": "official_persona_fullstack",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.29,
+          "recall": 0.022,
+          "hit_rate": 0.65,
+          "ndcg": 0.2648,
+          "mrr": 0.3533
+        },
+        "k10": {
+          "precision": 0.345,
+          "recall": 0.0523,
+          "hit_rate": 1.0,
+          "ndcg": 0.313,
+          "mrr": 0.4081
+        },
+        "diversity_at_10": 0.0
+      },
+      {
+        "persona": "official_persona_ai",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.11,
+          "recall": 0.0145,
+          "hit_rate": 0.45,
+          "ndcg": 0.1022,
+          "mrr": 0.1975
+        },
+        "k10": {
+          "precision": 0.14,
+          "recall": 0.0368,
+          "hit_rate": 0.8,
+          "ndcg": 0.1272,
+          "mrr": 0.2493
+        },
+        "diversity_at_10": 0.0
+      },
+      {
+        "persona": "official_persona_data",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.19,
+          "recall": 0.0207,
+          "hit_rate": 0.55,
+          "ndcg": 0.1723,
+          "mrr": 0.2683
+        },
+        "k10": {
+          "precision": 0.2,
+          "recall": 0.0435,
+          "hit_rate": 0.9,
+          "ndcg": 0.1855,
+          "mrr": 0.3189
+        },
+        "diversity_at_10": 0.0
+      },
+      {
+        "persona": "official_persona_devops",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.2,
+          "recall": 0.02,
+          "hit_rate": 0.6,
+          "ndcg": 0.2192,
+          "mrr": 0.4167
+        },
+        "k10": {
+          "precision": 0.18,
+          "recall": 0.036,
+          "hit_rate": 0.8,
+          "ndcg": 0.1968,
+          "mrr": 0.4418
+        },
+        "diversity_at_10": 0.0
+      },
+      {
+        "persona": "official_persona_mobile",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.22,
+          "recall": 0.0229,
+          "hit_rate": 0.8,
+          "ndcg": 0.2044,
+          "mrr": 0.3658
+        },
+        "k10": {
+          "precision": 0.265,
+          "recall": 0.0552,
+          "hit_rate": 0.95,
+          "ndcg": 0.2418,
+          "mrr": 0.3869
+        },
+        "diversity_at_10": 0.0
+      },
+      {
+        "persona": "official_persona_new",
+        "strategy": "random_20seeds",
+        "k5": {
+          "precision": 0.31,
+          "recall": 0.0235,
+          "hit_rate": 0.8,
+          "ndcg": 0.2982,
+          "mrr": 0.4558
+        },
+        "k10": {
+          "precision": 0.365,
+          "recall": 0.0553,
+          "hit_rate": 0.95,
+          "ndcg": 0.3422,
+          "mrr": 0.4785
+        },
+        "diversity_at_10": 0.0
+      }
+    ]
+  },
+  "case_studies": [
+    {
+      "persona": "official_persona_frontend",
+      "user_id": 108,
+      "full_name": "Frontend Developer",
+      "track": "Web Frontend & UI/UX",
+      "course_strategy": "content_based",
+      "material_strategy": "content_based",
+      "enrolled_courses": [
+        {
+          "id": 8,
+          "title": "Lập trình Backend Toàn diện với Node.js, Express và TypeScript",
+          "category": "Web Backend"
+        },
+        {
+          "id": 167,
+          "title": "NLP nền tảng với Python",
+          "category": "Generative AI & NLP"
+        },
+        {
+          "id": 200,
+          "title": "Manual Testing và thiết kế Test Case",
+          "category": "Kiểm thử phần mềm & QA"
+        },
+        {
+          "id": 207,
+          "title": "ESP32 và giao tiếp cảm biến",
+          "category": "IoT & Hệ thống nhúng"
+        }
+      ],
+      "history_count": 4,
+      "top5_courses": [
+        {
+          "rank": 1,
+          "id": 24,
+          "title": "Kiểm thử Phần mềm Toàn diện từ Manual Testing đến Automation Testing",
+          "category": "Kiểm thử phần mềm & QA",
+          "score": 0.383,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 155,
+          "title": "Quy trình Khoa học dữ liệu với Python",
+          "category": "Khoa học dữ liệu",
+          "score": 0.2682,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 6,
+          "title": "Lập trình Web Backend Hiện đại với Python FastAPI và SQLAlchemy",
+          "category": "Web Backend",
+          "score": 0.2676,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 130,
+          "title": "Xây dựng REST API với FastAPI và PostgreSQL",
+          "category": "Web Backend",
+          "score": 0.2433,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 132,
+          "title": "Fullstack React và Node.js",
+          "category": "Fullstack Development",
+          "score": 0.2321,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": true
+        }
+      ],
+      "top5_materials": [
+        {
+          "rank": 1,
+          "id": 330,
+          "title": "Sổ tay thực hành – Manual Testing và thiết kế Test Case",
+          "category": "Kiểm thử phần mềm & QA",
+          "score": 0.4937,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 337,
+          "title": "Sổ tay thực hành – ESP32 và giao tiếp cảm biến",
+          "category": "IoT & Hệ thống nhúng",
+          "score": 0.3839,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 297,
+          "title": "Sổ tay thực hành – NLP nền tảng với Python",
+          "category": "Generative AI & NLP",
+          "score": 0.316,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 28,
+          "title": "Node.js Official Documentation",
+          "category": "Web Backend",
+          "score": 0.2848,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 29,
+          "title": "Express.js Routing Guide",
+          "category": "Web Backend",
+          "score": 0.2522,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        }
+      ]
+    },
+    {
+      "persona": "official_persona_backend",
+      "user_id": 109,
+      "full_name": "Backend Developer",
+      "track": "Web Backend, DB & Software Architecture",
+      "course_strategy": "content_based",
+      "material_strategy": "content_based",
+      "enrolled_courses": [
+        {
+          "id": 4,
+          "title": "Xây dựng Single Page App với Vue 3 Composition API và Pinia State Management",
+          "category": "Web Frontend"
+        },
+        {
+          "id": 13,
+          "title": "Phát triển Ứng dụng Di động iOS và Android với React Native",
+          "category": "Lập trình Mobile"
+        },
+        {
+          "id": 134,
+          "title": "Spring Boot kết hợp Vue cho hệ thống doanh nghiệp",
+          "category": "Fullstack Development"
+        },
+        {
+          "id": 179,
+          "title": "Mạng máy tính từ TCP/IP đến HTTP",
+          "category": "Mạng máy tính"
+        }
+      ],
+      "history_count": 4,
+      "top5_courses": [
+        {
+          "rank": 1,
+          "id": 182,
+          "title": "Thiết kế mạng doanh nghiệp an toàn",
+          "category": "Mạng máy tính",
+          "score": 0.38,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 131,
+          "title": "Fullstack Vue 3 và FastAPI",
+          "category": "Fullstack Development",
+          "score": 0.3012,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 137,
+          "title": "React Native và TypeScript thực chiến",
+          "category": "Lập trình Mobile",
+          "score": 0.2499,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 136,
+          "title": "Flutter và Dart từ nền tảng đến ứng dụng",
+          "category": "Lập trình Mobile",
+          "score": 0.2453,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 14,
+          "title": "Thiết kế Kiến trúc Ứng dụng Di động Hiện đại với Flutter BLoC",
+          "category": "Lập trình Mobile",
+          "score": 0.2407,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_DURATION"
+          ],
+          "is_domain_relevant": false
+        }
+      ],
+      "top5_materials": [
+        {
+          "rank": 1,
+          "id": 264,
+          "title": "Sổ tay thực hành – Spring Boot kết hợp Vue cho hệ thống doanh nghiệp",
+          "category": "Fullstack Development",
+          "score": 0.5804,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 312,
+          "title": "Sổ tay thực hành – Thiết kế mạng doanh nghiệp an toàn",
+          "category": "Mạng máy tính",
+          "score": 0.3353,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 309,
+          "title": "Sổ tay thực hành – Mạng máy tính từ TCP/IP đến HTTP",
+          "category": "Mạng máy tính",
+          "score": 0.3231,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 53,
+          "title": "React Native Official Documentation",
+          "category": "Lập trình Mobile",
+          "score": 0.2823,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 57,
+          "title": "React Native Performance Optimization",
+          "category": "Lập trình Mobile",
+          "score": 0.2365,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        }
+      ]
+    },
+    {
+      "persona": "official_persona_fullstack",
+      "user_id": 110,
+      "full_name": "Fullstack Developer",
+      "track": "Fullstack Web Development",
+      "course_strategy": "content_based",
+      "material_strategy": "content_based",
+      "enrolled_courses": [
+        {
+          "id": 9,
+          "title": "Quản trị và Tối ưu hóa Cơ sở dữ liệu PostgreSQL Chuyên sâu",
+          "category": "Cơ sở dữ liệu & SQL"
+        },
+        {
+          "id": 146,
+          "title": "Electron và TypeScript cho ứng dụng đa nền tảng",
+          "category": "Lập trình Desktop"
+        },
+        {
+          "id": 156,
+          "title": "Feature Engineering và chuẩn bị dữ liệu",
+          "category": "Khoa học dữ liệu"
+        },
+        {
+          "id": 190,
+          "title": "Cấu trúc dữ liệu với Python",
+          "category": "Cấu trúc dữ liệu & Giải thuật"
+        }
+      ],
+      "history_count": 4,
+      "top5_courses": [
+        {
+          "rank": 1,
+          "id": 155,
+          "title": "Quy trình Khoa học dữ liệu với Python",
+          "category": "Khoa học dữ liệu",
+          "score": 0.3803,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 151,
+          "title": "Python Pandas cho phân tích dữ liệu",
+          "category": "Phân tích dữ liệu",
+          "score": 0.2574,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 15,
+          "title": "Nhập môn Khoa học Dữ liệu và Phân tích Dữ liệu với Python Pandas",
+          "category": "Khoa học dữ liệu",
+          "score": 0.2539,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 145,
+          "title": "Python, PySide và công cụ nội bộ",
+          "category": "Lập trình Desktop",
+          "score": 0.2533,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 144,
+          "title": "JavaFX và kiến trúc ứng dụng Desktop",
+          "category": "Lập trình Desktop",
+          "score": 0.2457,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION"
+          ],
+          "is_domain_relevant": false
+        }
+      ],
+      "top5_materials": [
+        {
+          "rank": 1,
+          "id": 286,
+          "title": "Sổ tay thực hành – Feature Engineering và chuẩn bị dữ liệu",
+          "category": "Khoa học dữ liệu",
+          "score": 0.5308,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 276,
+          "title": "Sổ tay thực hành – Electron và TypeScript cho ứng dụng đa nền tảng",
+          "category": "Lập trình Desktop",
+          "score": 0.4848,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 66,
+          "title": "Feature Engineering Tutorial",
+          "category": "Khoa học dữ liệu",
+          "score": 0.448,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 320,
+          "title": "Sổ tay thực hành – Cấu trúc dữ liệu với Python",
+          "category": "Cấu trúc dữ liệu & Giải thuật",
+          "score": 0.3084,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 285,
+          "title": "Sổ tay thực hành – Quy trình Khoa học dữ liệu với Python",
+          "category": "Khoa học dữ liệu",
+          "score": 0.2707,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        }
+      ]
+    },
+    {
+      "persona": "official_persona_ai",
+      "user_id": 111,
+      "full_name": "AI và Machine Learning",
+      "track": "AI, Machine Learning, Deep Learning & NLP",
+      "course_strategy": "content_based",
+      "material_strategy": "content_based",
+      "enrolled_courses": [
+        {
+          "id": 23,
+          "title": "Phân tích Mã độc và Điều tra Sự cố An ninh Mạng Incident Response",
+          "category": "An toàn thông tin"
+        },
+        {
+          "id": 160,
+          "title": "MLOps căn bản và theo dõi mô hình",
+          "category": "Machine Learning"
+        },
+        {
+          "id": 201,
+          "title": "Nền tảng UI/UX và tư duy thiết kế",
+          "category": "Thiết kế UI/UX"
+        }
+      ],
+      "history_count": 4,
+      "top5_courses": [
+        {
+          "rank": 1,
+          "id": 158,
+          "title": "Hồi quy, phân loại và đánh giá mô hình",
+          "category": "Machine Learning",
+          "score": 0.2535,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 2,
+          "id": 22,
+          "title": "Nhập môn Kiểm thử Xâm nhập và Đánh giá An ninh Mạng Thực chiến",
+          "category": "An toàn thông tin",
+          "score": 0.2417,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 204,
+          "title": "UX Research và kiểm thử khả dụng",
+          "category": "Thiết kế UI/UX",
+          "score": 0.2402,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 157,
+          "title": "Machine Learning với Scikit-learn",
+          "category": "Machine Learning",
+          "score": 0.2376,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 5,
+          "id": 126,
+          "title": "Java căn bản với lập trình hướng đối tượng",
+          "category": "Lập trình căn bản",
+          "score": 0.2178,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SIMILAR_DURATION"
+          ],
+          "is_domain_relevant": false
+        }
+      ],
+      "top5_materials": [
+        {
+          "rank": 1,
+          "id": 290,
+          "title": "Sổ tay thực hành – MLOps căn bản và theo dõi mô hình",
+          "category": "Machine Learning",
+          "score": 0.6682,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 2,
+          "id": 373,
+          "title": "Phiếu tự học: MLOps",
+          "category": "Fullstack Development",
+          "score": 0.2998,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 331,
+          "title": "Sổ tay thực hành – Nền tảng UI/UX và tư duy thiết kế",
+          "category": "Thiết kế UI/UX",
+          "score": 0.292,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 288,
+          "title": "Sổ tay thực hành – Hồi quy, phân loại và đánh giá mô hình",
+          "category": "Machine Learning",
+          "score": 0.2385,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 5,
+          "id": 103,
+          "title": "NIST Computer Security Incident Handling Guide",
+          "category": "An toàn thông tin",
+          "score": 0.2016,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        }
+      ]
+    },
+    {
+      "persona": "official_persona_data",
+      "user_id": 112,
+      "full_name": "Data Science và Database",
+      "track": "Data Science, Analytics & Databases",
+      "course_strategy": "content_based",
+      "material_strategy": "content_based",
+      "enrolled_courses": [
+        {
+          "id": 126,
+          "title": "Java căn bản với lập trình hướng đối tượng",
+          "category": "Lập trình căn bản"
+        },
+        {
+          "id": 170,
+          "title": "Prompt Engineering và đánh giá đầu ra",
+          "category": "Generative AI & NLP"
+        },
+        {
+          "id": 211,
+          "title": "Blockchain từ nguyên lý đến ứng dụng",
+          "category": "Blockchain & Web3"
+        }
+      ],
+      "history_count": 4,
+      "top5_courses": [
+        {
+          "rank": 1,
+          "id": 125,
+          "title": "C căn bản: bộ nhớ, con trỏ và cấu trúc chương trình",
+          "category": "Lập trình căn bản",
+          "score": 0.3096,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 156,
+          "title": "Feature Engineering và chuẩn bị dữ liệu",
+          "category": "Khoa học dữ liệu",
+          "score": 0.2833,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SIMILAR_LEVEL"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 3,
+          "id": 167,
+          "title": "NLP nền tảng với Python",
+          "category": "Generative AI & NLP",
+          "score": 0.2539,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 127,
+          "title": "JavaScript nền tảng cho người mới bắt đầu",
+          "category": "Lập trình căn bản",
+          "score": 0.2357,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 176,
+          "title": "Microsoft Azure căn bản thực hành",
+          "category": "Điện toán đám mây",
+          "score": 0.2342,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        }
+      ],
+      "top5_materials": [
+        {
+          "rank": 1,
+          "id": 300,
+          "title": "Sổ tay thực hành – Prompt Engineering và đánh giá đầu ra",
+          "category": "Generative AI & NLP",
+          "score": 0.5839,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 256,
+          "title": "Sổ tay thực hành – Java căn bản với lập trình hướng đối tượng",
+          "category": "Lập trình căn bản",
+          "score": 0.5163,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 341,
+          "title": "Sổ tay thực hành – Blockchain từ nguyên lý đến ứng dụng",
+          "category": "Blockchain & Web3",
+          "score": 0.2811,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 346,
+          "title": "Phiếu tự học: Python và lập trình nền tảng",
+          "category": "Lập trình căn bản",
+          "score": 0.2458,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 255,
+          "title": "Sổ tay thực hành – C căn bản: bộ nhớ, con trỏ và cấu trúc chương trình",
+          "category": "Lập trình căn bản",
+          "score": 0.2366,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        }
+      ]
+    },
+    {
+      "persona": "official_persona_devops",
+      "user_id": 113,
+      "full_name": "DevOps và Cloud",
+      "track": "DevOps, Cloud, Linux & Networking",
+      "course_strategy": "content_based",
+      "material_strategy": "content_based",
+      "enrolled_courses": [
+        {
+          "id": 129,
+          "title": "HTML, CSS và Responsive Web Design thực hành",
+          "category": "Web Frontend"
+        },
+        {
+          "id": 140,
+          "title": "Unreal Engine và Blueprint căn bản",
+          "category": "Lập trình Game"
+        },
+        {
+          "id": 182,
+          "title": "Thiết kế mạng doanh nghiệp an toàn",
+          "category": "Mạng máy tính"
+        }
+      ],
+      "history_count": 4,
+      "top5_courses": [
+        {
+          "rank": 1,
+          "id": 179,
+          "title": "Mạng máy tính từ TCP/IP đến HTTP",
+          "category": "Mạng máy tính",
+          "score": 0.2696,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 2,
+          "id": 139,
+          "title": "Unity 3D và hệ thống vật lý",
+          "category": "Lập trình Game",
+          "score": 0.2461,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 138,
+          "title": "Unity và C# cho Game 2D",
+          "category": "Lập trình Game",
+          "score": 0.2383,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 126,
+          "title": "Java căn bản với lập trình hướng đối tượng",
+          "category": "Lập trình căn bản",
+          "score": 0.2366,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 197,
+          "title": "Domain-Driven Design căn bản",
+          "category": "Kiến trúc & Thiết kế phần mềm",
+          "score": 0.2363,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION"
+          ],
+          "is_domain_relevant": false
+        }
+      ],
+      "top5_materials": [
+        {
+          "rank": 1,
+          "id": 270,
+          "title": "Sổ tay thực hành – Unreal Engine và Blueprint căn bản",
+          "category": "Lập trình Game",
+          "score": 0.6783,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 312,
+          "title": "Sổ tay thực hành – Thiết kế mạng doanh nghiệp an toàn",
+          "category": "Mạng máy tính",
+          "score": 0.4207,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 3,
+          "id": 259,
+          "title": "Sổ tay thực hành – HTML, CSS và Responsive Web Design thực hành",
+          "category": "Web Frontend",
+          "score": 0.2715,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 309,
+          "title": "Sổ tay thực hành – Mạng máy tính từ TCP/IP đến HTTP",
+          "category": "Mạng máy tính",
+          "score": 0.1952,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 5,
+          "id": 311,
+          "title": "Sổ tay thực hành – DNS, DHCP và dịch vụ mạng cốt lõi",
+          "category": "Mạng máy tính",
+          "score": 0.1885,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": true
+        }
+      ]
+    },
+    {
+      "persona": "official_persona_mobile",
+      "user_id": 114,
+      "full_name": "Mobile Developer",
+      "track": "Mobile App Development",
+      "course_strategy": "content_based",
+      "material_strategy": "content_based",
+      "enrolled_courses": [
+        {
+          "id": 148,
+          "title": "SQL nền tảng và mô hình dữ liệu quan hệ",
+          "category": "Cơ sở dữ liệu & SQL"
+        },
+        {
+          "id": 152,
+          "title": "Trực quan hóa dữ liệu với Power BI",
+          "category": "Phân tích dữ liệu"
+        },
+        {
+          "id": 193,
+          "title": "Dynamic Programming từ cơ bản đến ứng dụng",
+          "category": "Cấu trúc dữ liệu & Giải thuật"
+        }
+      ],
+      "history_count": 4,
+      "top5_courses": [
+        {
+          "rank": 1,
+          "id": 190,
+          "title": "Cấu trúc dữ liệu với Python",
+          "category": "Cấu trúc dữ liệu & Giải thuật",
+          "score": 0.301,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 150,
+          "title": "Phân tích dữ liệu với Excel và SQL",
+          "category": "Phân tích dữ liệu",
+          "score": 0.2873,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 149,
+          "title": "PostgreSQL từ thiết kế đến vận hành",
+          "category": "Cơ sở dữ liệu & SQL",
+          "score": 0.2826,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL",
+            "SIMILAR_DURATION",
+            "SIMILAR_PRICE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 10,
+          "title": "Thiết kế Cơ sở Dữ liệu Quan hệ và Thực hành Truy vấn SQL Chuẩn",
+          "category": "Cơ sở dữ liệu & SQL",
+          "score": 0.2631,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 151,
+          "title": "Python Pandas cho phân tích dữ liệu",
+          "category": "Phân tích dữ liệu",
+          "score": 0.2599,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "SIMILAR_LEVEL"
+          ],
+          "is_domain_relevant": false
+        }
+      ],
+      "top5_materials": [
+        {
+          "rank": 1,
+          "id": 323,
+          "title": "Sổ tay thực hành – Dynamic Programming từ cơ bản đến ứng dụng",
+          "category": "Cấu trúc dữ liệu & Giải thuật",
+          "score": 0.6163,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 282,
+          "title": "Sổ tay thực hành – Trực quan hóa dữ liệu với Power BI",
+          "category": "Phân tích dữ liệu",
+          "score": 0.5034,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 278,
+          "title": "Sổ tay thực hành – SQL nền tảng và mô hình dữ liệu quan hệ",
+          "category": "Cơ sở dữ liệu & SQL",
+          "score": 0.3329,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 4,
+          "id": 320,
+          "title": "Sổ tay thực hành – Cấu trúc dữ liệu với Python",
+          "category": "Cấu trúc dữ liệu & Giải thuật",
+          "score": 0.2384,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 5,
+          "id": 280,
+          "title": "Sổ tay thực hành – Phân tích dữ liệu với Excel và SQL",
+          "category": "Phân tích dữ liệu",
+          "score": 0.2312,
+          "reason_codes": [
+            "CONTENT_SIMILARITY",
+            "SAME_CATEGORY",
+            "RECOMMENDED_TYPE"
+          ],
+          "is_domain_relevant": false
+        }
+      ]
+    },
+    {
+      "persona": "official_persona_new",
+      "user_id": 107,
+      "full_name": "Người học mới",
+      "track": "Cold-start Beginner (Foundational CS & Intro Courses)",
+      "course_strategy": "latest",
+      "material_strategy": "latest",
+      "enrolled_courses": [],
+      "history_count": 0,
+      "top5_courses": [
+        {
+          "rank": 1,
+          "id": 124,
+          "title": "Python nhập môn và tư duy giải quyết bài toán",
+          "category": "Lập trình căn bản",
+          "score": 0.0,
+          "reason_codes": [
+            "RECENT_COURSE"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 2,
+          "id": 125,
+          "title": "C căn bản: bộ nhớ, con trỏ và cấu trúc chương trình",
+          "category": "Lập trình căn bản",
+          "score": 0.0,
+          "reason_codes": [
+            "RECENT_COURSE"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 3,
+          "id": 126,
+          "title": "Java căn bản với lập trình hướng đối tượng",
+          "category": "Lập trình căn bản",
+          "score": 0.0,
+          "reason_codes": [
+            "RECENT_COURSE"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 4,
+          "id": 127,
+          "title": "JavaScript nền tảng cho người mới bắt đầu",
+          "category": "Lập trình căn bản",
+          "score": 0.0,
+          "reason_codes": [
+            "RECENT_COURSE"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 5,
+          "id": 129,
+          "title": "HTML, CSS và Responsive Web Design thực hành",
+          "category": "Web Frontend",
+          "score": 0.0,
+          "reason_codes": [
+            "RECENT_COURSE"
+          ],
+          "is_domain_relevant": true
+        }
+      ],
+      "top5_materials": [
+        {
+          "rank": 1,
+          "id": 374,
+          "title": "Phiếu tự học: Data Engineering",
+          "category": "Lập trình Mobile",
+          "score": 0.0,
+          "reason_codes": [
+            "RECENT_MATERIAL"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 2,
+          "id": 373,
+          "title": "Phiếu tự học: MLOps",
+          "category": "Fullstack Development",
+          "score": 0.0,
+          "reason_codes": [
+            "RECENT_MATERIAL"
+          ],
+          "is_domain_relevant": false
+        },
+        {
+          "rank": 3,
+          "id": 372,
+          "title": "Phiếu tự học: Blockchain và Smart Contract",
+          "category": "Web Backend",
+          "score": 0.0,
+          "reason_codes": [
+            "RECENT_MATERIAL"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 4,
+          "id": 371,
+          "title": "Phiếu tự học: IoT và Embedded",
+          "category": "Web Frontend",
+          "score": 0.0,
+          "reason_codes": [
+            "RECENT_MATERIAL"
+          ],
+          "is_domain_relevant": true
+        },
+        {
+          "rank": 5,
+          "id": 370,
+          "title": "Phiếu tự học: UI/UX Design",
+          "category": "Lập trình căn bản",
+          "score": 0.0,
+          "reason_codes": [
+            "RECENT_MATERIAL"
+          ],
+          "is_domain_relevant": true
+        }
+      ]
+    }
+  ]
+}

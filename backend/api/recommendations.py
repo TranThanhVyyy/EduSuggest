@@ -10,6 +10,7 @@ from schemas.recommendation import (
     CourseRecommendationResponse,
     MaterialRecommendationResponse,
     RecommendedCourse,
+    RecommendedMaterial,
 )
 from service import recommendation_service
 from service.workflow_service import (
@@ -60,15 +61,41 @@ def get_similar_course_recommendations(
 def get_material_recommendations(
     user: Annotated[NguoiDung, Depends(require_roles("USER"))],
     db: Annotated[Session, Depends(get_db)],
-    course_id: int = Query(gt=0),
+    course_id: int | None = Query(default=None, gt=0),
     lesson_id: int | None = Query(default=None, gt=0),
     limit: int = Query(default=10, ge=1, le=20),
 ) -> MaterialRecommendationResponse:
+    if course_id is None:
+        return _run(
+            recommendation_service.recommend_standalone_materials,
+            db,
+            user.maNguoiDung,
+            limit,
+        )
     return _run(
         recommendation_service.recommend_materials,
         db,
         user.maNguoiDung,
         course_id,
         lesson_id,
+        limit,
+    )
+
+
+@router.get(
+    "/materials/{material_id}/similar",
+    response_model=list[RecommendedMaterial],
+)
+def get_similar_material_recommendations(
+    material_id: int,
+    user: Annotated[NguoiDung, Depends(require_roles("USER"))],
+    db: Annotated[Session, Depends(get_db)],
+    limit: int = Query(default=10, ge=1, le=20),
+) -> list[RecommendedMaterial]:
+    _ = user.maNguoiDung
+    return _run(
+        recommendation_service.recommend_similar_materials,
+        db,
+        material_id,
         limit,
     )

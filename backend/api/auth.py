@@ -13,6 +13,7 @@ from schemas.auth import (
     UserResponse,
 )
 from service.auth_service import (
+    AccountLockedError,
     EmailAlreadyRegisteredError,
     InvalidCredentialsError,
     UsernameAlreadyRegisteredError,
@@ -73,6 +74,11 @@ def login(
 ) -> LoginResponse:
     try:
         user, token = login_user(db, payload)
+    except AccountLockedError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Tài khoản của bạn đã bị khóa bởi Quản trị viên.",
+        ) from exc
     except InvalidCredentialsError as exc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

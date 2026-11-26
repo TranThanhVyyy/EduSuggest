@@ -1,30 +1,124 @@
 <script setup>
-import { Download, FileText } from 'lucide-vue-next'
+import { computed } from 'vue'
+import { BookOpen, Download, FileText, Layers } from 'lucide-vue-next'
+import ReasonBadgeList from '@/components/user/ReasonBadgeList.vue'
 
-defineProps({
-  material: { type: Object, required: true },
+const props = defineProps({
+  material: {
+    type: Object,
+    required: true,
+  },
+  reasonCodes: {
+    type: Array,
+    default: null,
+  },
+  showReasons: {
+    type: Boolean,
+    default: true,
+  },
+})
+
+const cleanCategory = computed(() => {
+  const value = String(props.material?.categoryName || props.material?.category || '').trim()
+  if (!value || /^Danh mục #\d+$/.test(value)) return ''
+  return value
+})
+
+const cleanProvider = computed(() => {
+  const value = String(props.material?.provider || '').trim()
+  if (!value || /^Nhà cung cấp #\d+$/.test(value)) return ''
+  return value
+})
+
+const effectiveReasonCodes = computed(() => {
+  if (!props.showReasons) return []
+  if (Array.isArray(props.reasonCodes)) return props.reasonCodes
+  return Array.isArray(props.material?.reasonCodes) ? props.material.reasonCodes : []
 })
 </script>
 
 <template>
-  <article class="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4">
+  <article class="es-card-interactive group relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface p-4 sm:p-5 hover:border-teal/40 hover:shadow-md focus-within:border-teal/60 focus-within:ring-2 focus-within:ring-teal/20">
+    <!-- Header with Icon & Format Tag -->
     <div class="flex items-start gap-3">
-      <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent"><FileText :size="20" aria-hidden="true" /></span>
+      <div class="flex size-10 shrink-0 items-center justify-center rounded-lg border border-teal/20 bg-teal/10 text-teal transition-colors group-hover:bg-teal group-hover:text-white">
+        <FileText :size="19" aria-hidden="true" />
+      </div>
+
       <div class="min-w-0 flex-1">
-        <RouterLink :to="{ name: 'material-detail', params: { id: material.id } }" class="line-clamp-2 font-bold text-navy hover:text-primary">{{ material.title }}</RouterLink>
-        <p class="mt-1 text-xs text-muted">{{ material.type }} · {{ material.format }}</p>
+        <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
+          <span v-if="material.type" class="rounded-md border border-border bg-subtle px-2 py-0.5 font-semibold text-ink">
+            {{ material.type }}
+          </span>
+          <span v-if="cleanCategory" class="max-w-[140px] truncate rounded-md bg-navy px-2 py-0.5 font-medium text-white">
+            {{ cleanCategory }}
+          </span>
+        </div>
+
+        <h3 class="mt-1.5 line-clamp-2 text-sm font-bold leading-snug text-navy transition-colors group-hover:text-teal">
+          <RouterLink
+            :to="{ name: 'material-detail', params: { id: material.id } }"
+            class="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+          >
+            {{ material.title }}
+          </RouterLink>
+        </h3>
       </div>
     </div>
-    <p class="mt-3 line-clamp-2 text-sm leading-5 text-muted">{{ material.description }}</p>
-    <div class="mt-4 space-y-1 text-xs text-muted">
-      <p>Khóa học: {{ material.courseTitle || 'Chưa có thông tin' }}</p>
-      <p>Bài học: {{ material.lessonTitle || 'Tài liệu khóa học' }}</p>
-      <p>Dung lượng: {{ material.sizeLabel || 'Chưa có dữ liệu' }}</p>
+
+    <!-- Description -->
+    <p v-if="material.description" class="mt-2.5 line-clamp-2 text-xs leading-relaxed text-muted">
+      {{ material.description }}
+    </p>
+
+    <!-- Recommendation Reason Badges -->
+    <div v-if="effectiveReasonCodes.length" class="mt-3">
+      <ReasonBadgeList :reason-codes="effectiveReasonCodes" :max-visible="2" />
     </div>
-    <div class="mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-4">
-      <span class="text-xs text-muted">{{ material.provider }}</span>
-      <RouterLink :to="{ name: 'material-detail', params: { id: material.id } }" class="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-navy hover:border-primary hover:text-primary">
-        <Download :size="14" aria-hidden="true" /> Xem
+
+    <!-- Context info (only when real API titles exist) -->
+    <div
+      v-if="material.courseTitle || material.courseId || material.lessonTitle || material.lessonId || material.sizeLabel"
+      class="mt-3 space-y-1 border-t border-border/60 pt-2.5 text-xs text-muted"
+    >
+      <p v-if="material.courseTitle" class="flex items-center gap-1.5 truncate">
+        <BookOpen :size="13" class="shrink-0 text-muted" aria-hidden="true" />
+        <span class="truncate">Khóa học: {{ material.courseTitle }}</span>
+      </p>
+      <p v-else-if="material.courseId" class="flex items-center gap-1.5 truncate">
+        <BookOpen :size="13" class="shrink-0 text-muted" aria-hidden="true" />
+        <span class="truncate">Mã khóa học: {{ material.courseId }}</span>
+      </p>
+
+      <p v-if="material.lessonTitle" class="flex items-center gap-1.5 truncate">
+        <Layers :size="13" class="shrink-0 text-muted" aria-hidden="true" />
+        <span class="truncate">Bài học: {{ material.lessonTitle }}</span>
+      </p>
+      <p v-else-if="material.lessonId" class="flex items-center gap-1.5 truncate">
+        <Layers :size="13" class="shrink-0 text-muted" aria-hidden="true" />
+        <span class="truncate">Mã bài học: {{ material.lessonId }}</span>
+      </p>
+
+      <p v-if="material.sizeLabel" class="text-[11px] text-muted">
+        Dung lượng: {{ material.sizeLabel }}
+      </p>
+    </div>
+
+    <!-- Footer & Link -->
+    <div class="mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-border/80 pt-3.5">
+      <span v-if="cleanProvider" class="min-w-0 flex-1 truncate text-xs font-medium text-ink">
+        {{ cleanProvider }}
+      </span>
+      <span v-else class="text-xs text-muted">
+        Tài liệu học tập
+      </span>
+
+      <RouterLink
+        :to="{ name: 'material-detail', params: { id: material.id } }"
+        class="ui-button ui-button--outline ui-button--sm inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap"
+      >
+        <Download :size="13" aria-hidden="true" />
+        <span>Xem tài liệu</span>
       </RouterLink>
     </div>
   </article>

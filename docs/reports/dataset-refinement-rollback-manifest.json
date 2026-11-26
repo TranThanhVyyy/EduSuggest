@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-11-26T16:19:23.543938+00:00",
+  "target_db": "edusuggest_phase53_staging",
+  "operations": [
+    {
+      "action": "RESTORE_ROW",
+      "table": "KhoaHoc",
+      "pk_column": "maKhoaHoc",
+      "pk_value": 31,
+      "old_values": {
+        "tieuDe": "fhahsahdáhdahshdáhdahdá",
+        "moTa": null,
+        "gia": null,
+        "trinhDo": null,
+        "thoiLuong": null,
+        "trangThaiDuyet": null,
+        "trangThaiHienThi": "HIDDEN",
+        "hinhAnh": "/media/courses/v5-realistic/course-031.webp"
+      }
+    },
+    {
+      "action": "DELETE_INSERTED_LESSONS",
+      "course_id": 31
+    },
+    {
+      "action": "RESTORE_ROW",
+      "table": "KhoaHoc",
+      "pk_column": "maKhoaHoc",
+      "pk_value": 29,
+      "old_values": {
+        "thoiLuong": 180
+      }
+    },
+    {
+      "action": "RESTORE_ROW",
+      "table": "TaiLieu",
+      "pk_column": "maTaiLieu",
+      "pk_value": 110,
+      "old_values": {
+        "tieuDe": "Atlassian Jira Bug Tracking Guide",
+        "duongDanTep": "https://www.atlassian.com/software/jira/guides/bug-tracking/overview"
+      }
+    },
+    {
+      "action": "RESTORE_ROW",
+      "table": "TaiLieu",
+      "pk_column": "maTaiLieu",
+      "pk_value": 98,
+      "old_values": {
+        "tieuDe": "Penetration Testing Execution Standard (PTES)",
+        "moTa": "Tiêu chuẩn thực thi kiểm thử xâm nhập quốc tế.",
+        "duongDanTep": "http://www.pentest-standard.org/"
+      }
+    },
+    {
+      "action": "RESTORE_ROW",
+      "table": "NhaCungCapKhoaHoc",
+      "pk_column": "maNhaCungCap",
+      "pk_value": 5,
+      "old_values": {
+        "tieuSu": "h",
+        "chuyenMon": "h"
+      }
+    }
+  ]
+}
