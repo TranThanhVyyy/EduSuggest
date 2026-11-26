@@ -1,18 +1,20 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { ChevronDown, LogOut, Menu, UserRound } from 'lucide-vue-next'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { ChevronDown, ChevronRight, LogOut, Menu, UserRound } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import { authState } from '@/service/authState'
 import { logoutAccount } from '@/service/authService'
+import NotificationBellDropdown from '@/components/shared/NotificationBellDropdown.vue'
 
 const emit = defineEmits(['toggle-navigation'])
-
 const route = useRoute()
 const router = useRouter()
+
 const accountOpen = ref(false)
+const accountRef = ref(null)
 const logoutError = ref('')
-const title = computed(() => route.meta.title || 'Dashboard')
-const section = computed(() => route.meta.adminSection || 'Quản trị hệ thống')
+
+const pageTitle = computed(() => route.meta.title || 'Tổng quan')
 const fullName = computed(() => authState.user?.hoTen || authState.user?.tenTaiKhoan || 'Quản trị viên')
 const initials = computed(() => {
   const words = fullName.value.trim().split(/\s+/).filter(Boolean)
@@ -20,6 +22,28 @@ const initials = computed(() => {
   return words.length > 1
     ? `${words[0][0]}${words[words.length - 1][0]}`.toLocaleUpperCase('vi')
     : words[0].slice(0, 2).toLocaleUpperCase('vi')
+})
+
+function handlePointerDown(event) {
+  if (accountOpen.value && accountRef.value && !accountRef.value.contains(event.target)) {
+    accountOpen.value = false
+  }
+}
+
+function handleKeydown(event) {
+  if (event.key === 'Escape') {
+    accountOpen.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('pointerdown', handlePointerDown)
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('pointerdown', handlePointerDown)
+  document.removeEventListener('keydown', handleKeydown)
 })
 
 async function logout() {
@@ -35,39 +59,84 @@ async function logout() {
 </script>
 
 <template>
-  <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
-    <div class="flex min-h-[72px] items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
-      <div class="flex min-w-0 items-center gap-3">
-        <button type="button" class="flex size-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 text-navy hover:bg-background lg:hidden" aria-label="Mở điều hướng quản trị" @click="emit('toggle-navigation')">
-          <Menu :size="19" aria-hidden="true" />
+  <header class="sticky top-0 z-30 border-b border-border/80 bg-surface/90 backdrop-blur-md">
+    <div class="flex h-15 items-center justify-between gap-3 px-4 sm:px-6 lg:px-10">
+      <!-- Left: Mobile trigger + Compact Breadcrumb -->
+      <div class="flex min-w-0 items-center gap-2.5">
+        <button
+          type="button"
+          class="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border text-navy transition-colors duration-150 hover:bg-subtle lg:hidden"
+          aria-label="Mở điều hướng quản trị"
+          @click="emit('toggle-navigation')"
+        >
+          <Menu :size="18" aria-hidden="true" />
         </button>
-        <div class="min-w-0">
-          <p class="truncate text-xs text-muted"><RouterLink :to="{ name: 'admin-dashboard' }" class="hover:text-primary">Admin</RouterLink> / {{ section }}</p>
-          <h1 class="mt-1 truncate text-lg font-bold text-navy sm:text-xl">{{ title }}</h1>
-        </div>
+
+        <nav class="flex min-w-0 items-center gap-1.5 text-sm" aria-label="Vị trí hiện tại">
+          <RouterLink
+            :to="{ name: 'admin-dashboard' }"
+            class="shrink-0 font-medium text-slate-500 transition-colors duration-150 hover:text-navy"
+          >
+            Quản trị
+          </RouterLink>
+          <ChevronRight :size="14" class="shrink-0 text-slate-400" aria-hidden="true" />
+          <span class="truncate font-semibold text-navy">{{ pageTitle }}</span>
+        </nav>
       </div>
 
-      <div class="flex shrink-0 items-center gap-2 sm:gap-3">
-        <div class="relative">
-          <button type="button" class="flex items-center gap-2 rounded-xl p-1.5 text-left hover:bg-background" aria-label="Menu tài khoản Admin" :aria-expanded="accountOpen" @click="accountOpen = !accountOpen">
-            <span class="flex size-9 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{{ initials }}</span>
-            <span class="hidden min-w-0 sm:block">
-              <span class="block max-w-36 truncate text-sm font-semibold text-navy">{{ fullName }}</span>
-              <span class="block text-xs text-muted">Quản trị viên</span>
-            </span>
-            <ChevronDown class="hidden text-muted sm:block" :size="15" aria-hidden="true" />
-          </button>
-          <div v-if="accountOpen" class="absolute right-0 top-12 z-40 w-56 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
-            <RouterLink :to="{ name: 'admin-profile' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false">
-              <UserRound :size="16" aria-hidden="true" /> Thông tin cá nhân
+      <!-- Right: Notification Bell + Compact Account Pill -->
+      <div class="flex items-center gap-2 shrink-0">
+        <NotificationBellDropdown role="ADMIN" />
+        <div ref="accountRef" class="relative shrink-0">
+        <button
+          type="button"
+          class="flex items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors duration-150 hover:bg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+          aria-label="Menu tài khoản Quản trị"
+          :aria-expanded="accountOpen"
+          @click="accountOpen = !accountOpen"
+        >
+          <span class="flex size-7 items-center justify-center rounded-full bg-navy text-[11px] font-bold text-white">
+            {{ initials }}
+          </span>
+          <span class="hidden max-w-40 truncate text-sm font-medium text-navy sm:block">
+            {{ fullName }}
+          </span>
+          <ChevronDown class="hidden text-slate-400 sm:block" :size="14" aria-hidden="true" />
+        </button>
+
+        <Transition name="es-popover">
+          <div
+            v-if="accountOpen"
+            class="absolute right-0 top-11 z-40 w-56 origin-top-right rounded-xl border border-border bg-surface p-1.5 shadow-lg"
+          >
+            <div class="mb-1 border-b border-border/70 px-3 py-2">
+              <p class="truncate text-sm font-semibold text-navy">{{ fullName }}</p>
+              <p class="text-xs text-slate-500">Quản trị viên hệ thống</p>
+            </div>
+            <RouterLink
+              :to="{ name: 'admin-profile' }"
+              class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy transition-colors duration-150 hover:bg-subtle"
+              @click="accountOpen = false"
+            >
+              <UserRound :size="15" class="text-slate-500" aria-hidden="true" />
+              <span>Hồ sơ cá nhân</span>
             </RouterLink>
-            <button type="button" class="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-muted hover:bg-background" @click="logout">
-              <LogOut :size="16" aria-hidden="true" /> Đăng xuất
+            <button
+              type="button"
+              class="mt-0.5 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-slate-600 transition-colors duration-150 hover:bg-subtle hover:text-navy"
+              @click="logout"
+            >
+              <LogOut :size="15" class="text-slate-500" aria-hidden="true" />
+              <span>Đăng xuất</span>
             </button>
           </div>
-        </div>
+        </Transition>
+      </div>
       </div>
     </div>
-    <p v-if="logoutError" class="px-4 pb-3 text-xs text-primary" role="status">{{ logoutError }}</p>
+
+    <p v-if="logoutError" class="border-t border-border/70 bg-subtle/60 px-4 py-2 text-xs text-navy sm:px-6 lg:px-10" role="status">
+      {{ logoutError }}
+    </p>
   </header>
 </template>

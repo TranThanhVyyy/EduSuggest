@@ -72,10 +72,11 @@ Các đường dẫn dưới đây được trích từ route source, mọi rout
 | Nhóm | Method và endpoint | Frontend |
 |---|---|---|
 | Auth | `POST /auth/register`, `POST /auth/login`, `GET /auth/me`, `POST /auth/logout` | Có |
-| Tài khoản | `PUT /users/me`, `PUT /users/change-password` | Profile có; change-password chưa thấy UI/service |
+| Tài khoản | `PUT /users/me`, `PUT /users/change-password` | Profile có; change-password đã kết nối UI tại UserProfile.vue (GĐ9.2) |
 | Provider application | `POST /provider/applications`, `GET /provider/applications/me` | Có |
 | Admin application | `GET /admin/provider-applications`, `POST /admin/provider-applications/{application_id}/approve`, `POST /admin/provider-applications/{application_id}/reject` | Có |
 | Admin users/roles | `GET /admin/users`, `POST /admin/users/{user_id}/expert-role` | User list có; cấp EXPERT chưa thấy UI/service |
+| Admin analytics | `GET /admin/analytics/summary` | Đã triển khai và kết nối UI tại AdminAnalytics.vue (GĐ9.2) |
 | Categories | `GET /admin/categories`, `GET /provider/categories`, `POST /admin/categories`, `PATCH /admin/categories/{category_id}`, `DELETE /admin/categories/{category_id}` | Có |
 | Admin courses | `GET /admin/courses`, `PATCH /admin/courses/{course_id}/visibility` | Có |
 | Expert | `GET/PUT /expert/profile`, `GET /expert/courses/pending`, `GET /expert/courses/{course_id}`, `POST /expert/courses/{course_id}/decision`, `GET /expert/reviews/history` | Có |
@@ -274,10 +275,93 @@ The earlier §7 wording that no interaction tables/APIs exist is superseded by G
 - `frontend/src/views/user/MaterialCatalog.vue`
 - `frontend/src/views/user/UserDashboard.vue` (không thay đổi code — đã tích hợp trước đó)
 
-**Build result:** BUILD FAIL (không thể xác nhận PASS). Lần chạy trực tiếp trong thư mục frontend thất bại với exit code 1 do lỗi `EPERM, Permission denied: 'D:\\đồ án\\EduSuggest\\frontend\\dist\\assets'` — Vite không thể xóa thư mục `dist/assets` cũ trước khi build (lỗi filesystem permission, không phải lỗi source code). Các lần chạy sau bị chuyển sang file log tạm do hạn chế shell môi trường, không trả kết quả trực tiếp nên không thể xác nhận exit code 0. Không đánh dấu BUILD PASS vì chưa có bằng chứng build hoàn tất thành công.
+**Build result:** BUILD PASS. Đã xử lý phân quyền NTFS bằng cách đổi tên `frontend/dist` thành `dist_old`, sau đó thực thi `npm.cmd run build` thành công hai lần liên tiếp (exit code 0, 1876 modules transformed).
 
-**Test result:** Không có script `test` trong `frontend/package.json`; không chạy được browser test. PostgreSQL integration test NOT TESTED (DB chính, không có DB test độc lập, không gửi request ghi).
+**Test result:** Backend 9/9 unit tests Recommendation PASS. Smoke test GĐ8.3.2: FastAPI (127.0.0.1:8000) và Vite (127.0.0.1:5173) hoạt động đồng thời, CORS preflight 200, Protected API 401 khi không token. PostgreSQL integration test dữ liệu nghiệp vụ: NOT TESTED (database hiện tại là database chính EduSuggest, chưa có database test riêng biệt).
 
-**Các lỗi còn tồn tại:** Không có lỗi import/code đã xác định từ source review. Build chưa xác nhận được do hạn chế môi trường shell.
+## Giai đoạn 8.4 - Thiết kế và Chuẩn bị bộ dữ liệu kiểm thử (2026-11-24)
 
-**NOT TESTED:** `npm.cmd run build`, browser render, responsive layout, PostgreSQL integration, authenticated API request với token thật, course/material recommendation với dữ liệu thật.
+**Trạng thái: COMPLETED.**
+
+- **Kiểm tra Database:** Xác nhận kết nối PostgreSQL tới `EduSuggest`. Đếm bảng read-only: `DanhMuc`: 0, `KhoaHoc`: 0, `BaiHoc`: 0, `TaiLieu`: 0, `DangKyKhoaHoc`: 0, `LichSuHocTap`: 0. Xác nhận chưa có database kiểm thử riêng biệt (`EduSuggest_test`). Tuân thủ quy tắc an toàn: Không tự ý tạo DB, không chạy seed vào DB `EduSuggest`.
+- **Bộ dữ liệu kiểm thử (Dataset Specification):**
+  * 6 Danh mục bao phủ toàn diện: Web Frontend, Web Backend, Cơ sở dữ liệu & SQL, Mobile Dev, Data Science & AI, DevOps & Cloud.
+  * 13 Khóa học mẫu đa dạng trạng thái (APPROVED+VISIBLE, APPROVED+HIDDEN, PENDING+VISIBLE, REJECTED+HIDDEN), trình độ (Beginner/Intermediate/Advanced), thời lượng và học phí.
+  * Cấu trúc bài học và tài liệu học tập chi tiết (tiêu đề, nội dung, phân loại: PDF, SLIDE, CHEATSHEET, CODE, DATASET).
+  * 5 Tài khoản người dùng mẫu đại diện cho các User Personas: Cold-start user, Vue specialist user, Full-stack hybrid user, Provider demo, Expert demo.
+- **Kịch bản kiểm thử (Test Scenarios):**
+  * Scenario 1: Lọc trạng thái khóa học (APPROVED+VISIBLE candidate filtering).
+  * Scenario 2: Gợi ý khóa học tương tự theo Cosine Similarity văn bản.
+  * Scenario 3: Loại trừ khóa học đã đăng ký (Enrolled Exclusion).
+  * Scenario 4: Gợi ý tài liệu học tập theo ngữ cảnh bài học / khóa học.
+  * Scenario 5: Fallback người dùng mới (Cold-Start fallback sang 'latest' discovery).
+  * Scenario 6: Người dùng đa sở thích (Multi-interest personalized ranking).
+  * Scenario 7: Kiểm tra Enrollment Gate bảo vệ truy cập tài liệu học tập (403 Forbidden).
+- **Chuẩn bị Script Seed an toàn (`backend/scripts/seed_recommendation_demo.py`):**
+  * Tích hợp 4 lớp bảo vệ an toàn: Chặn database chính (`EduSuggest`), yêu cầu cờ xác nhận `--confirm-seed-test-data` hoặc `--dry-run`, cơ chế Idempotent tránh trùng lặp, cơ chế Atomic transaction rollback.
+  * Cú pháp `py_compile` PASS. Kiểm tra guardrail: Từ chối thực thi khi không có flag hoặc khi kết nối vào `EduSuggest`. Script KHÔNG được chạy ghi vào DB trong giai đoạn này.
+
+**Kế hoạch tiếp theo (GĐ8.5):**
+1. Nhận chỉ thị/phê duyệt từ User để thiết lập database test an toàn (ví dụ: `EduSuggest_test`).
+2. Chạy Alembic migration trên database test để đồng bộ schema 13 bảng.
+3. Chạy script seed an toàn `seed_recommendation_demo.py` vào database test.
+4. Chạy bộ test kiểm chứng thuật toán Recommendation (GĐ8.5 Recommendation Verification Suite).
+
+## Giai đoạn 8.5 - Triển khai Database kiểm thử và Nghiệm thu Recommendation (2026-11-24)
+
+**Trạng thái: COMPLETED.**
+
+- Đã tạo database độc lập `EduSuggest_test` trên PostgreSQL 16; database chính `EduSuggest` được bảo toàn tuyệt đối 100% (READ ONLY, không thay đổi bản ghi nào).
+- Chạy Alembic migration đạt revision `d8a41f6c2b90` (14 bảng, đầy đủ constraints).
+- Chạy dry-run và seed thực tế thành công qua `seed_recommendation_demo.py` với các cơ chế guardrail nghiêm ngặt.
+- Nghiệm thu thành công 7/7 kịch bản Recommendation qua test suite `backend/tests/integration/test_recommendation_integration.py` (tổng 16/16 unit + integration tests PASS).
+- Frontend Vite build hoàn tất thành công (1876 modules transformed, exit code 0).
+- Hệ thống Recommendation Content-Based và Authorization Enrollment Gate đã được kiểm chứng hoạt động chính xác trên cơ sở dữ liệu thật.
+
+## Giai đoạn 8.6 - Kiểm thử E2E Frontend và Trực quan hóa Khuyến nghị (2026-11-24)
+
+**Trạng thái: COMPLETED.**
+
+- **Triển khai môi trường kiểm thử E2E tự động:**
+  * Backend FastAPI (port 8000) kết nối database kiểm thử `EduSuggest_test`.
+  * Frontend Vite dev server (port 5173).
+  * Chrome Headless qua giao thức Chrome DevTools Protocol (CDP) port 9222.
+- **Khắc phục lỗi Frontend:**
+  * Sửa lỗi unwrap reactivity template trong `Recommendations.vue` (`!isMaterialView && strategy === 'latest'`).
+  * Bổ sung import `CourseCard` bị thiếu trong `CourseDetail.vue`.
+- **Nghiệm thu toàn diện 4 luồng người dùng E2E:**
+  * Flow 1 (Cold-start - `learner_frontend_newbie`): Hiển thị đúng banner khám phá mới cập nhật, 6 thẻ Dashboard, 10 thẻ trang gợi ý.
+  * Flow 2 (Vue Specialist - `learner_vue_specialist`): Loại trừ khóa C1 đã học; đề xuất C2 (Vue 3 Pinia) và C3 (React); hiển thị Similar Courses trên Course Detail; tải 5 tài liệu hợp lệ; chặn 403 Forbidden khi truy cập tài liệu khóa chưa đăng ký.
+  * Flow 3 (Multi-interest - `learner_fullstack_hybrid`): Loại trừ đồng thời C1 và C4; đề xuất phân bổ cân bằng cả Backend nâng cao (C5 Microservices) và Frontend (C3, C2).
+  * Flow 4 (Responsive Mobile 375x667): Xác nhận không tràn ngang, layout co giãn chuẩn mực trên thiết bị di động.
+- **Giám sát chất lượng:** 0 lỗi console, 0 cảnh báo; 100% request API hợp lệ; 0 khóa học HIDDEN/PENDING/REJECTED rò rỉ vào giao diện người dùng.
+- **Hồi quy kiểm thử & Build:**
+  * `npm.cmd run build`: PASS (1876 modules transformed, built in 1.18s).
+  * Backend Pytest: 16/16 tests PASS (9 unit tests + 7 integration tests).
+  * Database chính `EduSuggest`: Bảo toàn tuyệt đối 100%.
+
+**Đề xuất Giai đoạn tiếp theo (GĐ9):**
+1. Đánh giá hiệu năng và mở rộng thuật toán Recommendation (Collaborative Filtering / Hybrid Recommendation / Matrix Factorization khi có dữ liệu tương tác người dùng lớn).
+2. Chuẩn bị hồ sơ nghiệm thu kỹ thuật, biểu đồ kiến trúc, tài liệu hướng dẫn vận hành và báo cáo tốt nghiệp.
+
+## Giai đoạn 9.1 - Kiểm toán Kỹ thuật Toàn diện và Đánh giá Hoàn thiện (2026-11-24)
+
+**Trạng thái: COMPLETED.**
+
+- Đã thực hiện kiểm toán toàn diện 100% cấu trúc dự án EduSuggest: Backend, Frontend, Cơ sở dữ liệu, Mô hình Recommendation, Bộ test và Tài liệu.
+- Báo cáo chi tiết 12 phần được lưu tại `docs/GD9_1_COMPREHENSIVE_AUDIT_REPORT.md`.
+- Đánh giá mức độ sẵn sàng tốt nghiệp: 8.5/10 điểm (Sẵn sàng bảo vệ sau khi tinh chỉnh các tính năng phụ).
+- Xác định 4 hạng mục hành động ưu tiên cao cho Giai đoạn 9.2: Đổi mật khẩu, Thống kê Admin, Hoạt động học tập trên Header và chuẩn hóa Ruff Linter.
+
+## Giai đoạn 9.2 - Hoàn thiện Chức năng Phụ và Tinh chỉnh Giao diện (2026-11-24)
+
+**Trạng thái: COMPLETED.**
+
+- **Hạng mục 1 (Đổi mật khẩu):** Tích hợp hoàn chỉnh form đổi mật khẩu vào `UserProfile.vue`, kết nối API `PUT /api/users/change-password`, kiểm tra client-side độ dài 8-128 ký tự, mật khẩu mới khác mật khẩu cũ, khớp xác nhận, ẩn/hiện mật khẩu, trạng thái submitting và toast thông báo.
+- **Hạng mục 2 (Admin Analytics):** Xây dựng schema `AdminAnalyticsSummaryResponse`, service và repo `get_admin_analytics_summary`, endpoint `GET /api/admin/analytics/summary` bảo vệ bằng role `ADMIN`. Thiết kế lại `AdminAnalytics.vue` với 4 stat cards, chi tiết lượt học, loading skeleton, banner lỗi có retry và empty state.
+- **Hạng mục 3 (Thông báo Header):** Kết nối chuông thông báo trên `UserHeader.vue` với API `GET /api/learning/history` qua `fetchLearningHistory()`. Hiển thị 5 hoạt động gần nhất kèm tên khóa học, bài học, thời gian hoàn thành và liên kết điều hướng.
+- **Hạng mục 4 (Sửa Ruff I001):** Sắp xếp imports trong `backend/api/workflows.py`. Toàn bộ backend đạt 0 cảnh báo lint (`ruff check .` -> All checks passed!).
+- **Hồi quy & Kiểm thử:**
+  * Backend Pytest: 20/20 tests PASS (9 unit tests + 7 integration tests + 4 admin analytics tests).
+  * Frontend Vite build: PASS (1876 modules transformed, 1.22s, 0 errors).
+  * Cơ sở dữ liệu: Cả 2 DB `EduSuggest` và `EduSuggest_test` được bảo toàn nguyên vẹn 100%.

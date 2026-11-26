@@ -9,6 +9,7 @@ import {
   PROVIDER_STATUS_LABELS,
 } from '@/service/providerApiService'
 import { loadProviderCourse, loadProviderReviews, mapProviderReview, providerErrorMessage, submitProviderCourseRecord } from '@/service/providerApiService'
+import { openMaterialFile } from '@/service/materialFileService'
 
 const route = useRoute()
 const router = useRouter()
@@ -20,6 +21,19 @@ const submitConfirmOpen = ref(false)
 const modalError = ref('')
 const toastMessage = ref('')
 const isSubmitting = ref(false)
+const openingMaterialId = ref('')
+
+async function openCourseMaterial(material) {
+  openingMaterialId.value = String(material.id)
+  loadError.value = ''
+  try {
+    await openMaterialFile({ id: material.id, fileUrl: material.fileUrl, title: material.title })
+  } catch (error) {
+    loadError.value = providerErrorMessage(error, 'Không thể mở tệp tài liệu.')
+  } finally {
+    openingMaterialId.value = ''
+  }
+}
 
 async function refreshCourse() {
   try {
@@ -144,7 +158,7 @@ async function confirmSubmit() {
           <ul v-if="course.materials.length" class="mt-4 divide-y divide-slate-100">
             <li v-for="material in course.materials" :key="material.id" class="flex flex-wrap items-center justify-between gap-2 py-3">
               <span class="flex min-w-0 items-center gap-2"><FileText :size="16" class="shrink-0 text-muted" aria-hidden="true" /><span class="truncate text-sm font-semibold text-navy">{{ material.title }}</span></span>
-              <a v-if="material.fileUrl" :href="material.fileUrl" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-primary hover:underline">Mở tệp</a>
+              <button v-if="material.fileUrl" type="button" class="text-xs font-semibold text-primary hover:underline" @click="openCourseMaterial(material)">{{ openingMaterialId === String(material.id) ? 'Đang mở…' : 'Mở tệp' }}</button>
               <span v-else class="text-xs text-muted">Chưa có tệp xem trước</span>
             </li>
           </ul>

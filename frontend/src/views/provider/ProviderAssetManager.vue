@@ -6,7 +6,8 @@ import ToastMessage from '@/components/reviewer/ToastMessage.vue'
 import {
   PROVIDER_STATUS,
 } from '@/service/providerApiService'
-import { createProviderMaterial, deleteProviderMaterial, loadProviderCourse, providerErrorMessage, updateProviderLesson, updateProviderMaterial } from '@/service/providerApiService'
+import { createProviderMaterial, deleteProviderMaterial, loadProviderCourse, providerErrorMessage, updateProviderLesson, updateProviderMaterial, uploadStandaloneMaterialFile } from '@/service/providerApiService'
+import { isProtectedMaterialUrl, openMaterialFile } from '@/service/materialFileService'
 
 const route = useRoute()
 const courseId = String(route.params.id)
@@ -18,6 +19,8 @@ const toastMessage = ref('')
 const videoDrafts = reactive({})
 const materialFormOpen = ref(false)
 const editingMaterialId = ref('')
+const selectedMaterialFile = ref(null)
+const openingMaterialId = ref('')
 const materialForm = reactive({
   title: '',
   documentType: '',
@@ -92,36 +95,59 @@ function openNewMaterial() {
     lessonId: '',
   })
   materialFormOpen.value = true
+  selectedMaterialFile.value = null
   errorMessage.value = ''
 }
 
 function openEditMaterial(material) {
   editingMaterialId.value = material.id
-  Object.assign(materialForm, material)
+  Object.assign(materialForm, material, {
+    fileUrl: isProtectedMaterialUrl(material.fileUrl) ? '' : material.fileUrl,
+  })
+  selectedMaterialFile.value = null
   materialFormOpen.value = true
   errorMessage.value = ''
 }
 
 function setMaterialFile(event) {
-  event.target.value = ''
-  errorMessage.value = 'Backend chưa có API upload tài liệu. Hãy nhập URL tệp đã được lưu trữ thực tế.'
+  selectedMaterialFile.value = event.target.files?.[0] || null
+  if (selectedMaterialFile.value) materialForm.fileUrl = ''
+  errorMessage.value = ''
 }
 
 async function saveMaterial() {
   try {
     if (!materialForm.lessonId) throw new Error('API hiện yêu cầu tài liệu phải gắn với một bài học.')
-    if (!/^https?:\/\//i.test(materialForm.fileUrl)) throw new Error('Nhập URL HTTP/HTTPS thật; tệp được chọn từ máy không thể lưu trên Backend.')
+    if (!selectedMaterialFile.value && !editingMaterialId.value && !/^https?:\/\//i.test(materialForm.fileUrl)) throw new Error('Chọn tệp riêng tư hoặc nhập URL HTTP/HTTPS.')
+    let saved
     if (editingMaterialId.value) {
-      await updateProviderMaterial(courseId, materialForm.lessonId, editingMaterialId.value, materialForm)
+      const values = { ...materialForm }
+      if (!materialForm.fileUrl) delete values.fileUrl
+      saved = await updateProviderMaterial(courseId, materialForm.lessonId, editingMaterialId.value, values)
     } else {
-      await createProviderMaterial(courseId, materialForm.lessonId, materialForm)
+      saved = await createProviderMaterial(courseId, materialForm.lessonId, materialForm)
+    }
+    if (selectedMaterialFile.value) {
+      await uploadStandaloneMaterialFile(saved.id, selectedMaterialFile.value)
     }
     await refresh()
     materialFormOpen.value = false
     errorMessage.value = ''
-    toastMessage.value = 'Đã lưu metadata tài liệu trên Backend.'
+    toastMessage.value = selectedMaterialFile.value ? 'Đã lưu tệp riêng tư trên Backend.' : 'Đã lưu URL tài liệu trên Backend.'
   } catch (error) {
     errorMessage.value = providerErrorMessage(error, 'Không thể lưu tài liệu.')
+  }
+}
+
+async function openManagedMaterial(material) {
+  openingMaterialId.value = String(material.id)
+  errorMessage.value = ''
+  try {
+    await openMaterialFile({ id: material.id, fileUrl: material.fileUrl, title: material.title })
+  } catch (error) {
+    errorMessage.value = providerErrorMessage(error, 'Không thể mở tệp tài liệu.')
+  } finally {
+    openingMaterialId.value = ''
   }
 }
 
@@ -218,11 +244,14 @@ function formatBytes(bytes) {
           </div>
         </div>
         <div v-if="material.fileUrl" class="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-background">
-          <img v-if="fileKind(material) === 'image'" :src="material.fileUrl" :alt="material.title" class="mx-auto max-h-[480px] max-w-full object-contain">
-          <iframe v-else-if="fileKind(material) === 'pdf'" :src="material.fileUrl" :title="`Xem trước ${material.title}`" class="h-[min(70vh,600px)] w-full border-0"></iframe>
-          <video v-else-if="fileKind(material) === 'video'" :src="material.fileUrl" controls class="max-h-[480px] w-full bg-navy"></video>
-          <div v-else class="p-4 text-sm text-muted">Định dạng này không xem trước được trong giao diện.</div>
-          <a :href="material.fileUrl" :download="material.fileName || material.title" target="_blank" rel="noopener noreferrer" class="m-3 inline-flex text-xs font-semibold text-primary hover:underline">{{ fileKind(material) === 'download' ? 'Tải / mở tệp' : 'Mở tệp trong tab mới' }}</a>
+          <div v-if="isProtectedMaterialUrl(material.fileUrl)" class="p-4 text-sm text-muted">Tệp được bảo vệ và chỉ được tải sau khi Backend xác thực quyền hiện tại.</div>
+          <template v-else>
+            <img v-if="fileKind(material) === 'image'" :src="material.fileUrl" :alt="material.title" class="mx-auto max-h-[480px] max-w-full object-contain">
+            <iframe v-else-if="fileKind(material) === 'pdf'" :src="material.fileUrl" :title="`Xem trước ${material.title}`" class="h-[min(70vh,600px)] w-full border-0"></iframe>
+            <video v-else-if="fileKind(material) === 'video'" :src="material.fileUrl" controls class="max-h-[480px] w-full bg-navy"></video>
+            <div v-else class="p-4 text-sm text-muted">Định dạng này không xem trước được trong giao diện.</div>
+          </template>
+          <button type="button" class="m-3 inline-flex text-xs font-semibold text-primary hover:underline" @click="openManagedMaterial(material)">{{ openingMaterialId === String(material.id) ? 'Đang mở…' : 'Mở / tải tệp' }}</button>
         </div>
         <p v-else class="mt-4 rounded-lg border border-dashed border-slate-200 p-3 text-xs text-muted">Chưa có tệp thực tế để xem trước hoặc tải xuống.</p>
       </article>
@@ -246,12 +275,13 @@ function formatBytes(bytes) {
             <option v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">{{ lesson.title || 'Bài học chưa đặt tên' }}</option>
           </select>
         </label>
-        <label class="text-xs font-semibold text-muted">Upload tệp (chưa hỗ trợ)
-          <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg" disabled class="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs opacity-60">
-          <span class="mt-1 block font-normal">Backend chưa có API lưu trữ tệp.</span>
+        <label class="text-xs font-semibold text-muted">Tải tệp riêng tư
+          <input type="file" accept=".pdf,.txt,.csv,.docx,.pptx,.xlsx,.png,.jpg,.jpeg,.webp" class="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs" @change="setMaterialFile">
+          <span class="mt-1 block font-normal">Tối đa 25 MB; tệp được xác thực quyền ở mỗi lần mở.</span>
         </label>
-        <label class="text-xs font-semibold text-muted md:col-span-2">URL tệp đã có
-          <input v-model="materialForm.fileUrl" type="url" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-navy outline-none focus:border-primary" placeholder="Không tạo URL nếu chưa có tệp thật">
+        <label class="text-xs font-semibold text-muted md:col-span-2">Hoặc URL tệp ngoài
+          <input v-model="materialForm.fileUrl" type="url" :disabled="Boolean(selectedMaterialFile)" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-navy outline-none focus:border-primary disabled:bg-background" placeholder="https://example.org/material.pdf">
+          <span class="mt-1 block font-normal">URL ngoài không thể được EduSuggest thu hồi.</span>
         </label>
       </div>
       <div class="mt-4 flex justify-end gap-2">
@@ -259,7 +289,7 @@ function formatBytes(bytes) {
         <button type="button" class="rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white hover:opacity-90" @click="saveMaterial">Lưu tài liệu</button>
       </div>
     </section>
-    <p v-if="assetType === 'material'" class="text-xs leading-5 text-muted">PDF, hình ảnh và video có thể xem trước khi MIME type phù hợp. Tệp Office không được giả lập nội dung xem trước; chỉ có thể mở hoặc tải nếu URL tệp tồn tại.</p>
+    <p v-if="assetType === 'material'" class="text-xs leading-5 text-muted">Tệp riêng tư được mở qua API có xác thực. URL ngoài tiếp tục hoạt động theo máy chủ lưu trữ và không thể thu hồi từ EduSuggest.</p>
     <ToastMessage :message="toastMessage" @close="toastMessage = ''" />
   </div>
 </template>

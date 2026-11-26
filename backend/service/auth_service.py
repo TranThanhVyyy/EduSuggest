@@ -34,6 +34,10 @@ class InvalidCredentialsError(Exception):
     pass
 
 
+class AccountLockedError(Exception):
+    pass
+
+
 class InvalidCurrentPasswordError(Exception):
     pass
 
@@ -90,6 +94,9 @@ def login_user(
     if not verify_password(payload.matKhau, user.matKhau):
         raise InvalidCredentialsError
 
+    if (getattr(user, "trangThai", "ACTIVE") or "ACTIVE").upper() == "LOCKED":
+        raise AccountLockedError
+
     return user, create_access_token(user.maNguoiDung, user.matKhau)
 
 
@@ -129,5 +136,6 @@ def change_user_password(
         raise NewPasswordUnchangedError
 
     user.matKhau = hash_password(payload.matKhauMoi)
+    user.batBuocDoiMatKhau = False
     db.commit()
     return user_repository.get_by_id(db, user.maNguoiDung) or user

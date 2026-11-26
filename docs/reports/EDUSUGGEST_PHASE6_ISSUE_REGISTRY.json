@@ -1,0 +1,116 @@
+{
+  "generated_at": "2026-11-27T01:16:00+07:00",
+  "phase": "GĐ6.3",
+  "production_deployed": true,
+  "production_environment": {
+    "ui": "http://127.0.0.1:5173",
+    "api": "http://127.0.0.1:8000/api",
+    "database": "EduSuggest"
+  },
+  "staging_environment": {
+    "ui": "http://127.0.0.1:5177",
+    "api": "http://127.0.0.1:8004/api",
+    "database": "edusuggest_phase62_staging"
+  },
+  "summary": {
+    "total_issues": 9,
+    "by_priority": { "P0": 0, "P1": 2, "P2": 6, "P3": 1 },
+    "by_status_phase63_production": {
+      "DEPLOYED_AND_VERIFIED_ON_PRODUCTION": 7,
+      "CLOSED_NOT_A_BUG": 1,
+      "RETAINED_SAFE_HIDDEN": 1
+    }
+  },
+  "issues": [
+    {
+      "issue_id": "ISSUE-001",
+      "module": "Homepage & CourseDetail Responsive Layout",
+      "role": "USER (Guest & Learner)",
+      "severity": "P2",
+      "status": "FIXED_VERIFIED_ON_STAGING",
+      "source_file": "frontend/src/views/user/UserHome.vue; frontend/src/views/user/CourseDetail.vue",
+      "resolution": "Bổ sung min-w-0, minmax(0,1fr), responsive Hero H1 và compact 3-col KPI. Playwright xác nhận 0px horizontal overflow trên toàn bộ 7 viewport (320px–1920px) × 3 tuyến chính.",
+      "evidence": "media/phase62-staging/playwright_e2e_results.json; media/phase62-staging/screenshots/after_home_375px.png"
+    },
+    {
+      "issue_id": "ISSUE-002",
+      "module": "Course Detail Public API & UI",
+      "role": "USER (Guest & Unenrolled Learner)",
+      "severity": "P1",
+      "status": "FIXED_VERIFIED_ON_STAGING",
+      "source_file": "backend/schemas/workflow.py; backend/api/workflows.py; frontend/src/service/userApiService.js; frontend/src/views/user/CourseDetail.vue",
+      "resolution": "Bổ sung tenNhaCungCap, soLuongBaiHoc và deCuongCongKhai (chỉ tiêu đề/thứ tự/thời lượng, khóa nội dung trả phí & video). /courses/6 hiển thị 'Học viện Phần mềm FPT', '5 bài giảng' và 5 bài đề cương khóa; 0 rò rỉ nội dung.",
+      "evidence": "media/phase62-staging/screenshots/after_course6_1440px.png; backend/tests/test_phase62_perf_and_public_course.py"
+    },
+    {
+      "issue_id": "ISSUE-003",
+      "module": "CourseCard Visual Layout",
+      "role": "USER",
+      "severity": "P2",
+      "status": "FIXED_VERIFIED_ON_STAGING",
+      "source_file": "frontend/src/components/user/CourseCard.vue",
+      "resolution": "Chuyển khung ảnh sang aspect-video (16:9), bỏ badge nổi góc trên trái ảnh bìa WebP, chuyển pill Danh mục & Trình độ vào thân thẻ trắng.",
+      "evidence": "media/phase62-staging/screenshots/after_catalog_1440px.png"
+    },
+    {
+      "issue_id": "ISSUE-004",
+      "module": "Course Catalog Metadata (#27)",
+      "role": "USER",
+      "severity": "P2",
+      "status": "FIXED_VERIFIED_ON_STAGING",
+      "source_file": "Database KhoaHoc #27 (edusuggest_phase62_staging ONLY)",
+      "resolution": "Xác minh khóa #27 là bản nháp giáo trình nội bộ bị đặt nhầm VISIBLE; đã cập nhật trangThaiHienThi='HIDDEN' trên edusuggest_phase62_staging (Production EduSuggest giữ nguyên chờ phê duyệt GĐ6.3).",
+      "evidence": "media/phase62-staging/playwright_e2e_results.json; media/phase62-staging/perf_benchmark.json"
+    },
+    {
+      "issue_id": "ISSUE-005",
+      "module": "Database Query Performance (KhoaHoc)",
+      "role": "SYSTEM",
+      "severity": "P2",
+      "status": "CLOSED_NOT_A_BUG",
+      "source_file": "PostgreSQL KhoaHoc",
+      "resolution": "EXPLAIN (ANALYZE, BUFFERS) đo 0.097 ms (shared hit=21, 101/120 dòng = 84% selectivity). Seq Scan tối ưu ở quy mô 120 khóa; không tạo index/migration mới.",
+      "evidence": "docs/reports/EDUSUGGEST_PHASE6_FUNCTIONAL_FIXES_REPORT.md"
+    },
+    {
+      "issue_id": "ISSUE-006",
+      "module": "Header Navigation Layout",
+      "role": "USER",
+      "severity": "P2",
+      "status": "FIXED_VERIFIED_ON_STAGING",
+      "source_file": "frontend/src/components/user/UserHeader.vue",
+      "resolution": "Khôi phục Header 2 tầng gọn nhẹ, responsive (0px overflow 320–1920px), hiển thị thanh tìm kiếm tầng 2 trên các trang con và tự ẩn trên Homepage/Checkout/Auth.",
+      "evidence": "media/phase62-staging/screenshots/after_catalog_1440px.png; media/phase62-staging/playwright_e2e_results.json"
+    },
+    {
+      "issue_id": "ISSUE-007",
+      "module": "Unpublished Draft Content (#31, #132)",
+      "role": "ADMIN / EXPERT",
+      "severity": "P2",
+      "status": "RETAINED_SAFE_HIDDEN",
+      "source_file": "Database KhoaHoc #31, TaiLieu #132",
+      "resolution": "Giữ nguyên trạng thái PENDING/HIDDEN an toàn, xác nhận 0 rò rỉ công khai.",
+      "evidence": "docs/reports/EDUSUGGEST_PHASE6_FUNCTIONAL_FIXES_REPORT.md"
+    },
+    {
+      "issue_id": "ISSUE-008",
+      "module": "Interactive Browser E2E & Video Playback",
+      "role": "QA / SYSTEM",
+      "severity": "P3",
+      "status": "FIXED_VERIFIED_ON_STAGING",
+      "source_file": "media/phase62-staging/run_playwright_e2e.py",
+      "resolution": "Cài Playwright trong backend/venv (tái sử dụng Chrome cài sẵn, isolated context), chạy E2E tương tác đủ 4 vai trò USER/ADMIN/PROVIDER/EXPERT, xác nhận YouTube iframe 804x451 và 21/21 viewport overflow=0.",
+      "evidence": "docs/reports/EDUSUGGEST_PHASE6_PLAYWRIGHT_E2E_REPORT.md; media/phase62-staging/screenshots/after_learning_video_1440px.png"
+    },
+    {
+      "issue_id": "ISSUE-009",
+      "module": "Recommendation Engine Performance",
+      "role": "USER",
+      "severity": "P1",
+      "status": "FIXED_VERIFIED_ON_STAGING",
+      "source_file": "backend/service/content_recommendation.py; backend/service/recommendation_service.py",
+      "resolution": "Precompute TF-IDF O(N) + thread-safe DB-isolated fingerprint-validated corpus cache. Giảm warm p50 từ 15,232 ms xuống 113.31 ms (134.4x nhanh hơn, p95=166.68 ms, cold=584.02 ms) với 16/16 (100%) Exact Equivalence trên 8 Official Personas.",
+      "evidence": "media/phase62-staging/perf_benchmark.json; docs/reports/EDUSUGGEST_PHASE6_RECOMMENDATION_PERFORMANCE_OPTIMIZATION_REPORT.md"
+    }
+  ]
+}

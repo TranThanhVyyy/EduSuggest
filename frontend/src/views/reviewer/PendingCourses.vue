@@ -1,7 +1,7 @@
 <script setup>
-import ReviewQueueView from '@/components/reviewer/ReviewQueueView.vue'
+import ReviewerAssignmentsView from '@/views/reviewer/ReviewerAssignmentsView.vue'
 </script>
 
 <template>
-  <ReviewQueueView kind="course" />
+  <ReviewerAssignmentsView default-target-type="COURSE" />
 </template>

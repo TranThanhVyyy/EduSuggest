@@ -1,0 +1,194 @@
+{
+  "generated_at": "2026-11-26T16:19:23.542452+00:00",
+  "target_db": "edusuggest_phase53_staging",
+  "production_modified": false,
+  "course_31_cover_meta": {
+    "source_provider": "Openverse",
+    "source_origin": "stocksnap",
+    "source_url": "https://stocksnap.io/photo/woman-developer-HMPNPRBUJ7",
+    "original_image_url": "https://cdn.stocksnap.io/img-thumbs/960w/HMPNPRBUJ7.jpg",
+    "author": "Christina Morillo",
+    "license": "CC0 1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "sha256": "32ba5dbe8044d6b2accd87db53f5b768301c5704ddc1f48ba824ec0cd8d7ec3f",
+    "size_bytes": 67752,
+    "transformation": {
+      "target_dimensions": "1280x720",
+      "aspect_ratio": "16:9",
+      "format": "WEBP",
+      "theme_key": "product_career",
+      "theme_layout": "lower_third",
+      "rendered_title": "Kiểm thử API thực chiến với Postman",
+      "rendered_category": "KIỂM THỬ PHẦN MỀM & QA",
+      "operations": [
+        "exif_transpose",
+        "smart_16_9_center_crop",
+        "editorial_scrim_overlay",
+        "vietnamese_typography_pillow"
+      ]
+    }
+  },
+  "total_changes": 16,
+  "changes": [
+    {
+      "table": "KhoaHoc",
+      "record_id": 31,
+      "field": "tieuDe",
+      "old_value": "fhahsahdáhdahshdáhdahdá",
+      "new_value": "Kiểm thử API thực chiến với Postman",
+      "reason": "Khôi phục khóa học rác #31 (0 tham chiếu nghiệp vụ), giữ HIDDEN + PENDING chờ kiểm duyệt",
+      "source": "EduSuggest authored + Openverse CC0 cover",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "KhoaHoc",
+      "record_id": 31,
+      "field": "moTa",
+      "old_value": null,
+      "new_value": "Khóa học thực hành kiểm thử REST API từ nền tảng đến tự động hóa với Postman và Newman. Học viên nắm vững HTTP Methods, Status Codes, JSON Schema, xác thực Bearer JWT/OAuth 2.0, biến môi trường, viết Test Scripts bằng JavaScript, chạy Collection Runner theo dữ liệu CSV/JSON và tích hợp Newman vào quy trình CI/CD qua dự án thực hành API Testing hoàn chỉnh.",
+      "reason": "Khôi phục khóa học rác #31 (0 tham chiếu nghiệp vụ), giữ HIDDEN + PENDING chờ kiểm duyệt",
+      "source": "EduSuggest authored + Openverse CC0 cover",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "KhoaHoc",
+      "record_id": 31,
+      "field": "gia",
+      "old_value": null,
+      "new_value": "399000",
+      "reason": "Khôi phục khóa học rác #31 (0 tham chiếu nghiệp vụ), giữ HIDDEN + PENDING chờ kiểm duyệt",
+      "source": "EduSuggest authored + Openverse CC0 cover",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "KhoaHoc",
+      "record_id": 31,
+      "field": "trinhDo",
+      "old_value": null,
+      "new_value": "INTERMEDIATE",
+      "reason": "Khôi phục khóa học rác #31 (0 tham chiếu nghiệp vụ), giữ HIDDEN + PENDING chờ kiểm duyệt",
+      "source": "EduSuggest authored + Openverse CC0 cover",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "KhoaHoc",
+      "record_id": 31,
+      "field": "thoiLuong",
+      "old_value": null,
+      "new_value": "320",
+      "reason": "Khôi phục khóa học rác #31 (0 tham chiếu nghiệp vụ), giữ HIDDEN + PENDING chờ kiểm duyệt",
+      "source": "EduSuggest authored + Openverse CC0 cover",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "KhoaHoc",
+      "record_id": 31,
+      "field": "trangThaiDuyet",
+      "old_value": null,
+      "new_value": "PENDING",
+      "reason": "Khôi phục khóa học rác #31 (0 tham chiếu nghiệp vụ), giữ HIDDEN + PENDING chờ kiểm duyệt",
+      "source": "EduSuggest authored + Openverse CC0 cover",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "KhoaHoc",
+      "record_id": 31,
+      "field": "trangThaiHienThi",
+      "old_value": "HIDDEN",
+      "new_value": "HIDDEN",
+      "reason": "Khôi phục khóa học rác #31 (0 tham chiếu nghiệp vụ), giữ HIDDEN + PENDING chờ kiểm duyệt",
+      "source": "EduSuggest authored + Openverse CC0 cover",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "KhoaHoc",
+      "record_id": 31,
+      "field": "hinhAnh",
+      "old_value": "/media/courses/v5-realistic/course-031.webp",
+      "new_value": "/media/phase53-staging/course-031-api-testing.webp",
+      "reason": "Khôi phục khóa học rác #31 (0 tham chiếu nghiệp vụ), giữ HIDDEN + PENDING chờ kiểm duyệt",
+      "source": "EduSuggest authored + Openverse CC0 cover",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "BaiHoc",
+      "record_id": 31,
+      "field": "inserted_lessons_count",
+      "old_value": "0",
+      "new_value": "10",
+      "reason": "Bổ sung 10 bài học thực chiến API Testing với Postman & Newman cho khóa #31",
+      "source": "EduSuggest authored",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "KhoaHoc",
+      "record_id": 29,
+      "field": "thoiLuong",
+      "old_value": "180",
+      "new_value": "300",
+      "reason": "Sửa lỗi logic thời lượng khóa (180 phút) nhỏ hơn tổng 5 bài học bắt buộc (300 phút)",
+      "source": "Computed from SUM(BaiHoc.thoiLuong)",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "TaiLieu",
+      "record_id": 110,
+      "field": "duongDanTep",
+      "old_value": "https://www.atlassian.com/software/jira/guides/bug-tracking/overview",
+      "new_value": "https://www.atlassian.com/software/jira/guides/issues/overview",
+      "reason": "Thay thế URL Jira 404 bằng tài liệu chính thức Atlassian Jira (verified 200 OK)",
+      "source": "Official Atlassian Documentation",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "TaiLieu",
+      "record_id": 98,
+      "field": "tieuDe",
+      "old_value": "Penetration Testing Execution Standard (PTES)",
+      "new_value": "OWASP Web Security Testing Guide (WSTG)",
+      "reason": "Thay thế liên kết pentest-standard.org ngừng hoạt động bằng OWASP WSTG chính thức (verified 200 OK) và cập nhật metadata khớp nội dung",
+      "source": "Official OWASP Foundation Documentation",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "TaiLieu",
+      "record_id": 98,
+      "field": "moTa",
+      "old_value": "Tiêu chuẩn thực thi kiểm thử xâm nhập quốc tế.",
+      "new_value": "Hướng dẫn chuẩn hóa kiểm thử bảo mật ứng dụng web chính thức từ OWASP Foundation (thay thế liên kết pentest-standard.org đã ngừng hoạt động).",
+      "reason": "Thay thế liên kết pentest-standard.org ngừng hoạt động bằng OWASP WSTG chính thức (verified 200 OK) và cập nhật metadata khớp nội dung",
+      "source": "Official OWASP Foundation Documentation",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "TaiLieu",
+      "record_id": 98,
+      "field": "duongDanTep",
+      "old_value": "http://www.pentest-standard.org/",
+      "new_value": "https://owasp.org/www-project-web-security-testing-guide/",
+      "reason": "Thay thế liên kết pentest-standard.org ngừng hoạt động bằng OWASP WSTG chính thức (verified 200 OK) và cập nhật metadata khớp nội dung",
+      "source": "Official OWASP Foundation Documentation",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "NhaCungCapKhoaHoc",
+      "record_id": 5,
+      "field": "tieuSu",
+      "old_value": "h",
+      "new_value": "Hồ sơ nhà cung cấp mô phỏng phụ trách biên soạn học liệu thực hành về kiểm thử phần mềm, lập trình ứng dụng, dữ liệu và hạ tầng cloud trên EduSuggest.",
+      "reason": "Thay thế dữ liệu placeholder 'h' bằng hồ sơ mô phỏng rõ ràng khớp 12 khóa học đang quản lý",
+      "source": "EduSuggest simulated profile",
+      "validation_result": "APPLIED_STAGING"
+    },
+    {
+      "table": "NhaCungCapKhoaHoc",
+      "record_id": 5,
+      "field": "chuyenMon",
+      "old_value": "h",
+      "new_value": "Kiểm thử phần mềm & QA, Lập trình ứng dụng, Dữ liệu & Cloud",
+      "reason": "Thay thế dữ liệu placeholder 'h' bằng hồ sơ mô phỏng rõ ràng khớp 12 khóa học đang quản lý",
+      "source": "EduSuggest simulated profile",
+      "validation_result": "APPLIED_STAGING"
+    }
+  ]
+}

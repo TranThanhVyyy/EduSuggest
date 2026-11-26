@@ -1,12 +1,14 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import {
   BookOpen,
-  BookPlus,
-  ClipboardList,
+  ClipboardCheck,
+  FileText,
   GraduationCap,
   History,
-  LayoutDashboard,
+  LayoutGrid,
+  PanelLeftClose,
+  PanelLeftOpen,
   UserRound,
   X,
 } from 'lucide-vue-next'
@@ -21,7 +23,15 @@ defineProps({
 const emit = defineEmits(['toggle-collapse', 'close-mobile'])
 const route = useRoute()
 const pendingCount = ref(0)
+
+function handleKeydown(event) {
+  if (event.key === 'Escape') {
+    emit('close-mobile')
+  }
+}
+
 onMounted(async () => {
+  document.addEventListener('keydown', handleKeydown)
   try {
     const courses = await loadProviderCourses()
     pendingCount.value = courses.filter((course) => course.status === PROVIDER_STATUS.pending).length
@@ -29,74 +39,110 @@ onMounted(async () => {
     pendingCount.value = 0
   }
 })
-const courseLinks = [
-  { label: 'Tất cả khóa học', routeName: 'provider-courses', icon: BookOpen },
-  { label: 'Tạo khóa học mới', routeName: 'provider-course-create', icon: BookPlus },
-  { label: 'Bản nháp', routeName: 'provider-courses', query: { status: PROVIDER_STATUS.draft } },
-  { label: 'Chờ kiểm duyệt', routeName: 'provider-courses', query: { status: PROVIDER_STATUS.pending } },
-  { label: 'Đã phê duyệt', routeName: 'provider-courses', query: { status: PROVIDER_STATUS.approved } },
-  { label: 'Từ chối / chỉnh sửa', routeName: 'provider-courses', query: { status: 'feedback' } },
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleKeydown)
+})
+
+const navGroups = [
+  {
+    label: 'Biên soạn',
+    items: [
+      { label: 'Tổng quan', routeName: 'provider-dashboard', icon: LayoutGrid },
+      { label: 'Khóa học', routeName: 'provider-courses', icon: BookOpen },
+      { label: 'Tài liệu học tập', routeName: 'provider-materials-manage', icon: FileText },
+      { label: 'Doanh thu & Bán hàng', routeName: 'provider-sales', icon: ClipboardCheck },
+    ],
+  },
+  {
+    label: 'Kiểm duyệt & Hồ sơ',
+    items: [
+      { label: 'Theo dõi duyệt', routeName: 'provider-reviews', icon: ClipboardCheck, showPending: true },
+      { label: 'Lịch sử duyệt', routeName: 'provider-review-history', icon: History },
+      { label: 'Hồ sơ', routeName: 'provider-profile', icon: UserRound },
+    ],
+  },
 ]
-const reviewLinks = [
-  { label: 'Theo dõi kiểm duyệt', routeName: 'provider-reviews', icon: ClipboardList },
-  { label: 'Lịch sử kiểm duyệt', routeName: 'provider-review-history', icon: History },
-]
 
-function isActive(link) {
-  if (route.name !== link.routeName) return false
-  if (!link.query) return !route.query.status
-  return Object.entries(link.query).every(([key, value]) => route.query[key] === value)
+function isActive(item) {
+  if (item.routeName === 'provider-courses') {
+    return ['provider-courses', 'provider-course-detail', 'provider-course-edit'].includes(route.name)
+  }
+  return route.name === item.routeName
 }
-
-function renderLinks() {
-  return [
-    { label: 'Dashboard', routeName: 'provider-dashboard', icon: LayoutDashboard },
-    ...courseLinks,
-    ...reviewLinks,
-    { label: 'Hồ sơ cá nhân', routeName: 'provider-profile', icon: UserRound },
-  ]
-}
-
-const allLinks = renderLinks()
 </script>
 
 <template>
-  <aside class="sticky top-0 hidden h-screen shrink-0 flex-col overflow-y-auto bg-navy px-3 py-5 text-white transition-[width] duration-200 lg:flex" :class="collapsed ? 'w-20' : 'w-[270px]'">
-    <div class="flex items-center justify-between gap-2 px-1">
-      <RouterLink :to="{ name: 'provider-dashboard' }" class="flex min-w-0 items-center gap-2.5" aria-label="EduSuggest Course Provider">
-        <span class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-accent text-navy">
-          <GraduationCap :size="21" aria-hidden="true" />
+  <!-- Desktop Light Editorial Studio Sidebar -->
+  <aside
+    class="sticky top-0 hidden h-screen shrink-0 flex-col border-r border-border bg-surface transition-[width] duration-200 ease-out lg:flex"
+    :class="collapsed ? 'w-[72px]' : 'w-[248px]'"
+  >
+    <!-- Brand + Collapse -->
+    <div
+      class="flex h-15 items-center border-b border-border/70 px-3.5"
+      :class="collapsed ? 'justify-center' : 'justify-between gap-2'"
+    >
+      <RouterLink
+        :to="{ name: 'provider-dashboard' }"
+        class="flex min-w-0 items-center gap-2.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+        aria-label="EduSuggest"
+      >
+        <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-navy text-white">
+          <GraduationCap :size="17" aria-hidden="true" />
         </span>
-        <span v-if="!collapsed" class="min-w-0">
-          <span class="block truncate text-base font-bold">EduSuggest</span>
-          <span class="block text-[10px] font-semibold tracking-[0.14em] text-white/55">COURSE PROVIDER</span>
+        <span v-if="!collapsed" class="truncate text-[15px] font-bold tracking-tight text-navy">
+          EduSuggest
         </span>
       </RouterLink>
-      <button v-if="!collapsed" type="button" class="flex size-8 shrink-0 items-center justify-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white" aria-label="Thu gọn thanh điều hướng" @click="emit('toggle-collapse')">
-        <BookOpen :size="17" aria-hidden="true" />
+
+      <button
+        v-if="!collapsed"
+        type="button"
+        class="flex size-7 shrink-0 items-center justify-center rounded-lg text-slate-400 transition-colors duration-150 hover:bg-subtle hover:text-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+        aria-label="Thu gọn thanh điều hướng"
+        @click="emit('toggle-collapse')"
+      >
+        <PanelLeftClose :size="16" aria-hidden="true" />
       </button>
     </div>
-    <button v-if="collapsed" type="button" class="mx-auto mt-3 flex size-9 items-center justify-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white" aria-label="Mở rộng thanh điều hướng" @click="emit('toggle-collapse')">
-      <BookOpen :size="17" aria-hidden="true" />
-    </button>
 
-    <nav class="mt-7 flex-1 space-y-5" aria-label="Điều hướng người cung cấp khóa học">
-      <section>
-        <p v-if="!collapsed" class="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">Không gian của tôi</p>
-        <div class="space-y-1">
+    <!-- Navigation Groups -->
+    <nav class="mt-4 flex-1 space-y-6 overflow-y-auto px-3 pb-4" aria-label="Điều hướng Nhà cung cấp">
+      <section v-for="group in navGroups" :key="group.label">
+        <p
+          v-if="!collapsed"
+          class="mb-1.5 px-2.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400"
+        >
+          {{ group.label }}
+        </p>
+        <div class="space-y-0.5">
           <RouterLink
-            v-for="link in allLinks"
-            :key="`${link.routeName}-${link.label}`"
-            :to="{ name: link.routeName, query: link.query }"
-            class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            :class="isActive(link) ? 'bg-white/10 font-semibold text-white ring-1 ring-inset ring-white/15' : 'text-white/70 hover:bg-white/10 hover:text-white'"
-            :title="collapsed ? link.label : undefined"
-            :aria-current="isActive(link) ? 'page' : undefined"
-            @click="emit('close-mobile')"
+            v-for="item in group.items"
+            :key="item.routeName"
+            :to="{ name: item.routeName }"
+            class="group flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13.5px] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+            :class="[
+              collapsed ? 'justify-center' : '',
+              isActive(item)
+                ? 'bg-subtle font-semibold text-navy'
+                : 'font-medium text-slate-600 hover:bg-subtle/70 hover:text-navy',
+            ]"
+            :title="collapsed ? item.label : undefined"
+            :aria-current="isActive(item) ? 'page' : undefined"
           >
-            <component :is="link.icon || ClipboardList" class="shrink-0" :size="18" aria-hidden="true" />
-            <span v-if="!collapsed" class="min-w-0 flex-1 truncate">{{ link.label }}</span>
-            <span v-if="!collapsed && link.label === 'Chờ kiểm duyệt' && pendingCount" class="rounded-full bg-white/15 px-2 py-0.5 text-[10px]">
+            <component
+              :is="item.icon"
+              :size="17"
+              class="shrink-0 transition-colors duration-150"
+              :class="isActive(item) ? 'text-teal' : 'text-slate-400 group-hover:text-navy'"
+              aria-hidden="true"
+            />
+            <span v-if="!collapsed" class="min-w-0 flex-1 truncate">{{ item.label }}</span>
+            <span
+              v-if="!collapsed && item.showPending && pendingCount"
+              class="rounded-full bg-amber/15 px-1.5 py-0.5 text-[11px] font-semibold text-amber tabular-nums"
+            >
               {{ pendingCount }}
             </span>
           </RouterLink>
@@ -104,34 +150,78 @@ const allLinks = renderLinks()
       </section>
     </nav>
 
-   
-   
+    <!-- Bottom Collapse Toggle (when collapsed) -->
+    <div v-if="collapsed" class="border-t border-border/70 p-3">
+      <button
+        type="button"
+        class="flex w-full items-center justify-center rounded-lg py-2 text-slate-400 transition-colors duration-150 hover:bg-subtle hover:text-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+        aria-label="Mở rộng thanh điều hướng"
+        @click="emit('toggle-collapse')"
+      >
+        <PanelLeftOpen :size="16" aria-hidden="true" />
+      </button>
+    </div>
   </aside>
 
-  <div v-if="mobileOpen" class="fixed inset-0 z-50 lg:hidden">
-    <button type="button" class="absolute inset-0 bg-navy/55" aria-label="Đóng menu" @click="emit('close-mobile')"></button>
-    <aside class="relative flex h-full w-[min(86vw,320px)] flex-col overflow-y-auto bg-navy px-3 py-5 text-white shadow-xl">
-      <div class="flex items-center justify-between gap-3 px-1">
-        <RouterLink :to="{ name: 'provider-dashboard' }" class="flex items-center gap-2.5" @click="emit('close-mobile')">
-          <span class="flex size-10 items-center justify-center rounded-xl bg-brand-accent text-navy"><GraduationCap :size="21" aria-hidden="true" /></span>
-          <span><span class="block text-base font-bold">EduSuggest</span><span class="block text-[10px] font-semibold tracking-[0.14em] text-white/55">COURSE PROVIDER</span></span>
-        </RouterLink>
-        <button type="button" class="flex size-9 items-center justify-center rounded-lg text-white/70 hover:bg-white/10" aria-label="Đóng menu" @click="emit('close-mobile')"><X :size="19" aria-hidden="true" /></button>
-      </div>
-      <nav class="mt-7 flex-1 space-y-1" aria-label="Điều hướng Provider di động">
-        <RouterLink
-          v-for="link in allLinks"
-          :key="`mobile-${link.routeName}-${link.label}`"
-          :to="{ name: link.routeName, query: link.query }"
-          class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm"
-          :class="isActive(link) ? 'bg-white/10 font-semibold text-white ring-1 ring-inset ring-white/15' : 'text-white/70 hover:bg-white/10 hover:text-white'"
-          @click="emit('close-mobile')"
-        >
-          <component :is="link.icon || ClipboardList" :size="18" aria-hidden="true" />
-          <span class="truncate">{{ link.label }}</span>
-        </RouterLink>
-      </nav>
-      <p class="mt-5 rounded-xl border border-white/10 bg-white/5 p-3 text-xs leading-5 text-white/55">Nội dung khóa học được tải và lưu qua Backend theo tài khoản hiện tại.</p>
-    </aside>
-  </div>
+  <!-- Mobile Drawer -->
+  <Transition name="es-fade">
+    <div v-if="mobileOpen" class="fixed inset-0 z-50 lg:hidden">
+      <button
+        type="button"
+        class="absolute inset-0 bg-navy/40 backdrop-blur-[2px]"
+        aria-label="Đóng menu"
+        @click="emit('close-mobile')"
+      ></button>
+
+      <aside class="relative flex h-full w-[min(84vw,280px)] flex-col bg-surface shadow-2xl">
+        <div class="flex h-15 items-center justify-between border-b border-border/70 px-4">
+          <RouterLink
+            :to="{ name: 'provider-dashboard' }"
+            class="flex items-center gap-2.5"
+            @click="emit('close-mobile')"
+          >
+            <span class="flex size-8 items-center justify-center rounded-lg bg-navy text-white">
+              <GraduationCap :size="17" aria-hidden="true" />
+            </span>
+            <span class="text-[15px] font-bold tracking-tight text-navy">EduSuggest</span>
+          </RouterLink>
+          <button
+            type="button"
+            class="flex size-8 items-center justify-center rounded-lg text-slate-500 hover:bg-subtle hover:text-navy"
+            aria-label="Đóng menu"
+            @click="emit('close-mobile')"
+          >
+            <X :size="18" aria-hidden="true" />
+          </button>
+        </div>
+
+        <nav class="mt-4 flex-1 space-y-5 overflow-y-auto px-3.5 pb-4" aria-label="Điều hướng Provider di động">
+          <section v-for="group in navGroups" :key="`mobile-${group.label}`">
+            <p class="mb-1.5 px-2.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
+              {{ group.label }}
+            </p>
+            <div class="space-y-0.5">
+              <RouterLink
+                v-for="item in group.items"
+                :key="`mobile-${item.routeName}`"
+                :to="{ name: item.routeName }"
+                class="flex items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-sm"
+                :class="isActive(item) ? 'bg-subtle font-semibold text-navy' : 'font-medium text-slate-600 hover:bg-subtle/70 hover:text-navy'"
+                @click="emit('close-mobile')"
+              >
+                <component :is="item.icon" :size="17" :class="isActive(item) ? 'text-teal' : 'text-slate-400'" aria-hidden="true" />
+                <span class="flex-1 truncate">{{ item.label }}</span>
+                <span
+                  v-if="item.showPending && pendingCount"
+                  class="rounded-full bg-amber/15 px-1.5 py-0.5 text-[11px] font-semibold text-amber"
+                >
+                  {{ pendingCount }}
+                </span>
+              </RouterLink>
+            </div>
+          </section>
+        </nav>
+      </aside>
+    </div>
+  </Transition>
 </template>

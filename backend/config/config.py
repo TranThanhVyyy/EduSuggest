@@ -79,6 +79,60 @@ class Settings(BaseSettings):
     momo_environment: str = Field(default="sandbox", alias="MOMO_ENVIRONMENT")
     momo_demo_mode: bool = Field(default=False, alias="MOMO_DEMO_MODE")
 
+    # GĐ3.3–3.4 Fail-closed runtime flags (default False -> Production stays isolated until approved rollout)
+    auto_assignment_workflow_enabled: bool = Field(
+        default=False, alias="AUTO_ASSIGNMENT_WORKFLOW_ENABLED"
+    )
+    auto_assignment_worker_enabled: bool = Field(
+        default=False, alias="AUTO_ASSIGNMENT_WORKER_ENABLED"
+    )
+    accountability_enabled: bool = Field(
+        default=False, alias="ACCOUNTABILITY_ENABLED"
+    )
+
+    # GĐ4.1 Commerce enrollment gate (default False -> keeps Production safe until GĐ4.3/4.4 checkout rollout)
+    commerce_enrollment_gate_enabled: bool = Field(
+        default=False, alias="COMMERCE_ENROLLMENT_GATE_ENABLED"
+    )
+    mock_payment_enabled: bool = Field(
+        default=False, alias="MOCK_PAYMENT_ENABLED"
+    )
+    order_payment_ttl_minutes: int = Field(
+        default=15, ge=1, le=120, alias="ORDER_PAYMENT_TTL_MINUTES"
+    )
+
+    # GĐ4.5 VNPay Sandbox configuration (default OFF; never hard-coded; never auto-enabled on Production)
+    vnpay_sandbox_enabled: bool = Field(
+        default=False, alias="VNPAY_SANDBOX_ENABLED"
+    )
+    vnpay_tmn_code: str | None = Field(default=None, alias="VNPAY_TMN_CODE")
+    vnpay_hash_secret: SecretStr | None = Field(default=None, alias="VNPAY_HASH_SECRET")
+    vnpay_payment_url: str = Field(
+        default="https://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
+        alias="VNPAY_PAYMENT_URL",
+    )
+    vnpay_return_url: str | None = Field(default=None, alias="VNPAY_RETURN_URL")
+    vnpay_ipn_url: str | None = Field(default=None, alias="VNPAY_IPN_URL")
+    vnpay_querydr_url: str = Field(
+        default="https://sandbox.vnpayment.vn/merchant_webapi/api/transaction",
+        alias="VNPAY_QUERYDR_URL",
+    )
+    vnpay_version: str = Field(default="2.1.0", alias="VNPAY_VERSION")
+
+    # GĐ4.7A.2 Financial integrity & durable payment recovery flags (ALL default False)
+    financial_integrity_workflow_enabled: bool = Field(
+        default=False, alias="FINANCIAL_INTEGRITY_WORKFLOW_ENABLED"
+    )
+    payment_reconciliation_worker_enabled: bool = Field(
+        default=False, alias="PAYMENT_RECONCILIATION_WORKER_ENABLED"
+    )
+    payment_auto_gateway_query_enabled: bool = Field(
+        default=False, alias="PAYMENT_AUTO_GATEWAY_QUERY_ENABLED"
+    )
+    payment_auto_restore_enabled: bool = Field(
+        default=False, alias="PAYMENT_AUTO_RESTORE_ENABLED"
+    )
+
     @property
     def client_kwargs(self) -> dict:
         return {

@@ -33,6 +33,8 @@ class VerifiedAccessToken:
     subject_id: int
     jti: str
     expires_at: datetime
+    issued_at: datetime | None = None
+    has_ms_precision: bool = False
 
 
 def hash_password(password: str) -> str:
@@ -65,6 +67,7 @@ def create_access_token(user_id: int, password_hash: str) -> CreatedAccessToken:
         "sub": str(user_id),
         "jti": jti,
         "iat": now,
+        "iat_ms": int(now.timestamp() * 1000),
         "exp": expires_at,
         "iss": _settings.app_name,
     }
@@ -147,8 +150,18 @@ def verify_access_token(
     ):
         raise InvalidAccessTokenError
 
+    issued_at_ms = payload.get("iat_ms")
+    issued_at_raw = payload.get("iat")
+    has_ms_precision = False
     try:
         expires_at = datetime.fromtimestamp(expiration, UTC).replace(tzinfo=None)
+        if isinstance(issued_at_ms, (int, float)):
+            issued_at = datetime.fromtimestamp(issued_at_ms / 1000.0, UTC).replace(tzinfo=None)
+            has_ms_precision = True
+        elif isinstance(issued_at_raw, (int, float)):
+            issued_at = datetime.fromtimestamp(issued_at_raw, UTC).replace(tzinfo=None)
+        else:
+            issued_at = None
     except (OverflowError, OSError, ValueError) as exc:
         raise InvalidAccessTokenError from exc
 
@@ -156,4 +169,6 @@ def verify_access_token(
         subject_id=expected_user_id,
         jti=jti,
         expires_at=expires_at,
+        issued_at=issued_at,
+        has_ms_precision=has_ms_precision,
     )

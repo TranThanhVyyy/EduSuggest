@@ -1,4 +1,4 @@
-import api from '@/service/api'
+import api, { resolveMediaUrl } from '@/service/api'
 
 export const PROVIDER_STATUS = Object.freeze({
   draft: 'Draft',
@@ -17,6 +17,7 @@ export const PROVIDER_STATUS_LABELS = Object.freeze({
 })
 
 const statusToUi = Object.freeze({
+  DRAFT: 'Draft',
   PENDING: 'ChoKiemDuyet',
   APPROVED: 'DaPheDuyet',
   REJECTED: 'TuChoi',
@@ -62,6 +63,8 @@ export function mapProviderCourse(course) {
   return {
     id: String(course.maKhoaHoc),
     title: course.tieuDe || '',
+    coverImageUrl: resolveMediaUrl(course.hinhAnh),
+    rawCoverImageUrl: course.hinhAnh || '',
     categoryId: course.maDanhMuc == null ? '' : String(course.maDanhMuc),
     category: course.maDanhMuc == null ? '' : `Mã danh mục ${course.maDanhMuc}`,
     shortDescription: course.moTa || '',
@@ -88,15 +91,24 @@ export function mapProviderCourse(course) {
 export function mapProviderMaterial(material) {
   return {
     id: String(material.maTaiLieu),
-    lessonId: String(material.maBaiHoc),
+    courseId: material.maKhoaHoc != null ? String(material.maKhoaHoc) : null,
+    lessonId: material.maBaiHoc != null ? String(material.maBaiHoc) : null,
+    categoryId: material.maDanhMuc != null ? Number(material.maDanhMuc) : null,
     title: material.tieuDe || '',
     description: material.moTa || '',
-    documentType: material.loai || '',
+    documentType: material.loai || 'DOCUMENT',
     fileUrl: material.duongDanTep || '',
     fileName: '',
     mimeType: '',
     sizeBytes: null,
+    status: statusToUi[material.trangThaiDuyet] || material.trangThaiDuyet || 'Draft',
+    reviewStatus: statusToUi[material.trangThaiDuyet] || material.trangThaiDuyet || 'Draft',
+    visibility: material.trangThaiHienThi || 'HIDDEN',
+    rejectionReason: material.lyDoTuChoi || null,
+    reviewedBy: material.maNguoiDuyet || null,
+    reviewedAt: material.ngayDuyet || null,
     createdAt: material.ngayTao || '',
+    updatedAt: material.ngayCapNhat || '',
   }
 }
 
@@ -138,6 +150,7 @@ export async function createProviderCourseRecord(values) {
     maDanhMuc: Number(values.categoryId || values.category),
     tieuDe: values.title,
     moTa: values.description || values.shortDescription || null,
+    hinhAnh: values.coverImagePath || null,
     trinhDo: values.level || null,
     gia: optionalNumber(values.price),
     thoiLuong: optionalNumber(values.durationMinutes),
@@ -154,12 +167,36 @@ export async function updateProviderCourseRecord(courseId, values) {
   if (Object.hasOwn(values, 'description') || Object.hasOwn(values, 'shortDescription')) {
     payload.moTa = values.description || values.shortDescription || null
   }
+  if (Object.hasOwn(values, 'coverImagePath')) payload.hinhAnh = values.coverImagePath || null
   if (Object.hasOwn(values, 'level')) payload.trinhDo = values.level || null
   if (Object.hasOwn(values, 'price')) payload.gia = optionalNumber(values.price)
   if (Object.hasOwn(values, 'durationMinutes')) payload.thoiLuong = optionalNumber(values.durationMinutes)
   if (!Object.keys(payload).length) throw new Error('Không có trường khóa học nào được Backend hỗ trợ để lưu.')
   const { data } = await api.put(`/provider/courses/${courseId}`, payload)
   return mapProviderCourse(data)
+}
+
+export async function uploadProviderCourseCover(file, courseId = null) {
+  const formData = new FormData()
+  formData.append('file', file)
+  if (courseId) {
+    const { data } = await api.post(`/provider/courses/${encodeURIComponent(courseId)}/cover-image`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    return {
+      url: resolveMediaUrl(data.hinhAnh),
+      rawUrl: data.hinhAnh || '',
+      course: mapProviderCourse(data),
+    }
+  }
+  const { data } = await api.post('/provider/media/course-cover', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+  return {
+    url: resolveMediaUrl(data.url),
+    rawUrl: data.url || '',
+    course: null,
+  }
 }
 
 export async function deleteProviderCourseRecord(courseId) {
@@ -199,22 +236,24 @@ export async function deleteProviderLesson(courseId, lessonId) {
 }
 
 export async function createProviderMaterial(courseId, lessonId, values) {
-  const { data } = await api.post(`/provider/courses/${courseId}/lessons/${lessonId}/materials`, {
+  const payload = {
     tieuDe: values.title,
-    duongDanTep: values.fileUrl,
     loai: values.documentType || null,
     moTa: values.description || null,
-  })
+  }
+  if (values.fileUrl?.trim()) payload.duongDanTep = values.fileUrl.trim()
+  const { data } = await api.post(`/provider/courses/${courseId}/lessons/${lessonId}/materials`, payload)
   return mapProviderMaterial(data)
 }
 
 export async function updateProviderMaterial(courseId, lessonId, materialId, values) {
-  const { data } = await api.put(`/provider/courses/${courseId}/lessons/${lessonId}/materials/${materialId}`, {
+  const payload = {
     tieuDe: values.title,
-    duongDanTep: values.fileUrl,
     loai: values.documentType || null,
     moTa: values.description || null,
-  })
+  }
+  if (values.fileUrl !== undefined) payload.duongDanTep = values.fileUrl
+  const { data } = await api.put(`/provider/courses/${courseId}/lessons/${lessonId}/materials/${materialId}`, payload)
   return mapProviderMaterial(data)
 }
 
@@ -225,4 +264,58 @@ export async function deleteProviderMaterial(courseId, lessonId, materialId) {
 export async function loadProviderReviews(courseId) {
   const { data } = await api.get(`/provider/courses/${courseId}/reviews`)
   return data
+}
+
+export async function loadProviderMaterials() {
+  const { data } = await api.get('/provider/materials')
+  return data.map(mapProviderMaterial)
+}
+
+export async function loadProviderMaterial(materialId) {
+  const { data } = await api.get(`/provider/materials/${materialId}`)
+  return mapProviderMaterial(data)
+}
+
+export async function createStandaloneMaterial(values) {
+  const payload = {
+    tieuDe: values.title,
+    loai: values.documentType || null,
+    moTa: values.description || null,
+    maDanhMuc: values.categoryId ? Number(values.categoryId) : null,
+    maKhoaHoc: values.courseId ? Number(values.courseId) : null,
+    maBaiHoc: values.lessonId ? Number(values.lessonId) : null,
+  }
+  if (values.fileUrl?.trim()) payload.duongDanTep = values.fileUrl.trim()
+  const { data } = await api.post('/provider/materials', payload)
+  return mapProviderMaterial(data)
+}
+
+export async function uploadStandaloneMaterialFile(materialId, file) {
+  const payload = new FormData()
+  payload.append('file', file)
+  const { data } = await api.post(`/provider/materials/${materialId}/file`, payload)
+  return mapProviderMaterial(data)
+}
+
+export async function updateStandaloneMaterial(materialId, values) {
+  const payload = {}
+  if (values.title !== undefined) payload.tieuDe = values.title
+  if (values.fileUrl !== undefined) payload.duongDanTep = values.fileUrl
+  if (values.documentType !== undefined) payload.loai = values.documentType
+  if (values.description !== undefined) payload.moTa = values.description
+  if (values.categoryId !== undefined) payload.maDanhMuc = values.categoryId ? Number(values.categoryId) : null
+  if (values.courseId !== undefined) payload.maKhoaHoc = values.courseId ? Number(values.courseId) : null
+  if (values.lessonId !== undefined) payload.maBaiHoc = values.lessonId ? Number(values.lessonId) : null
+
+  const { data } = await api.put(`/provider/materials/${materialId}`, payload)
+  return mapProviderMaterial(data)
+}
+
+export async function deleteStandaloneMaterial(materialId) {
+  await api.delete(`/provider/materials/${materialId}`)
+}
+
+export async function submitStandaloneMaterial(materialId) {
+  const { data } = await api.post(`/provider/materials/${materialId}/submit`)
+  return mapProviderMaterial(data)
 }

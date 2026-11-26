@@ -1,0 +1,40 @@
+{
+  "evaluation_date": "2026-11-26T18:11:01.263055+00:00",
+  "dataset": "edusuggest-official-v2 (EduSuggest READ ONLY)",
+  "python_version": "3.11.0",
+  "eligible_courses_count": 101,
+  "eligible_standalone_materials_count": 226,
+  "personas_evaluated": 8,
+  "k_values": [
+    5,
+    10
+  ],
+  "random_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61
+  ],
+  "ground_truth_methodology": "Independent domain-category relevance labels mapped from the 24 EduSuggest taxonomy categories prior to evaluation; already-enrolled courses are excluded from each persona's eligible candidate pool.",
+  "limitations": [
+    "8 Official Personas with simulated learning histories (3-4 enrollments each) represent structured domain archetypes rather than real production student clickstreams.",
+    "Category-level relevance labels evaluate domain alignment rather than fine-grained user satisfaction or completion rate.",
+    "Results should be presented in thesis defense as offline simulation evaluation on Official Dataset V2, NOT as a live human user survey."
+  ]
+}

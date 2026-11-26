@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduSuggest GĐ6.2 – Before / After Visual Comparison Gallery</title>
+  <style>
+    :root { --navy: #0f172a; --teal: #0d9488; --border: #e2e8f0; --bg: #f8fafc; --card: #ffffff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--navy); line-height: 1.5; }
+    header { background: var(--navy); color: #fff; padding: 28px 32px; border-bottom: 3px solid var(--teal); }
+    header h1 { margin: 0 0 6px; font-size: 24px; }
+    header p { margin: 0; color: #cbd5e1; font-size: 14px; }
+    main { max-width: 1440px; margin: 0 auto; padding: 28px 24px 64px; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 28px; }
+    .metric { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .metric .label { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #64748b; font-weight: 600; }
+    .metric .val { font-size: 22px; font-weight: 800; margin-top: 4px; color: var(--navy); }
+    .metric .sub { font-size: 12px; color: var(--teal); margin-top: 2px; font-weight: 600; }
+    section.pair { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 24px; }
+    section.pair h2 { margin: 0 0 4px; font-size: 18px; }
+    section.pair .desc { margin: 0 0 16px; font-size: 13px; color: #475569; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    figure { margin: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: #fff; }
+    figcaption { padding: 10px 14px; font-size: 12px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: #f1f5f9; }
+    figcaption.after { background: #ecfdf5; color: #065f46; }
+    figcaption.before { background: #fef2f2; color: #991b1b; }
+    figure img { display: block; width: 100%; height: auto; max-height: 620px; object-fit: contain; background: #f8fafc; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>EduSuggest GĐ6.2 – Visual Comparison Gallery (Before vs. After)</h1>
+    <p>Môi trường nghiệm thu độc lập: Staging UI <code>http://127.0.0.1:5177</code> · Staging API <code>http://127.0.0.1:8004/api</code> · DB <code>edusuggest_phase62_staging</code></p>
+  </header>
+  <main>
+    <div class="metrics">
+      <div class="metric"><div class="label">Recommendation p50 (Warm)</div><div class="val">113.31 ms</div><div class="sub">134.4× nhanh hơn (từ 15,232 ms)</div></div>
+      <div class="metric"><div class="label">8-Persona Exact Equivalence</div><div class="val">16 / 16 PASS</div><div class="sub">100% khớp Top-5 Khóa học &amp; Tài liệu</div></div>
+      <div class="metric"><div class="label">Horizontal Overflow (320–1920px)</div><div class="val">0 px</div><div class="sub">21/21 viewport checks + 4 vai trò</div></div>
+      <div class="metric"><div class="label">YouTube Embed &amp; WebP Covers</div><div class="val">100% LIVE</div><div class="sub">804×451 iframe · 6/6 cover cards</div></div>
+    </div>
+
+    <section class="pair">
+      <h2>1. ISSUE-002 (P1) – CourseDetail Công khai (/courses/6, 1440px)</h2>
+      <p class="desc">Trước: hiển thị "0 bài giảng" và "Thông tin nhà cung cấp chưa được cập...". Sau: hiển thị đúng "Học viện Phần mềm FPT", "5 bài giảng", và đề cương công khai 5 bài kèm khóa bảo vệ nội dung trả phí + Header 2 tầng.</p>
+      <div class="grid-2">
+        <figure>
+          <figcaption class="before"><span>BEFORE (GĐ6.1 – 1440px)</span><span>0 bài giảng · Provider thiếu</span></figcaption>
+          <img src="../../media/phase6-audit/screenshots/course-detail-1440.png" alt="Before CourseDetail 1440px" />
+        </figure>
+        <figure>
+          <figcaption class="after"><span>AFTER (GĐ6.2 – 1440px)</span><span>5 bài giảng · FPT · Locked Syllabus</span></figcaption>
+          <img src="../../media/phase62-staging/screenshots/after_course6_1440px.png" alt="After CourseDetail 1440px" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="pair">
+      <h2>2. ISSUE-003 &amp; ISSUE-006 (P2) – CourseCard 16:9 Sạch &amp; Header 2 Tầng (/courses, 1440px)</h2>
+      <p class="desc">Trước: badge nổi góc trên trái đè trực tiếp lên tiêu đề trong ảnh bìa WebP; Header 1 tầng không có thanh tìm kiếm toàn cục ở trang con. Sau: ảnh bìa WebP 16:9 sạch hoàn toàn, badge Danh mục &amp; Trình độ nằm gọn trong thân thẻ trắng; Header 2 tầng gọn nhẹ.</p>
+      <div class="grid-2">
+        <figure>
+          <figcaption class="before"><span>BEFORE (GĐ6.1 – 1440px)</span><span>Badge đè lên ảnh bìa WebP</span></figcaption>
+          <img src="../../media/phase6-audit/screenshots/courses-1440.png" alt="Before Catalog 1440px" />
+        </figure>
+        <figure>
+          <figcaption class="after"><span>AFTER (GĐ6.2 – 1440px)</span><span>Ảnh bìa 16:9 sạch · Header 2 tầng</span></figcaption>
+          <img src="../../media/phase62-staging/screenshots/after_catalog_1440px.png" alt="After Catalog 1440px" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="pair">
+      <h2>3. ISSUE-001 (P2) – Homepage Mobile 375px (0px Horizontal Overflow)</h2>
+      <p class="desc">Trước: Hero H1, thanh tìm kiếm và ô KPI thứ 3 bị tràn ngang trên 375px. Sau: 0px overflow trên toàn bộ 320px, 375px, 390px, 768px, 1024px, 1440px, 1920px.</p>
+      <div class="grid-2">
+        <figure>
+          <figcaption class="before"><span>BEFORE (GĐ6.1 – 375px)</span><span>Tràn ngang mép phải</span></figcaption>
+          <img src="../../media/phase6-audit/screenshots/home-375.png" alt="Before Home 375px" />
+        </figure>
+        <figure>
+          <figcaption class="after"><span>AFTER (GĐ6.2 – 375px)</span><span>scrollWidth == 375px (0px overflow)</span></figcaption>
+          <img src="../../media/phase62-staging/screenshots/after_home_375px.png" alt="After Home 375px" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="pair">
+      <h2>4. Đa Vai Trò &amp; Phòng Học Video YouTube (Playwright Interactive E2E – 1440px)</h2>
+      <p class="desc">Nghiệm thu trực quan trên staging GĐ6.2 với phiên đăng nhập thật cho 4 vai trò USER, ADMIN, PROVIDER, EXPERT và video YouTube nhúng hoạt động thực tế.</p>
+      <div class="grid-3">
+        <figure>
+          <figcaption class="after"><span>USER – LearningView YouTube</span><span>804×451 Embed</span></figcaption>
+          <img src="../../media/phase62-staging/screenshots/after_learning_video_1440px.png" alt="LearningView YouTube" />
+        </figure>
+        <figure>
+          <figcaption class="after"><span>USER – Dashboard</span><span>Wishlist &amp; Cart Active</span></figcaption>
+          <img src="../../media/phase62-staging/screenshots/after_user_dashboard_1440px.png" alt="User Dashboard" />
+        </figure>
+        <figure>
+          <figcaption class="after"><span>ADMIN – Dashboard</span><span>120 Courses · 150 Enrollments</span></figcaption>
+          <img src="../../media/phase62-staging/screenshots/after_admin_dashboard_1440px.png" alt="Admin Dashboard" />
+        </figure>
+        <figure>
+          <figcaption class="after"><span>PROVIDER – Dashboard</span><span>12 Courses · WebP Covers</span></figcaption>
+          <img src="../../media/phase62-staging/screenshots/after_provider_dashboard_1440px.png" alt="Provider Dashboard" />
+        </figure>
+        <figure>
+          <figcaption class="after"><span>EXPERT – Reviewer Dashboard</span><span>0px Overflow</span></figcaption>
+          <img src="../../media/phase62-staging/screenshots/after_expert_dashboard_1440px.png" alt="Expert Dashboard" />
+        </figure>
+        <figure>
+          <figcaption class="after"><span>Homepage Desktop 1440px</span><span>Clean Hero &amp; 8 Categories</span></figcaption>
+          <img src="../../media/phase62-staging/screenshots/after_home_1440px.png" alt="Homepage 1440px" />
+        </figure>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

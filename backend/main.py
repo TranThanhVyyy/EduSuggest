@@ -1,23 +1,37 @@
 import asyncio
+import mimetypes
 import time
 import uuid
 from contextlib import asynccontextmanager
 
+# Ensure Windows StaticFiles serves .webp with standard MIME type image/webp
+mimetypes.add_type("image/webp", ".webp")
+
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.exc import SQLAlchemyError
 
+from api.accountability import router as accountability_router
+from api.assignments import router as assignments_router
 from api.auth import router as auth_router
+from api.availability_notifications import router as availability_notifications_router
+from api.commerce import router as commerce_router
+from api.commerce_admin import router as commerce_admin_router
 from api.recommendations import router as recommendations_router
 from api.users import router as users_router
 from api.workflows import router as workflows_router
 from config.config import get_settings
 from config.context import request_id
+from config.storage import course_media_directory
 from config.database import (
     check_database_connection,
     close_database_connection,
     connect_to_database,
+    engine as db_engine,
+    get_db,
 )
+from config.schema_guard import SchemaCompatibilityError, verify_database_schema_compatibility
 from utils.logger import log_success, logger
 from utils.token_cleanup import cleanup_expired_tokens_periodically
 
@@ -33,6 +47,16 @@ async def lifespan(_: FastAPI):
     try:
         await asyncio.to_thread(connect_to_database)
         log_success("PostgreSQL connection established")
+        if get_db not in app.dependency_overrides:
+            await asyncio.to_thread(
+                verify_database_schema_compatibility,
+                db_engine,
+                require_marketplace_tables=bool(settings.commerce_enrollment_gate_enabled),
+            )
+            log_success("PostgreSQL schema compatibility verified (fail-closed guard PASS)")
+    except SchemaCompatibilityError as exc:
+        logger.error("STARTUP BLOCKED — %s", exc)
+        raise
     except SQLAlchemyError as exc:
         logger.error("PostgreSQL connection failed (%s)", type(exc).__name__)
 
@@ -72,12 +96,25 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=sorted(allowed_frontend_origins),
     allow_methods=["*"],
-    allow_headers=["Authorization", "Content-Type"],
+    allow_headers=["Authorization", "Content-Type", "Idempotency-Key"],
 )
 app.include_router(auth_router, prefix=settings.api_prefix)
 app.include_router(users_router, prefix=settings.api_prefix)
 app.include_router(workflows_router, prefix=settings.api_prefix)
+app.include_router(assignments_router, prefix=settings.api_prefix)
+app.include_router(accountability_router, prefix=settings.api_prefix)
+app.include_router(availability_notifications_router, prefix=settings.api_prefix)
 app.include_router(recommendations_router, prefix=settings.api_prefix)
+app.include_router(commerce_router, prefix=settings.api_prefix)
+app.include_router(commerce_admin_router, prefix=settings.api_prefix)
+
+_course_media_dir = course_media_directory()
+_course_media_dir.mkdir(parents=True, exist_ok=True)
+app.mount(
+    "/media/courses",
+    StaticFiles(directory=str(_course_media_dir)),
+    name="course-media",
+)
 
 
 @app.middleware("http")

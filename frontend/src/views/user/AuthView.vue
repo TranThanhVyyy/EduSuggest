@@ -159,7 +159,7 @@ async function submit() {
       </RouterLink>
       <div class="auth-topbar__aside">
         <span class="hidden text-sm text-muted sm:inline">Bạn mới với EduSuggest?</span>
-        <RouterLink :to="{ name: 'register' }" class="auth-text-link">Tạo tài khoản <span aria-hidden="true">↗</span></RouterLink>
+        <RouterLink :to="{ name: 'register' }" class="auth-text-link">Tạo tài khoản <span aria-hidden="true"></span></RouterLink>
       </div>
     </header>
 
@@ -217,7 +217,7 @@ async function submit() {
       </RouterLink>
       <div class="auth-topbar__aside">
         <span class="hidden text-sm text-muted sm:inline">Đã có tài khoản?</span>
-        <RouterLink :to="{ name: 'login' }" class="auth-text-link">Đăng nhập <span aria-hidden="true">↗</span></RouterLink>
+        <RouterLink :to="{ name: 'login' }" class="auth-text-link">Đăng nhập <span aria-hidden="true"></span></RouterLink>
       </div>
     </header>
 
@@ -246,22 +246,22 @@ async function submit() {
               <input id="auth-name" v-model="form.fullName" required maxlength="255" autocomplete="name" placeholder="Nguyễn Văn An" class="ui-input" :aria-invalid="Boolean(errors.fullName)" :aria-describedby="describedBy">
             </template>
           </UiField>
-          <UiField id="auth-username" label="Tên tài khoản" required :error="errors.username" hint="3–50 ký tự; chữ không dấu, số, dấu chấm, gạch dưới hoặc gạch ngang.">
+          <UiField id="auth-username" label="Tên tài khoản" required :error="errors.username" hint="">
             <template #default="{ describedBy }">
               <input id="auth-username" v-model="form.username" required minlength="3" maxlength="50" autocomplete="username" placeholder="nguyenvana" class="ui-input" :aria-invalid="Boolean(errors.username)" :aria-describedby="describedBy">
             </template>
           </UiField>
-          <UiField id="auth-email" label="Email" required :error="errors.email" hint="Email dùng để liên hệ, không dùng để đăng nhập.">
+          <UiField id="auth-email" label="Email" required :error="errors.email" hint="">
             <template #default="{ describedBy }">
               <input id="auth-email" v-model="form.email" required type="email" autocomplete="email" placeholder="ban@example.com" class="ui-input" :aria-invalid="Boolean(errors.email)" :aria-describedby="describedBy">
             </template>
           </UiField>
-          <UiField id="auth-phone" label="Số điện thoại" :error="errors.phone" hint="Không bắt buộc.">
+          <UiField id="auth-phone" label="Số điện thoại" :error="errors.phone" hint="">
             <template #default="{ describedBy }">
               <input id="auth-phone" v-model="form.phone" maxlength="20" type="tel" autocomplete="tel" placeholder="090 123 4567" class="ui-input" :aria-invalid="Boolean(errors.phone)" :aria-describedby="describedBy">
             </template>
           </UiField>
-          <UiField id="auth-password" label="Mật khẩu" required :error="errors.password" hint="Từ 8 đến 128 ký tự.">
+          <UiField id="auth-password" label="Mật khẩu" required :error="errors.password" hint="">
             <template #default="{ describedBy }">
               <span class="auth-password-control">
                 <input id="auth-password" v-model="form.password" required minlength="8" maxlength="128" :type="passwordVisible ? 'text' : 'password'" autocomplete="new-password" placeholder="Tạo mật khẩu" class="ui-input" :aria-invalid="Boolean(errors.password)" :aria-describedby="describedBy">
@@ -287,7 +287,7 @@ async function submit() {
               <span>Tôi đồng ý với điều khoản sử dụng và chính sách quyền riêng tư.</span>
             </label>
             <p v-if="errors.agree" class="auth-inline-error" role="alert">{{ errors.agree }}</p>
-            <p class="auth-role-note">Tài khoản mới được Backend tự động gán vai trò USER.</p>
+            <p class="auth-role-note">Tạo tài khoản mới thành công sẽ  chuyển sang phần đăng nhập</p>
             <p v-if="attempted && message" class="auth-feedback" :class="successMessage ? 'auth-feedback--success' : 'auth-feedback--error'" :role="successMessage ? 'status' : 'alert'">{{ message }}</p>
             <UiButton type="submit" class="auth-submit" :loading="submitting">
               <LoaderCircle v-if="submitting" :size="17" class="animate-spin" aria-hidden="true" />
@@ -297,7 +297,7 @@ async function submit() {
         </form>
       </section>
     </div>
-    <footer class="auth-footer"><span>EDUSUGGEST</span><span>Thông tin tài khoản được xác thực qua Backend.</span></footer>
+    <footer class="auth-footer"><span>EDUSUGGEST</span><span>Học tập có định hướng, tiến bộ có ý nghĩa.</span></footer>
   </main>
 </template>
 

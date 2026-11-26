@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, joinedload, selectinload
 
 from models import (
@@ -10,6 +10,7 @@ from models import (
     DonXinNhaCungCap,
     KhoaHoc,
     LichSuHocTap,
+    NguoiDung,
     NhaCungCapKhoaHoc,
     TaiLieu,
 )
@@ -38,8 +39,6 @@ def list_provider_applications(
         DonXinNhaCungCap.ngayGui.desc(), DonXinNhaCungCap.maDon.desc()
     )
     return list(db.scalars(statement).all())
-
-
 def get_provider_profile(db: Session, user_id: int) -> NhaCungCapKhoaHoc | None:
     statement = select(NhaCungCapKhoaHoc).where(
         NhaCungCapKhoaHoc.maNguoiDung == user_id
@@ -119,24 +118,54 @@ def list_courses_for_review(db: Session) -> list[KhoaHoc]:
 def get_public_course(
     db: Session, course_id: int, *, for_update: bool = False
 ) -> KhoaHoc | None:
-    statement = select(KhoaHoc).where(
-        KhoaHoc.maKhoaHoc == course_id,
-        KhoaHoc.trangThaiDuyet == "APPROVED",
-        KhoaHoc.trangThaiHienThi == "VISIBLE",
+    statement = (
+        select(KhoaHoc)
+        .options(
+            joinedload(KhoaHoc.nhaCungCap).joinedload(
+                NhaCungCapKhoaHoc.nguoiDung
+            )
+        )
+        .where(
+            KhoaHoc.maKhoaHoc == course_id,
+            KhoaHoc.trangThaiDuyet == "APPROVED",
+            KhoaHoc.trangThaiHienThi == "VISIBLE",
+        )
     )
     if for_update:
         statement = statement.with_for_update()
     return db.scalars(statement).first()
 
 
-def get_enrollment(db: Session, user_id: int, course_id: int, *, for_update: bool = False) -> DangKyKhoaHoc | None:
+def get_enrollment(
+    db: Session,
+    user_id: int,
+    course_id: int,
+    *,
+    for_update: bool = False,
+    active_only: bool = True,
+) -> DangKyKhoaHoc | None:
     statement = select(DangKyKhoaHoc).where(
         DangKyKhoaHoc.maNguoiDung == user_id,
         DangKyKhoaHoc.maKhoaHoc == course_id,
     )
+    if active_only:
+        statement = statement.where(DangKyKhoaHoc.trangThaiQuyenHoc == "ACTIVE")
     if for_update:
         statement = statement.with_for_update()
     return db.scalars(statement).first()
+
+
+def list_enrolled_course_ids(
+    db: Session, user_id: int, course_ids: set[int]
+) -> set[int]:
+    if not course_ids:
+        return set()
+    statement = select(DangKyKhoaHoc.maKhoaHoc).where(
+        DangKyKhoaHoc.maNguoiDung == user_id,
+        DangKyKhoaHoc.maKhoaHoc.in_(course_ids),
+        DangKyKhoaHoc.trangThaiQuyenHoc == "ACTIVE",
+    )
+    return {cid for cid in db.scalars(statement).all() if cid is not None}
 
 
 def list_enrollments(db: Session, user_id: int) -> list[DangKyKhoaHoc]:
@@ -144,7 +173,10 @@ def list_enrollments(db: Session, user_id: int) -> list[DangKyKhoaHoc]:
         select(DangKyKhoaHoc)
         .options(joinedload(DangKyKhoaHoc.khoaHoc).joinedload(KhoaHoc.baiHocs))
         .join(DangKyKhoaHoc.khoaHoc)
-        .where(DangKyKhoaHoc.maNguoiDung == user_id)
+        .where(
+            DangKyKhoaHoc.maNguoiDung == user_id,
+            DangKyKhoaHoc.trangThaiQuyenHoc == "ACTIVE",
+        )
         .where(KhoaHoc.trangThaiDuyet == "APPROVED", KhoaHoc.trangThaiHienThi == "VISIBLE")
         .order_by(DangKyKhoaHoc.ngayDangKy.desc(), DangKyKhoaHoc.maDangKy.desc())
     )
@@ -220,6 +252,7 @@ def list_user_recommendation_enrollments(
         )
         .where(
             DangKyKhoaHoc.maNguoiDung == user_id,
+            DangKyKhoaHoc.trangThaiQuyenHoc == "ACTIVE",
             KhoaHoc.trangThaiDuyet == "APPROVED",
             KhoaHoc.trangThaiHienThi == "VISIBLE",
         )
@@ -254,22 +287,31 @@ def list_recommendation_materials_for_enrolled_course(
 ) -> list[TaiLieu]:
     statement = (
         select(TaiLieu)
-        .join(TaiLieu.baiHoc)
-        .join(BaiHoc.khoaHoc)
-        .join(KhoaHoc.dangKyKhoaHocs)
+        .outerjoin(BaiHoc, TaiLieu.maBaiHoc == BaiHoc.maBaiHoc)
+        .join(
+            KhoaHoc,
+            or_(
+                TaiLieu.maKhoaHoc == KhoaHoc.maKhoaHoc,
+                BaiHoc.maKhoaHoc == KhoaHoc.maKhoaHoc,
+            ),
+        )
+        .join(DangKyKhoaHoc, DangKyKhoaHoc.maKhoaHoc == KhoaHoc.maKhoaHoc)
         .options(
-            joinedload(TaiLieu.baiHoc)
-            .joinedload(BaiHoc.khoaHoc)
-            .joinedload(KhoaHoc.danhMuc)
+            joinedload(TaiLieu.baiHoc),
+            joinedload(TaiLieu.khoaHoc).joinedload(KhoaHoc.danhMuc),
+            joinedload(TaiLieu.danhMuc),
         )
         .where(
             DangKyKhoaHoc.maNguoiDung == user_id,
             DangKyKhoaHoc.maKhoaHoc == course_id,
+            DangKyKhoaHoc.trangThaiQuyenHoc == "ACTIVE",
             KhoaHoc.maKhoaHoc == course_id,
             KhoaHoc.trangThaiDuyet == "APPROVED",
             KhoaHoc.trangThaiHienThi == "VISIBLE",
+            TaiLieu.trangThaiDuyet == "APPROVED",
+            TaiLieu.trangThaiHienThi == "VISIBLE",
         )
-        .order_by(BaiHoc.thuTu, TaiLieu.maTaiLieu)
+        .order_by(BaiHoc.thuTu.nulls_last(), TaiLieu.maTaiLieu)
     )
     return list(db.scalars(statement).unique().all())
 
@@ -319,7 +361,10 @@ def get_review_history_for_expert(
 ) -> list[DanhGiaChuyenGia]:
     statement = (
         select(DanhGiaChuyenGia)
-        .options(joinedload(DanhGiaChuyenGia.khoaHoc))
+        .options(
+            joinedload(DanhGiaChuyenGia.khoaHoc),
+            joinedload(DanhGiaChuyenGia.taiLieu),
+        )
         .where(DanhGiaChuyenGia.maChuyenGia == expert_id)
         .order_by(DanhGiaChuyenGia.ngayTao.desc(), DanhGiaChuyenGia.maDanhGia.desc())
     )
@@ -333,5 +378,201 @@ def get_review_history_for_course(
         select(DanhGiaChuyenGia)
         .where(DanhGiaChuyenGia.maKhoaHoc == course_id)
         .order_by(DanhGiaChuyenGia.ngayTao.desc(), DanhGiaChuyenGia.maDanhGia.desc())
+    )
+    return list(db.scalars(statement).all())
+
+
+def get_admin_analytics_summary(db: Session) -> dict[str, int | float]:
+    total_users = db.scalar(select(func.count(NguoiDung.maNguoiDung))) or 0
+    total_courses = db.scalar(select(func.count(KhoaHoc.maKhoaHoc))) or 0
+    total_lessons = db.scalar(select(func.count(BaiHoc.maBaiHoc))) or 0
+    total_enrollments = db.scalar(select(func.count(DangKyKhoaHoc.maDangKy))) or 0
+    completed_enrollments = (
+        db.scalar(
+            select(func.count(DangKyKhoaHoc.maDangKy)).where(
+                or_(
+                    DangKyKhoaHoc.ngayHoanThanh.is_not(None),
+                    DangKyKhoaHoc.tienDo >= 100,
+                )
+            )
+        )
+        or 0
+    )
+    completion_rate = (
+        round((completed_enrollments / total_enrollments) * 100, 1)
+        if total_enrollments > 0
+        else 0.0
+    )
+    return {
+        "total_users": int(total_users),
+        "total_courses": int(total_courses),
+        "total_lessons": int(total_lessons),
+        "total_enrollments": int(total_enrollments),
+        "completed_enrollments": int(completed_enrollments),
+        "completion_rate": float(completion_rate),
+    }
+
+
+def _material_options():
+    return (
+        joinedload(TaiLieu.danhMuc),
+        joinedload(TaiLieu.khoaHoc),
+        joinedload(TaiLieu.baiHoc),
+        joinedload(TaiLieu.nhaCungCap),
+    )
+
+
+def list_owned_materials(db: Session, user_id: int) -> list[TaiLieu]:
+    statement = (
+        select(TaiLieu)
+        .options(*_material_options())
+        .join(NhaCungCapKhoaHoc, TaiLieu.maNhaCungCap == NhaCungCapKhoaHoc.maNhaCungCap)
+        .where(NhaCungCapKhoaHoc.maNguoiDung == user_id)
+        .order_by(TaiLieu.maTaiLieu.desc())
+    )
+    return list(db.scalars(statement).all())
+
+
+def get_owned_material_by_id(
+    db: Session, user_id: int, material_id: int, *, for_update: bool = False
+) -> TaiLieu | None:
+    statement = (
+        select(TaiLieu)
+        .options(*_material_options())
+        .join(NhaCungCapKhoaHoc, TaiLieu.maNhaCungCap == NhaCungCapKhoaHoc.maNhaCungCap)
+        .where(
+            TaiLieu.maTaiLieu == material_id,
+            NhaCungCapKhoaHoc.maNguoiDung == user_id,
+        )
+    )
+    if for_update:
+        statement = statement.with_for_update(of=TaiLieu)
+    return db.scalars(statement).first()
+
+
+def list_pending_materials_for_expert(db: Session) -> list[TaiLieu]:
+    statement = (
+        select(TaiLieu)
+        .options(*_material_options())
+        .where(TaiLieu.trangThaiDuyet == "PENDING")
+        .order_by(TaiLieu.ngayTao.desc(), TaiLieu.maTaiLieu.desc())
+    )
+    return list(db.scalars(statement).all())
+
+
+def get_expert_material(
+    db: Session, material_id: int, *, for_update: bool = False
+) -> TaiLieu | None:
+    statement = (
+        select(TaiLieu)
+        .options(*_material_options())
+        .where(TaiLieu.maTaiLieu == material_id)
+    )
+    if for_update:
+        statement = statement.with_for_update(of=TaiLieu)
+    return db.scalars(statement).first()
+
+
+def list_public_materials(
+    db: Session,
+    *,
+    query: str | None = None,
+    category_id: int | None = None,
+    material_type: str | None = None,
+    limit: int = 20,
+    offset: int = 0,
+) -> tuple[list[TaiLieu], int]:
+    base_filters = [
+        TaiLieu.trangThaiDuyet == "APPROVED",
+        TaiLieu.trangThaiHienThi == "VISIBLE",
+    ]
+    if query:
+        base_filters.append(
+            or_(
+                TaiLieu.tieuDe.ilike(f"%{query}%"),
+                TaiLieu.moTa.ilike(f"%{query}%"),
+            )
+        )
+    if category_id is not None:
+        base_filters.append(TaiLieu.maDanhMuc == category_id)
+    if material_type:
+        base_filters.append(TaiLieu.loai.ilike(material_type))
+
+    total = db.scalar(
+        select(func.count(TaiLieu.maTaiLieu)).where(*base_filters)
+    ) or 0
+
+    statement = (
+        select(TaiLieu)
+        .options(*_material_options())
+        .where(*base_filters)
+        .order_by(TaiLieu.ngayTao.desc(), TaiLieu.maTaiLieu.desc())
+        .offset(offset)
+        .limit(limit)
+    )
+    items = list(db.scalars(statement).all())
+    return items, total
+
+
+def get_public_material(db: Session, material_id: int) -> TaiLieu | None:
+    statement = (
+        select(TaiLieu)
+        .options(*_material_options())
+        .where(
+            TaiLieu.maTaiLieu == material_id,
+            TaiLieu.trangThaiDuyet == "APPROVED",
+            TaiLieu.trangThaiHienThi == "VISIBLE",
+        )
+    )
+    return db.scalars(statement).first()
+
+
+def list_admin_materials(
+    db: Session,
+    *,
+    query: str | None = None,
+    category_id: int | None = None,
+    status: str | None = None,
+    limit: int = 20,
+    offset: int = 0,
+) -> tuple[list[TaiLieu], int]:
+    filters = []
+    if query:
+        filters.append(
+            or_(
+                TaiLieu.tieuDe.ilike(f"%{query}%"),
+                TaiLieu.moTa.ilike(f"%{query}%"),
+            )
+        )
+    if category_id is not None:
+        filters.append(TaiLieu.maDanhMuc == category_id)
+    if status:
+        filters.append(TaiLieu.trangThaiDuyet == status)
+
+    total = (
+        db.scalar(select(func.count(TaiLieu.maTaiLieu)).where(*filters)) or 0
+    )
+
+    statement = (
+        select(TaiLieu)
+        .options(*_material_options())
+        .where(*filters)
+        .order_by(TaiLieu.maTaiLieu.desc())
+        .offset(offset)
+        .limit(limit)
+    )
+    items = list(db.scalars(statement).all())
+    return items, int(total)
+
+
+def list_standalone_recommendation_materials(db: Session) -> list[TaiLieu]:
+    statement = (
+        select(TaiLieu)
+        .options(*_material_options())
+        .where(
+            TaiLieu.trangThaiDuyet == "APPROVED",
+            TaiLieu.trangThaiHienThi == "VISIBLE",
+        )
+        .order_by(TaiLieu.maTaiLieu.asc())
     )
     return list(db.scalars(statement).all())

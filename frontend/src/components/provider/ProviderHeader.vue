@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { Bell, ChevronDown, LogOut, Menu, UserRound } from 'lucide-vue-next'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { Bell, ChevronDown, ChevronRight, LogOut, Menu, UserRound } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import { authState } from '@/service/authState'
 import { logoutAccount } from '@/service/authService'
@@ -8,17 +8,47 @@ import { logoutAccount } from '@/service/authService'
 const emit = defineEmits(['toggle-navigation'])
 const route = useRoute()
 const router = useRouter()
+
 const notificationsOpen = ref(false)
 const accountOpen = ref(false)
+const notificationsRef = ref(null)
+const accountRef = ref(null)
 const logoutError = ref('')
-const title = computed(() => route.meta.title || 'Dashboard')
+
+const pageTitle = computed(() => route.meta.title || 'Tổng quan')
 const notifications = ref([])
-const fullName = computed(() => authState.user?.hoTen || '')
+const fullName = computed(() => authState.user?.hoTen || 'Nhà cung cấp')
 const initials = computed(() => {
   const words = fullName.value.trim().split(/\s+/).filter(Boolean)
   return words.length > 1
     ? `${words[0][0]}${words[words.length - 1][0]}`.toLocaleUpperCase('vi')
     : words[0]?.slice(0, 2).toLocaleUpperCase('vi') || 'PR'
+})
+
+function handlePointerDown(event) {
+  if (notificationsOpen.value && notificationsRef.value && !notificationsRef.value.contains(event.target)) {
+    notificationsOpen.value = false
+  }
+  if (accountOpen.value && accountRef.value && !accountRef.value.contains(event.target)) {
+    accountOpen.value = false
+  }
+}
+
+function handleKeydown(event) {
+  if (event.key === 'Escape') {
+    notificationsOpen.value = false
+    accountOpen.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('pointerdown', handlePointerDown)
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('pointerdown', handlePointerDown)
+  document.removeEventListener('keydown', handleKeydown)
 })
 
 async function logout() {
@@ -34,56 +64,120 @@ async function logout() {
 </script>
 
 <template>
-  <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
-    <div class="flex min-h-[72px] items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
-      <div class="flex min-w-0 items-center gap-3">
-        <button type="button" class="flex size-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 text-navy hover:bg-background lg:hidden" aria-label="Mở điều hướng Provider" @click="emit('toggle-navigation')">
-          <Menu :size="19" aria-hidden="true" />
+  <header class="sticky top-0 z-30 border-b border-border/80 bg-surface/90 backdrop-blur-md">
+    <div class="flex h-15 items-center justify-between gap-3 px-4 sm:px-6 lg:px-10">
+      <!-- Left: Mobile trigger + Compact Breadcrumb -->
+      <div class="flex min-w-0 items-center gap-2.5">
+        <button
+          type="button"
+          class="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border text-navy transition-colors duration-150 hover:bg-subtle lg:hidden"
+          aria-label="Mở điều hướng Provider"
+          @click="emit('toggle-navigation')"
+        >
+          <Menu :size="18" aria-hidden="true" />
         </button>
-        <div class="min-w-0">
-          <p class="truncate text-xs text-muted"><RouterLink :to="{ name: 'provider-dashboard' }" class="hover:text-primary">Provider</RouterLink> / Không gian quản lý</p>
-          <h1 class="mt-1 truncate text-lg font-bold text-navy sm:text-xl">{{ title }}</h1>
-        </div>
+
+        <nav class="flex min-w-0 items-center gap-1.5 text-sm" aria-label="Vị trí hiện tại">
+          <RouterLink
+            :to="{ name: 'provider-dashboard' }"
+            class="shrink-0 font-medium text-slate-500 transition-colors duration-150 hover:text-navy"
+          >
+            Nhà cung cấp
+          </RouterLink>
+          <ChevronRight :size="14" class="shrink-0 text-slate-400" aria-hidden="true" />
+          <span class="truncate font-semibold text-navy">{{ pageTitle }}</span>
+        </nav>
       </div>
 
-      <div class="flex shrink-0 items-center gap-2 sm:gap-3">
-        <div class="relative">
-          <button type="button" class="relative flex size-10 items-center justify-center rounded-xl text-muted hover:bg-background hover:text-navy" aria-label="Thông báo Provider" :aria-expanded="notificationsOpen" @click="notificationsOpen = !notificationsOpen; accountOpen = false">
-            <Bell :size="19" aria-hidden="true" />
-            <span v-if="notifications.length" class="absolute right-2 top-2 size-2 rounded-full bg-accent" aria-label="Có thông báo"></span>
+      <!-- Right: Notifications + Compact Account Pill -->
+      <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
+        <div ref="notificationsRef" class="relative">
+          <button
+            type="button"
+            class="relative flex size-9 items-center justify-center rounded-lg text-slate-500 transition-colors duration-150 hover:bg-subtle hover:text-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+            aria-label="Thông báo kiểm duyệt"
+            :aria-expanded="notificationsOpen"
+            @click="notificationsOpen = !notificationsOpen; accountOpen = false"
+          >
+            <Bell :size="18" aria-hidden="true" />
+            <span
+              v-if="notifications.length"
+              class="absolute right-2 top-2 size-1.5 rounded-full bg-amber"
+              aria-label="Có thông báo mới"
+            ></span>
           </button>
-          <div v-if="notificationsOpen" class="absolute right-0 top-12 z-40 w-[min(88vw,340px)] rounded-xl border border-slate-200 bg-white p-4 shadow-xl">
-            <p class="font-semibold text-navy">Thông báo kiểm duyệt</p>
-            <ul v-if="notifications.length" class="mt-2 divide-y divide-slate-100">
-              <li v-for="notification in notifications" :key="notification.id" class="py-2.5">
-                <p class="text-sm font-semibold text-navy">{{ notification.title }}</p>
-                <p class="mt-0.5 text-xs text-muted">{{ notification.detail }}</p>
-              </li>
-            </ul>
-            <p v-else class="mt-2 text-sm text-muted">Backend hiện chưa cung cấp API thông báo Provider.</p>
-          </div>
+
+          <Transition name="es-popover">
+            <div
+              v-if="notificationsOpen"
+              class="absolute right-0 top-11 z-40 w-[min(88vw,320px)] origin-top-right rounded-xl border border-border bg-surface p-4 shadow-lg"
+            >
+              <p class="text-sm font-semibold text-navy">Thông báo kiểm duyệt</p>
+              <ul v-if="notifications.length" class="mt-2.5 divide-y divide-border/60">
+                <li v-for="notification in notifications" :key="notification.id" class="py-2.5">
+                  <p class="text-sm font-medium text-navy">{{ notification.title }}</p>
+                  <p class="mt-0.5 text-xs text-slate-600">{{ notification.detail }}</p>
+                </li>
+              </ul>
+              <p v-else class="mt-2 text-xs leading-relaxed text-slate-500">
+                Chưa có thông báo mới. Phản hồi từ Chuyên gia kiểm duyệt sẽ hiển thị tại đây.
+              </p>
+            </div>
+          </Transition>
         </div>
 
-        <div class="relative">
-          <button type="button" class="flex items-center gap-2 rounded-xl p-1.5 text-left hover:bg-background" aria-label="Menu tài khoản Provider" :aria-expanded="accountOpen" @click="accountOpen = !accountOpen; notificationsOpen = false">
-            <span class="flex size-9 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{{ initials }}</span>
-            <span class="hidden min-w-0 sm:block">
-              <span class="block max-w-36 truncate text-sm font-semibold text-navy">{{ fullName }}</span>
-              <span class="block text-xs text-muted">Nhà cung cấp</span>
+        <div class="h-5 w-px bg-border/80 hidden sm:block" aria-hidden="true"></div>
+
+        <div ref="accountRef" class="relative">
+          <button
+            type="button"
+            class="flex items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors duration-150 hover:bg-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+            aria-label="Menu tài khoản Provider"
+            :aria-expanded="accountOpen"
+            @click="accountOpen = !accountOpen; notificationsOpen = false"
+          >
+            <span class="flex size-7 items-center justify-center rounded-full bg-navy text-[11px] font-bold text-white">
+              {{ initials }}
             </span>
-            <ChevronDown class="hidden text-muted sm:block" :size="15" aria-hidden="true" />
+            <span class="hidden max-w-36 truncate text-sm font-medium text-navy sm:block">
+              {{ fullName }}
+            </span>
+            <ChevronDown class="hidden text-slate-400 sm:block" :size="14" aria-hidden="true" />
           </button>
-          <div v-if="accountOpen" class="absolute right-0 top-12 z-40 w-60 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
-            <RouterLink :to="{ name: 'provider-profile' }" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy hover:bg-background" @click="accountOpen = false">
-              <UserRound :size="16" aria-hidden="true" /> Hồ sơ cá nhân
-            </RouterLink>
-            <button type="button" class="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-muted hover:bg-background" @click="logout">
-              <LogOut :size="16" aria-hidden="true" /> Đăng xuất
-            </button>
-          </div>
+
+          <Transition name="es-popover">
+            <div
+              v-if="accountOpen"
+              class="absolute right-0 top-11 z-40 w-56 origin-top-right rounded-xl border border-border bg-surface p-1.5 shadow-lg"
+            >
+              <div class="border-b border-border/70 px-3 py-2 mb-1">
+                <p class="truncate text-sm font-semibold text-navy">{{ fullName }}</p>
+                <p class="text-xs text-slate-500">Nhà cung cấp khóa học</p>
+              </div>
+              <RouterLink
+                :to="{ name: 'provider-profile' }"
+                class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy transition-colors duration-150 hover:bg-subtle"
+                @click="accountOpen = false"
+              >
+                <UserRound :size="15" class="text-slate-500" aria-hidden="true" />
+                <span>Hồ sơ cá nhân</span>
+              </RouterLink>
+              <button
+                type="button"
+                class="mt-0.5 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-slate-600 transition-colors duration-150 hover:bg-subtle hover:text-navy"
+                @click="logout"
+              >
+                <LogOut :size="15" class="text-slate-500" aria-hidden="true" />
+                <span>Đăng xuất</span>
+              </button>
+            </div>
+          </Transition>
         </div>
       </div>
     </div>
-    <p v-if="logoutError" class="px-4 pb-3 text-xs text-primary" role="status">{{ logoutError }}</p>
+
+    <p v-if="logoutError" class="border-t border-border/70 bg-subtle/60 px-4 py-2 text-xs text-navy sm:px-6 lg:px-10" role="status">
+      {{ logoutError }}
+    </p>
   </header>
 </template>
